@@ -1,0 +1,587 @@
+/* ==========================================================================
+   ADMIN PORTAL - DESIGN SYSTEM & MODERN SAAS DASHBOARD THEME
+   Hệ thống Quản Trị & Tác Nghiệp Thủ Thư - Thư Viện Tri Thức
+   ========================================================================== */
+
+:root {
+  /* ==========================================================================
+     BOOTSTRAP 5 THEME OVERRIDES
+     ========================================================================== */
+  --bs-primary: #1B4332;
+  --bs-primary-rgb: 27, 67, 50;
+  --bs-primary-text-emphasis: #0D281E;
+  --bs-primary-bg-subtle: #E8F5E9;
+  --bs-primary-border-subtle: #A3D9A5;
+
+  --bs-secondary: #6B4226;
+  --bs-secondary-rgb: 107, 66, 38;
+  --bs-secondary-text-emphasis: #442A18;
+  --bs-secondary-bg-subtle: #F7EDE2;
+  --bs-secondary-border-subtle: #E8D5C4;
+
+  --bs-success: #10B981;
+  --bs-success-rgb: 16, 185, 129;
+  --bs-success-text-emphasis: #065F46;
+  --bs-success-bg-subtle: #D1FAE5;
+  --bs-success-border-subtle: #A7F3D0;
+
+  --bs-info: #0284C7;
+  --bs-info-rgb: 2, 132, 199;
+  --bs-info-text-emphasis: #075985;
+  --bs-info-bg-subtle: #E0F2FE;
+  --bs-info-border-subtle: #BAE6FD;
+
+  --bs-warning: #F59E0B;
+  --bs-warning-rgb: 245, 158, 11;
+  --bs-warning-text-emphasis: #92400E;
+  --bs-warning-bg-subtle: #FEF3C7;
+  --bs-warning-border-subtle: #FDE68A;
+
+  --bs-danger: #EF4444;
+  --bs-danger-rgb: 239, 68, 68;
+  --bs-danger-text-emphasis: #991B1B;
+  --bs-danger-bg-subtle: #FEE2E2;
+  --bs-danger-border-subtle: #FECACA;
+
+  --bs-link-color: #1B4332;
+  --bs-link-color-rgb: 27, 67, 50;
+  --bs-link-hover-color: #2D6A4F;
+  --bs-link-hover-color-rgb: 45, 106, 79;
+  --bs-focus-ring-color: rgba(27, 67, 50, 0.25);
+  --bs-body-color: #1E293B;
+  --bs-body-bg: #F4F6F8;
+  --bs-border-color: #E2E8F0;
+
+  /* ==========================================================================
+     ADMIN DESIGN TOKENS
+     ========================================================================== */
+  --admin-bg: #F4F6F8;
+  --admin-surface: #FFFFFF;
+  --admin-sidebar-bg: #0D281E;
+  --admin-sidebar-hover: rgba(255, 255, 255, 0.1);
+  --admin-sidebar-active: #1B4332;
+  --admin-sidebar-active-border: #D4A373;
+  --admin-text-main: #1E293B;
+  --admin-text-muted: #64748B;
+  --admin-border: #E2E8F0;
+  
+  --admin-primary: #1B4332;
+  --admin-primary-dark: #0D281E;
+  --admin-accent: #6B4226;
+  --admin-gold: #D4A373;
+  
+  --admin-success: #10B981;
+  --admin-warning: #F59E0B;
+  --admin-danger: #EF4444;
+  --admin-info: #0284C7;
+  
+  --font-serif: 'Merriweather', Georgia, serif;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 14px rgba(0, 0, 0, 0.07);
+  --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.1);
+  
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+}
+
+body {
+  background-color: var(--admin-bg);
+  color: var(--admin-text-main);
+  font-family: var(--font-sans);
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Layout Cấu Trúc */
+.admin-layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+.admin-sidebar {
+  width: 260px;
+  min-width: 260px;
+  background-color: var(--admin-sidebar-bg);
+  color: #FFFFFF;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1020;
+  border-right: 1px solid rgba(212, 163, 115, 0.25);
+  box-shadow: 2px 0 12px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease;
+}
+
+.admin-main {
+  flex-grow: 1;
+  margin-left: 260px;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  background-color: var(--admin-bg);
+}
+
+.admin-header {
+  height: 64px;
+  background-color: var(--admin-surface);
+  border-bottom: 1px solid var(--admin-border);
+  position: sticky;
+  top: 0;
+  z-index: 1010;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1.5rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.admin-content {
+  padding: 1.5rem;
+  flex-grow: 1;
+}
+
+/* Sidebar Nav Items */
+.sidebar-nav-item {
+  color: rgba(255, 255, 255, 0.85);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.65rem 1.15rem;
+  font-weight: 500;
+  font-size: 0.9rem;
+  text-decoration: none;
+  border-radius: var(--radius-sm);
+  margin: 0.15rem 0.75rem;
+  transition: all 0.2s ease;
+}
+
+.sidebar-nav-item:hover {
+  color: #FFFFFF;
+  background-color: var(--admin-sidebar-hover);
+}
+
+.sidebar-nav-item.active {
+  color: #FFFFFF;
+  background-color: var(--admin-sidebar-active);
+  border-left: 4px solid var(--admin-sidebar-active-border);
+  font-weight: 600;
+}
+
+.sidebar-category-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: rgba(255, 255, 255, 0.45);
+  font-weight: 700;
+  padding: 0.75rem 1.25rem 0.25rem;
+}
+
+/* KPI Card Thống Kê */
+.kpi-card {
+  background: var(--admin-surface);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  border: 1px solid var(--admin-border);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.kpi-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.kpi-icon-wrap {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+}
+
+.kpi-number {
+  font-size: 1.75rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+/* Table Styling */
+.admin-table {
+  background: var(--admin-surface);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--admin-border);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+.admin-table table {
+  margin-bottom: 0;
+}
+
+.admin-table th {
+  background-color: #F8FAFC;
+  font-weight: 600;
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--admin-text-muted);
+  border-bottom: 1px solid var(--admin-border);
+  padding: 0.85rem 1rem;
+}
+
+.admin-table td {
+  padding: 0.85rem 1rem;
+  font-size: 0.9rem;
+  vertical-align: middle;
+  border-bottom: 1px solid #F1F5F9;
+}
+
+.admin-table tbody tr:hover {
+  background-color: #F8FAFC;
+}
+
+/* Badges */
+.badge-status-pending {
+  background-color: #FEF3C7;
+  color: #B45309;
+  font-weight: 600;
+  border: 1px solid #FDE68A;
+}
+
+.badge-status-borrowed {
+  background-color: #DCFCE7;
+  color: #15803D;
+  font-weight: 600;
+  border: 1px solid #BBF7D0;
+}
+
+.badge-status-returned {
+  background-color: #E0E7FF;
+  color: #3730A3;
+  font-weight: 600;
+  border: 1px solid #C7D2FE;
+}
+
+.badge-status-overdue {
+  background-color: #FEE2E2;
+  color: #B91C1C;
+  font-weight: 600;
+  border: 1px solid #FECACA;
+}
+
+.badge-status-cancelled {
+  background-color: #F1F5F9;
+  color: #64748B;
+  font-weight: 600;
+  border: 1px solid #E2E8F0;
+}
+
+/* ==========================================================================
+   BOOTSTRAP COMPONENT OVERRIDES
+   ========================================================================== */
+
+/* Nút bấm Chuẩn Phong Cách Dự Án */
+.btn-primary {
+  --bs-btn-color: #ffffff;
+  --bs-btn-bg: #1B4332;
+  --bs-btn-border-color: #1B4332;
+  --bs-btn-hover-color: #ffffff;
+  --bs-btn-hover-bg: #2D6A4F;
+  --bs-btn-hover-border-color: #2D6A4F;
+  --bs-btn-focus-shadow-rgb: 27, 67, 50;
+  --bs-btn-active-color: #ffffff;
+  --bs-btn-active-bg: #0D281E;
+  --bs-btn-active-border-color: #0D281E;
+  --bs-btn-disabled-color: #ffffff;
+  --bs-btn-disabled-bg: #1B4332;
+  --bs-btn-disabled-border-color: #1B4332;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.btn-primary:hover {
+  box-shadow: 0 4px 12px rgba(27, 67, 50, 0.25);
+}
+
+.btn-outline-primary {
+  --bs-btn-color: #1B4332;
+  --bs-btn-border-color: #1B4332;
+  --bs-btn-hover-color: #ffffff;
+  --bs-btn-hover-bg: #1B4332;
+  --bs-btn-hover-border-color: #1B4332;
+  --bs-btn-focus-shadow-rgb: 27, 67, 50;
+  --bs-btn-active-color: #ffffff;
+  --bs-btn-active-bg: #0D281E;
+  --bs-btn-active-border-color: #0D281E;
+  --bs-btn-disabled-color: #1B4332;
+  --bs-btn-disabled-bg: transparent;
+  --bs-btn-disabled-border-color: #1B4332;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.btn-secondary {
+  --bs-btn-color: #ffffff;
+  --bs-btn-bg: #6B4226;
+  --bs-btn-border-color: #6B4226;
+  --bs-btn-hover-color: #ffffff;
+  --bs-btn-hover-bg: #8B5A2B;
+  --bs-btn-hover-border-color: #8B5A2B;
+  --bs-btn-focus-shadow-rgb: 107, 66, 38;
+  --bs-btn-active-color: #ffffff;
+  --bs-btn-active-bg: #52331C;
+  --bs-btn-active-border-color: #52331C;
+  --bs-btn-disabled-color: #ffffff;
+  --bs-btn-disabled-bg: #6B4226;
+  --bs-btn-disabled-border-color: #6B4226;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.btn-outline-secondary {
+  --bs-btn-color: #6B4226;
+  --bs-btn-border-color: #6B4226;
+  --bs-btn-hover-color: #ffffff;
+  --bs-btn-hover-bg: #6B4226;
+  --bs-btn-hover-border-color: #6B4226;
+  --bs-btn-focus-shadow-rgb: 107, 66, 38;
+  --bs-btn-active-color: #ffffff;
+  --bs-btn-active-bg: #52331C;
+  --bs-btn-active-border-color: #52331C;
+  --bs-btn-disabled-color: #6B4226;
+  --bs-btn-disabled-bg: transparent;
+  --bs-btn-disabled-border-color: #6B4226;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+/* Form Controls, Focus States & Inputs */
+.form-control:focus,
+.form-select:focus {
+  border-color: var(--admin-primary) !important;
+  box-shadow: 0 0 0 0.25rem rgba(27, 67, 50, 0.15) !important;
+}
+
+.form-check-input:checked {
+  background-color: var(--admin-primary) !important;
+  border-color: var(--admin-primary) !important;
+}
+
+.form-check-input:focus {
+  border-color: var(--admin-primary) !important;
+  box-shadow: 0 0 0 0.25rem rgba(27, 67, 50, 0.15) !important;
+}
+
+/* Phân Trang (Pagination) */
+.page-item.active .page-link {
+  background-color: var(--admin-primary) !important;
+  border-color: var(--admin-primary) !important;
+  color: #ffffff !important;
+}
+
+.page-link {
+  color: var(--admin-primary);
+  border-color: var(--admin-border);
+}
+
+.page-link:hover {
+  color: #2D6A4F;
+  background-color: #E8F5E9;
+  border-color: #A3D9A5;
+}
+
+.page-link:focus {
+  color: var(--admin-primary);
+  box-shadow: 0 0 0 0.25rem rgba(27, 67, 50, 0.15);
+}
+
+/* Nav Pills & Tabs */
+.nav-pills .nav-link.active,
+.nav-pills .show > .nav-link {
+  background-color: var(--admin-primary) !important;
+  color: #ffffff !important;
+}
+
+.nav-tabs .nav-link.active {
+  color: var(--admin-primary) !important;
+  border-color: var(--admin-border) var(--admin-border) var(--admin-bg) !important;
+  font-weight: 600;
+}
+
+/* Spinners, Progress Bars & Dropdown Active */
+.spinner-border.text-primary,
+.spinner-grow.text-primary {
+  color: var(--admin-primary) !important;
+}
+
+.progress-bar {
+  background-color: var(--admin-primary) !important;
+}
+
+.dropdown-item:active,
+.dropdown-item.active {
+  background-color: var(--admin-primary) !important;
+  color: #ffffff !important;
+}
+
+.btn-warning {
+  --bs-btn-color: #ffffff;
+  --bs-btn-bg: #F59E0B;
+  --bs-btn-border-color: #F59E0B;
+  --bs-btn-hover-color: #ffffff;
+  --bs-btn-hover-bg: #D97706;
+  --bs-btn-hover-border-color: #D97706;
+  --bs-btn-focus-shadow-rgb: 245, 158, 11;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.btn-outline-warning {
+  --bs-btn-color: #D97706;
+  --bs-btn-border-color: #D97706;
+  --bs-btn-hover-color: #ffffff;
+  --bs-btn-hover-bg: #D97706;
+  --bs-btn-hover-border-color: #D97706;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.btn-success {
+  --bs-btn-color: #ffffff;
+  --bs-btn-bg: #10B981;
+  --bs-btn-border-color: #10B981;
+  --bs-btn-hover-color: #ffffff;
+  --bs-btn-hover-bg: #059669;
+  --bs-btn-hover-border-color: #059669;
+  --bs-btn-focus-shadow-rgb: 16, 185, 129;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.btn-outline-success {
+  --bs-btn-color: #10B981;
+  --bs-btn-border-color: #10B981;
+  --bs-btn-hover-color: #ffffff;
+  --bs-btn-hover-bg: #10B981;
+  --bs-btn-hover-border-color: #10B981;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.btn-danger {
+  --bs-btn-color: #ffffff;
+  --bs-btn-bg: #EF4444;
+  --bs-btn-border-color: #EF4444;
+  --bs-btn-hover-color: #ffffff;
+  --bs-btn-hover-bg: #DC2626;
+  --bs-btn-hover-border-color: #DC2626;
+  --bs-btn-focus-shadow-rgb: 239, 68, 68;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.btn-outline-danger {
+  --bs-btn-color: #EF4444;
+  --bs-btn-border-color: #EF4444;
+  --bs-btn-hover-color: #ffffff;
+  --bs-btn-hover-bg: #EF4444;
+  --bs-btn-hover-border-color: #EF4444;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+/* Badges & Utilities */
+.badge.bg-primary {
+  background-color: var(--admin-primary) !important;
+  color: #ffffff !important;
+}
+
+.badge.bg-primary-subtle {
+  background-color: #E8F5E9 !important;
+  color: var(--admin-primary) !important;
+}
+
+.badge.bg-secondary {
+  background-color: var(--admin-accent) !important;
+  color: #ffffff !important;
+}
+
+.badge.bg-secondary-subtle {
+  background-color: #F7EDE2 !important;
+  color: var(--admin-accent) !important;
+}
+
+.badge.bg-warning {
+  background-color: #F59E0B !important;
+  color: #ffffff !important;
+}
+
+.badge.bg-warning-subtle {
+  background-color: #FEF3C7 !important;
+  color: #92400E !important;
+}
+
+.badge.bg-success {
+  background-color: #10B981 !important;
+  color: #ffffff !important;
+}
+
+.badge.bg-success-subtle {
+  background-color: #D1FAE5 !important;
+  color: #065F46 !important;
+}
+
+.badge.bg-danger {
+  background-color: #EF4444 !important;
+  color: #ffffff !important;
+}
+
+.badge.bg-danger-subtle {
+  background-color: #FEE2E2 !important;
+  color: #991B1B !important;
+}
+
+.text-primary {
+  color: var(--admin-primary) !important;
+}
+
+.text-secondary {
+  color: var(--admin-accent) !important;
+}
+
+.bg-primary {
+  background-color: var(--admin-primary) !important;
+}
+
+.bg-secondary {
+  background-color: var(--admin-accent) !important;
+}
+
+.border-primary {
+  border-color: var(--admin-primary) !important;
+}
+
+/* Responsive */
+@media (max-width: 991.98px) {
+  .admin-sidebar {
+    transform: translateX(-100%);
+  }
+  .admin-sidebar.show {
+    transform: translateX(0);
+  }
+  .admin-main {
+    margin-left: 0;
+  }
+}

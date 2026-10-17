@@ -1,0 +1,645 @@
+/* ==========================================================================
+   DESIGN SYSTEM - CỔNG BẠN ĐỌC THƯ VIỆN TRI THỨC
+   Tone màu: Giấy ngà ấm áp, Xanh ngọc lục bảo sâu & Nâu hạt dẻ
+   ========================================================================== */
+
+:root {
+  /* ==========================================================================
+     BOOTSTRAP 5 THEME OVERRIDES
+     ========================================================================== */
+  --bs-primary: #1B4332;
+  --bs-primary-rgb: 27, 67, 50;
+  --bs-primary-text-emphasis: #0D281E;
+  --bs-primary-bg-subtle: #E8F5E9;
+  --bs-primary-border-subtle: #A3D9A5;
+
+  --bs-secondary: #6B4226;
+  --bs-secondary-rgb: 107, 66, 38;
+  --bs-secondary-text-emphasis: #442A18;
+  --bs-secondary-bg-subtle: #F7EDE2;
+  --bs-secondary-border-subtle: #E8D5C4;
+
+  --bs-success: #15803D;
+  --bs-success-rgb: 21, 128, 61;
+  --bs-success-text-emphasis: #0E5829;
+  --bs-success-bg-subtle: #DCFCE7;
+  --bs-success-border-subtle: #BBF7D0;
+
+  --bs-info: #0E7490;
+  --bs-info-rgb: 14, 116, 144;
+  --bs-info-text-emphasis: #155E75;
+  --bs-info-bg-subtle: #CFFAFE;
+  --bs-info-border-subtle: #A5F3FC;
+
+  --bs-warning: #B45309;
+  --bs-warning-rgb: 180, 83, 9;
+  --bs-warning-text-emphasis: #78350F;
+  --bs-warning-bg-subtle: #FEF3C7;
+  --bs-warning-border-subtle: #FDE68A;
+
+  --bs-danger: #B91C1C;
+  --bs-danger-rgb: 185, 28, 28;
+  --bs-danger-text-emphasis: #7F1D1D;
+  --bs-danger-bg-subtle: #FEE2E2;
+  --bs-danger-border-subtle: #FECACA;
+
+  --bs-link-color: #1B4332;
+  --bs-link-color-rgb: 27, 67, 50;
+  --bs-link-hover-color: #2D6A4F;
+  --bs-link-hover-color-rgb: 45, 106, 79;
+  --bs-focus-ring-color: rgba(27, 67, 50, 0.25);
+  --bs-body-color: #2C2825;
+  --bs-body-bg: #FDFBF7;
+  --bs-border-color: #E8E3D9;
+
+  /* ==========================================================================
+     CUSTOM DESIGN TOKENS
+     ========================================================================== */
+  /* Nền & Bề mặt */
+  --color-bg: #FDFBF7;
+  --bg-page: #FDFBF7;
+  --color-surface: #FFFFFF;
+  --bg-card: #FFFFFF;
+  
+  /* Văn bản & Đường viền */
+  --color-text: #2C2825;
+  --text-main: #2C2825;
+  --color-text-muted: #5C554E;
+  --text-muted: #5C554E;
+  --color-text-light: #8C827A;
+  --text-light: #8C827A;
+  --color-border: #E8E3D9;
+  --border-color: #E8E3D9;
+  --border-focus: #1B4332;
+  
+  /* Màu chủ đạo: Xanh ngọc lục bảo sâu */
+  --color-primary: #1B4332;
+  --color-primary-dark: #0D281E;
+  --color-primary-hover: #2D6A4F;
+  --color-primary-light: #E8F5E9;
+  
+  /* Màu nhấn: Nâu hạt dẻ & Vàng hổ phách */
+  --color-accent: #6B4226;
+  --color-accent-hover: #8B5A2B;
+  --color-accent-light: #F7EDE2;
+  --color-gold: #D4A373;
+  --color-gold-hover: #C58F58;
+  
+  /* Trạng thái thông báo */
+  --color-warning: #B45309;
+  --color-warning-bg: #FEF3C7;
+  --color-danger: #B91C1C;
+  --color-danger-bg: #FEE2E2;
+  --color-success: #15803D;
+  --color-success-bg: #DCFCE7;
+  
+  /* Typography */
+  --font-serif: 'Merriweather', Georgia, serif;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  
+  /* Hiệu ứng chuyển động */
+  --transition-fast: 0.15s ease;
+  --transition-normal: 0.25s ease-in-out;
+  
+  /* Bóng đổ & Bo góc */
+  --shadow-sm: 0 2px 8px rgba(44, 40, 37, 0.06);
+  --shadow-md: 0 8px 24px rgba(44, 40, 37, 0.1);
+  --shadow-lg: 0 14px 32px rgba(44, 40, 37, 0.15);
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-pill: 50px;
+}
+
+body {
+  background-color: var(--bg-page);
+  color: var(--text-main);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  line-height: 1.6;
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, .font-serif {
+  font-family: 'Merriweather', Georgia, serif;
+  color: var(--text-main);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+/* Thanh điều hướng */
+.navbar-library {
+  background-color: rgba(253, 251, 247, 0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border-color);
+  transition: all 0.3s ease;
+}
+
+.brand-title {
+  font-family: 'Merriweather', serif;
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+/* Thẻ sách (Book Card) */
+.book-card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.25s ease-in-out;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.book-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+  border-color: #D3CBBE;
+}
+
+.book-cover-wrap {
+  position: relative;
+  width: 100%;
+  padding-top: 140%; /* Tỷ lệ vàng bìa sách gần 2:3 */
+  background-color: #F3EFE6;
+  overflow: hidden;
+}
+
+.book-cover-img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.35s ease;
+}
+
+.book-card:hover .book-cover-img {
+  transform: scale(1.03);
+}
+
+/* Huy hiệu trạng thái sách */
+.badge-available {
+  background-color: var(--color-success-bg);
+  color: var(--color-success);
+  font-weight: 600;
+  font-size: 0.75rem;
+  padding: 0.35rem 0.65rem;
+  border-radius: var(--radius-pill);
+}
+
+.badge-out-of-stock {
+  background-color: #F3F4F6;
+  color: var(--text-light);
+  font-weight: 600;
+  font-size: 0.75rem;
+  padding: 0.35rem 0.65rem;
+  border-radius: var(--radius-pill);
+}
+
+/* ==========================================================================
+   BOOTSTRAP COMPONENT OVERRIDES - THEME DỰ ÁN (WARM ACADEMIC)
+   ========================================================================== */
+
+/* 1. Nút bấm (Buttons) */
+.btn-primary {
+  --bs-btn-color: #ffffff;
+  --bs-btn-bg: #1B4332;
+  --bs-btn-border-color: #1B4332;
+  --bs-btn-hover-color: #ffffff;
+  --bs-btn-hover-bg: #2D6A4F;
+  --bs-btn-hover-border-color: #2D6A4F;
+  --bs-btn-focus-shadow-rgb: 27, 67, 50;
+  --bs-btn-active-color: #ffffff;
+  --bs-btn-active-bg: #0D281E;
+  --bs-btn-active-border-color: #0D281E;
+  --bs-btn-disabled-color: #ffffff;
+  --bs-btn-disabled-bg: #1B4332;
+  --bs-btn-disabled-border-color: #1B4332;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.btn-primary:hover {
+  box-shadow: 0 4px 12px rgba(27, 67, 50, 0.25);
+}
+
+.btn-outline-primary {
+  --bs-btn-color: #1B4332;
+  --bs-btn-border-color: #1B4332;
+  --bs-btn-hover-color: #ffffff;
+  --bs-btn-hover-bg: #1B4332;
+  --bs-btn-hover-border-color: #1B4332;
+  --bs-btn-focus-shadow-rgb: 27, 67, 50;
+  --bs-btn-active-color: #ffffff;
+  --bs-btn-active-bg: #0D281E;
+  --bs-btn-active-border-color: #0D281E;
+  --bs-btn-disabled-color: #1B4332;
+  --bs-btn-disabled-bg: transparent;
+  --bs-btn-disabled-border-color: #1B4332;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.btn-secondary {
+  --bs-btn-color: #ffffff;
+  --bs-btn-bg: #6B4226;
+  --bs-btn-border-color: #6B4226;
+  --bs-btn-hover-color: #ffffff;
+  --bs-btn-hover-bg: #8B5A2B;
+  --bs-btn-hover-border-color: #8B5A2B;
+  --bs-btn-focus-shadow-rgb: 107, 66, 38;
+  --bs-btn-active-color: #ffffff;
+  --bs-btn-active-bg: #52331C;
+  --bs-btn-active-border-color: #52331C;
+  --bs-btn-disabled-color: #ffffff;
+  --bs-btn-disabled-bg: #6B4226;
+  --bs-btn-disabled-border-color: #6B4226;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.btn-outline-secondary {
+  --bs-btn-color: #6B4226;
+  --bs-btn-border-color: #6B4226;
+  --bs-btn-hover-color: #ffffff;
+  --bs-btn-hover-bg: #6B4226;
+  --bs-btn-hover-border-color: #6B4226;
+  --bs-btn-focus-shadow-rgb: 107, 66, 38;
+  --bs-btn-active-color: #ffffff;
+  --bs-btn-active-bg: #52331C;
+  --bs-btn-active-border-color: #52331C;
+  --bs-btn-disabled-color: #6B4226;
+  --bs-btn-disabled-bg: transparent;
+  --bs-btn-disabled-border-color: #6B4226;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.btn-warning {
+  --bs-btn-color: #ffffff;
+  --bs-btn-bg: #B45309;
+  --bs-btn-border-color: #B45309;
+  --bs-btn-hover-color: #ffffff;
+  --bs-btn-hover-bg: #92400E;
+  --bs-btn-hover-border-color: #92400E;
+  --bs-btn-focus-shadow-rgb: 180, 83, 9;
+  --bs-btn-active-color: #ffffff;
+  --bs-btn-active-bg: #78350F;
+  --bs-btn-active-border-color: #78350F;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.btn-outline-warning {
+  --bs-btn-color: #B45309;
+  --bs-btn-border-color: #B45309;
+  --bs-btn-hover-color: #ffffff;
+  --bs-btn-hover-bg: #B45309;
+  --bs-btn-hover-border-color: #B45309;
+  --bs-btn-focus-shadow-rgb: 180, 83, 9;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.btn-success {
+  --bs-btn-color: #ffffff;
+  --bs-btn-bg: #15803D;
+  --bs-btn-border-color: #15803D;
+  --bs-btn-hover-color: #ffffff;
+  --bs-btn-hover-bg: #166534;
+  --bs-btn-hover-border-color: #166534;
+  --bs-btn-focus-shadow-rgb: 21, 128, 61;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.btn-outline-success {
+  --bs-btn-color: #15803D;
+  --bs-btn-border-color: #15803D;
+  --bs-btn-hover-color: #ffffff;
+  --bs-btn-hover-bg: #15803D;
+  --bs-btn-hover-border-color: #15803D;
+  --bs-btn-focus-shadow-rgb: 21, 128, 61;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.btn-danger {
+  --bs-btn-color: #ffffff;
+  --bs-btn-bg: #B91C1C;
+  --bs-btn-border-color: #B91C1C;
+  --bs-btn-hover-color: #ffffff;
+  --bs-btn-hover-bg: #991B1B;
+  --bs-btn-hover-border-color: #991B1B;
+  --bs-btn-focus-shadow-rgb: 185, 28, 28;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.btn-outline-danger {
+  --bs-btn-color: #B91C1C;
+  --bs-btn-border-color: #B91C1C;
+  --bs-btn-hover-color: #ffffff;
+  --bs-btn-hover-bg: #B91C1C;
+  --bs-btn-hover-border-color: #B91C1C;
+  --bs-btn-focus-shadow-rgb: 185, 28, 28;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+/* 2. Biểu mẫu & Trường nhập liệu (Form Controls & Focus) */
+.form-control:focus,
+.form-select:focus {
+  border-color: var(--color-primary) !important;
+  box-shadow: 0 0 0 0.25rem rgba(27, 67, 50, 0.15) !important;
+}
+
+.form-check-input:checked {
+  background-color: var(--color-primary) !important;
+  border-color: var(--color-primary) !important;
+}
+
+.form-check-input:focus {
+  border-color: var(--color-primary) !important;
+  box-shadow: 0 0 0 0.25rem rgba(27, 67, 50, 0.15) !important;
+}
+
+/* 3. Phân trang (Pagination) */
+.page-item.active .page-link {
+  background-color: var(--color-primary) !important;
+  border-color: var(--color-primary) !important;
+  color: #ffffff !important;
+}
+
+.page-link {
+  color: var(--color-primary);
+  border-color: var(--color-border);
+}
+
+.page-link:hover {
+  color: var(--color-primary-hover);
+  background-color: var(--color-primary-light);
+  border-color: #A3D9A5;
+}
+
+.page-link:focus {
+  color: var(--color-primary);
+  box-shadow: 0 0 0 0.25rem rgba(27, 67, 50, 0.15);
+}
+
+/* 4. Tabs & Navigation Pills */
+.nav-pills .nav-link.active,
+.nav-pills .show > .nav-link {
+  background-color: var(--color-primary) !important;
+  color: #ffffff !important;
+}
+
+.nav-tabs .nav-link.active {
+  color: var(--color-primary) !important;
+  border-color: var(--color-border) var(--color-border) var(--color-bg) !important;
+  font-weight: 600;
+}
+
+.nav-link {
+  color: var(--color-text-muted);
+}
+
+.nav-link:hover {
+  color: var(--color-primary);
+}
+
+/* 5. Spinners, Progress Bars & Dropdown */
+.spinner-border.text-primary,
+.spinner-grow.text-primary {
+  color: var(--color-primary) !important;
+}
+
+.spinner-border.text-secondary,
+.spinner-grow.text-secondary {
+  color: var(--color-accent) !important;
+}
+
+.progress-bar {
+  background-color: var(--color-primary) !important;
+}
+
+.dropdown-item:active,
+.dropdown-item.active {
+  background-color: var(--color-primary) !important;
+  color: #ffffff !important;
+}
+
+/* 6. Huy hiệu (Badges) */
+.badge.bg-primary {
+  background-color: var(--color-primary) !important;
+  color: #ffffff !important;
+}
+
+.badge.bg-primary-subtle {
+  background-color: var(--color-primary-light) !important;
+  color: var(--color-primary) !important;
+}
+
+.badge.bg-secondary {
+  background-color: var(--color-accent) !important;
+  color: #ffffff !important;
+}
+
+.badge.bg-secondary-subtle {
+  background-color: var(--color-accent-light) !important;
+  color: var(--color-accent) !important;
+}
+
+.badge.bg-warning {
+  background-color: var(--color-warning) !important;
+  color: #ffffff !important;
+}
+
+.badge.bg-warning-subtle {
+  background-color: var(--color-warning-bg) !important;
+  color: var(--color-warning) !important;
+}
+
+.badge.bg-success {
+  background-color: var(--color-success) !important;
+  color: #ffffff !important;
+}
+
+.badge.bg-success-subtle {
+  background-color: var(--color-success-bg) !important;
+  color: var(--color-success) !important;
+}
+
+.badge.bg-danger {
+  background-color: var(--color-danger) !important;
+  color: #ffffff !important;
+}
+
+.badge.bg-danger-subtle {
+  background-color: var(--color-danger-bg) !important;
+  color: var(--color-danger) !important;
+}
+
+/* 7. Tiện ích Màu sắc (Color Utilities) */
+.text-primary {
+  color: var(--color-primary) !important;
+}
+
+.text-secondary {
+  color: var(--color-accent) !important;
+}
+
+.text-warning {
+  color: var(--color-warning) !important;
+}
+
+.text-success {
+  color: var(--color-success) !important;
+}
+
+.text-danger {
+  color: var(--color-danger) !important;
+}
+
+.bg-primary {
+  background-color: var(--color-primary) !important;
+}
+
+.bg-secondary {
+  background-color: var(--color-accent) !important;
+}
+
+.bg-primary-subtle {
+  background-color: var(--color-primary-light) !important;
+}
+
+.bg-secondary-subtle {
+  background-color: var(--color-accent-light) !important;
+}
+
+.border-primary {
+  border-color: var(--color-primary) !important;
+}
+
+.border-secondary {
+  border-color: var(--color-accent) !important;
+}
+
+/* 8. Links & Hover States */
+a {
+  color: var(--color-primary);
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+a:hover {
+  color: var(--color-primary-hover);
+}
+
+.hover-primary:hover {
+  color: var(--color-primary) !important;
+}
+
+/* Nút bấm chuẩn phong cách thư viện */
+.btn-primary-library {
+  background-color: var(--color-primary);
+  color: #FFFFFF;
+  border: 1px solid var(--color-primary);
+  border-radius: var(--radius-sm);
+  padding: 0.55rem 1.25rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.btn-primary-library:hover {
+  background-color: var(--color-primary-hover);
+  border-color: var(--color-primary-hover);
+  color: #FFFFFF;
+  box-shadow: 0 4px 12px rgba(27, 67, 50, 0.25);
+}
+
+.btn-secondary-library {
+  background-color: transparent;
+  color: var(--color-accent);
+  border: 1px solid var(--color-accent);
+  border-radius: var(--radius-sm);
+  padding: 0.55rem 1.25rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.btn-secondary-library:hover {
+  background-color: var(--color-accent);
+  color: #FFFFFF;
+}
+
+/* Form input với toggle con mắt */
+.input-with-eye {
+  position: relative;
+}
+
+.input-with-eye input {
+  padding-right: 2.75rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-color);
+  background-color: #FFFFFF;
+}
+
+.input-with-eye input:focus {
+  border-color: var(--border-focus);
+  box-shadow: 0 0 0 3px rgba(27, 67, 50, 0.12);
+}
+
+.btn-toggle-eye {
+  position: absolute;
+  top: 50%;
+  right: 0.75rem;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: var(--text-light);
+  cursor: pointer;
+  padding: 0.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+}
+
+.btn-toggle-eye:hover {
+  color: var(--text-main);
+}
+
+/* Skeleton Loading */
+.skeleton {
+  background: linear-gradient(90deg, #F0EBE1 25%, #F8F5EE 50%, #F0EBE1 75%);
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s infinite;
+  border-radius: var(--radius-sm);
+}
+
+@keyframes skeleton-loading {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Empty State */
+.empty-state {
+  text-align: center;
+  padding: 3.5rem 1.5rem;
+  color: var(--text-muted);
+}
+
+.empty-state-icon {
+  font-size: 3.5rem;
+  color: var(--text-light);
+  margin-bottom: 1rem;
+}

@@ -1,0 +1,18 @@
+{
+  "name": "books-management-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Hệ thống Quản lý Sách Thư viện - Monorepo Vue 3 + Express + MongoDB",
+  "scripts": {
+    "install:all": "npm install && npm --prefix backend install && npm --prefix frontend-user install && npm --prefix frontend-admin install",
+    "dev:backend": "npm --prefix backend run dev",
+    "dev:user": "npm --prefix frontend-user run dev",
+    "dev:admin": "npm --prefix frontend-admin run dev",
+    "dev": "concurrently -n \"BACKEND,USER,ADMIN\" -c \"blue,green,magenta\" \"npm run dev:backend\" \"npm run dev:user\" \"npm run dev:admin\"",
+    "seed": "npm --prefix backend run seed",
+    "test:e2e": "npm --prefix backend run test:e2e"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
