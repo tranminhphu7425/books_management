@@ -17,7 +17,7 @@
             <div class="col-md-4 text-center">
               <div class="book-cover-wrapper rounded-3 shadow-sm border p-2 bg-light mb-3">
                 <img
-                  :src="book.HinhAnh || defaultCover"
+                  :src="getImageUrl(book.HinhAnh, defaultCover)"
                   :alt="book.TenSach"
                   class="img-fluid rounded shadow-sm book-cover-img"
                   @error="$event.target.src = defaultCover"
@@ -145,6 +145,7 @@
 import { ref, computed, nextTick } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import api from '../services/api';
+import { getImageUrl } from '../utils/imageHelper';
 
 const router = useRouter();
 const route = useRoute();

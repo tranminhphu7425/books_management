@@ -157,6 +157,7 @@ import { useRoute, useRouter } from 'vue-router';
 import { useAuthStore } from '../stores/authStore';
 import { useBorrowStore } from '../stores/borrowStore';
 import { useToast } from '../composables/useToast';
+import { getImageUrl } from '../utils/imageHelper';
 
 const props = defineProps({
   book: {
@@ -205,7 +206,7 @@ const imageFallback = ref(false);
 
 const modalCoverImage = computed(() => {
   if (imageFallback.value || !props.book?.HinhAnh) return defaultCover;
-  return props.book.HinhAnh;
+  return getImageUrl(props.book.HinhAnh, defaultCover);
 });
 
 const handleImageError = () => {

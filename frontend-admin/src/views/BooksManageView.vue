@@ -374,7 +374,7 @@
                     <div class="flex-shrink-0 text-center">
                       <div class="position-relative d-inline-block">
                         <img
-                          :src="formData.HinhAnh || defaultCover"
+                          :src="getImageUrl(formData.HinhAnh, defaultCover)"
                           alt="Preview"
                           class="rounded border shadow-sm"
                           style="width: 70px; height: 98px; object-fit: cover;"
@@ -474,6 +474,7 @@ import { useToast } from '../composables/useToast';
 import { useConfirm } from '../composables/useConfirm';
 import BookDetailModal from '../components/BookDetailModal.vue';
 import PublisherSelect from '../components/PublisherSelect.vue';
+import { getImageUrl } from '../utils/imageHelper';
 
 const route = useRoute();
 const bookStore = useAdminBookStore();

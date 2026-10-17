@@ -136,7 +136,7 @@
                   <!-- Ảnh sách có Link -->
                   <router-link :to="getBookDetailLink(item)" class="flex-shrink-0" :title="`Xem chi tiết: ${item.SachId?.TenSach || item.MaSach}`">
                     <img
-                      :src="item.SachId?.HinhAnh || defaultCover"
+                      :src="getCover(item)"
                       :alt="item.SachId?.TenSach || item.MaSach"
                       class="rounded shadow-sm book-thumbnail-hover"
                       style="width: 85px; height: 125px; object-fit: cover;"
@@ -233,7 +233,7 @@
                   <!-- Ảnh bìa sách có Link -->
                   <router-link :to="getBookDetailLink(item)" class="flex-shrink-0" :title="`Xem chi tiết: ${item.SachId?.TenSach || item.MaSach}`">
                     <img
-                      :src="item.SachId?.HinhAnh || defaultCover"
+                      :src="getCover(item)"
                       :alt="item.SachId?.TenSach || item.MaSach"
                       class="rounded shadow-sm book-thumbnail-hover"
                       style="width: 85px; height: 125px; object-fit: cover;"
@@ -334,7 +334,7 @@
                       <div class="d-flex align-items-center gap-2">
                         <router-link :to="getBookDetailLink(item)">
                           <img
-                            :src="item.SachId?.HinhAnh || defaultCover"
+                            :src="getCover(item)"
                             :alt="item.SachId?.TenSach || item.MaSach"
                             class="rounded shadow-sm book-thumbnail-hover"
                             style="width: 40px; height: 55px; object-fit: cover;"
@@ -393,6 +393,7 @@ import { ref, onMounted } from 'vue';
 import { useBorrowStore } from '../stores/borrowStore';
 import { useToast } from '../composables/useToast';
 import { useConfirm } from '../composables/useConfirm';
+import { getImageUrl } from '../utils/imageHelper';
 
 const borrowStore = useBorrowStore();
 const toast = useToast();
@@ -400,6 +401,8 @@ const { confirm } = useConfirm();
 const activeTab = ref('borrowed');
 const isActionLoading = ref(false);
 const defaultCover = 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=400&q=80';
+
+const getCover = (item) => getImageUrl(item?.SachId?.HinhAnh, defaultCover);
 
 const onImageError = (event) => {
   if (event?.target && event.target.src !== defaultCover) {

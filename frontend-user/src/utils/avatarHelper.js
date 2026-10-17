@@ -1,6 +1,7 @@
 import maleAvatar from '../assets/avatar-male.svg';
 import femaleAvatar from '../assets/avatar-female.svg';
 import neutralAvatar from '../assets/avatar-neutral.svg';
+import { getImageUrl } from './imageHelper';
 
 /**
  * Lấy avatar mặc định theo giới tính
@@ -26,7 +27,7 @@ export function getDefaultAvatar(gender) {
  */
 export function getUserAvatar(user) {
   if (user && user.HinhAnh && typeof user.HinhAnh === 'string' && user.HinhAnh.trim() !== '') {
-    return user.HinhAnh;
+    return getImageUrl(user.HinhAnh);
   }
   return getDefaultAvatar(user?.Phai || user?.GioiTinh || user?.Gender);
 }

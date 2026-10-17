@@ -63,6 +63,7 @@
 
 <script setup>
 import { ref, computed } from 'vue';
+import { getImageUrl } from '../utils/imageHelper';
 
 const props = defineProps({
   book: {
@@ -76,7 +77,7 @@ const imageFallback = ref(false);
 
 const coverImage = computed(() => {
   if (imageFallback.value) return defaultCover;
-  return props.book.HinhAnh || defaultCover;
+  return getImageUrl(props.book?.HinhAnh, defaultCover);
 });
 
 const conLai = computed(() => {

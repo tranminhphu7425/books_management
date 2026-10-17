@@ -161,6 +161,7 @@ import { useRoute, useRouter } from 'vue-router';
 import { useBookStore } from '../stores/bookStore';
 import { useToast } from '../composables/useToast';
 import BorrowModal from '../components/BorrowModal.vue';
+import { getImageUrl } from '../utils/imageHelper';
 
 const route = useRoute();
 const router = useRouter();
@@ -196,7 +197,7 @@ const publisherName = computed(() => {
 
 const coverImage = computed(() => {
   if (imageFallback.value || !book.value?.HinhAnh) return defaultCover;
-  return book.value.HinhAnh;
+  return getImageUrl(book.value.HinhAnh, defaultCover);
 });
 
 const handleImageError = () => {
