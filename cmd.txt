@@ -1,0 +1,6 @@
+# Khởi chạy đồng thời cả 3 dịch vụ trên các cổng localhost mặc định:
+npm run dev
+
+# Cổng Độc giả (User Portal):           http://localhost:3000
+# Cổng Quản trị & Thủ thư (Admin):     http://localhost:3001
+# Máy chủ Backend API:                  http://localhost:5000

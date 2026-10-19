@@ -1,0 +1,42 @@
+# Dependencies
+node_modules/
+package-lock.json
+
+# Environment variables
+.env
+.env.local
+*.local
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+*-audit.json
+
+# Static uploaded files
+uploads/
+backend/uploads/covers/*
+!backend/uploads/covers/.gitkeep
+backend/uploads/avatars/*
+!backend/uploads/avatars/.gitkeep
+
+# Build outputs & Vite cache
+dist/
+dist-ssr/
+*.timestamp-*.mjs
+
+# Python scripts (không commit file .py theo yêu cầu)
+*.py
+__pycache__/
+*.pyc
+
+# Markdown files (ngoại trừ README.md theo yêu cầu)
+*.md
+!README.md
+!**/README.md
+
+# IDE & OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

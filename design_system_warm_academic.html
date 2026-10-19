@@ -1,0 +1,1162 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bảng Màu & Thành Phần Giao Diện Design System "Warm Academic" - Thư Viện Tri Thức</title>
+  
+  <!-- Google Fonts: Merriweather (Serif) & Inter (Sans-serif) & Be Vietnam Pro -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300;1,400&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
+  
+  <!-- Bootstrap Icons CDN -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+  <!-- html2canvas for 1-click high-res PNG export -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+  <style>
+    /* ==========================================================================
+       WARM ACADEMIC DESIGN TOKENS
+       ========================================================================== */
+    :root {
+      --bg-page: #FDFBF7;
+      --bg-surface: #FFFFFF;
+      --bg-warm-secondary: #F7EDE2;
+      --text-main: #2C2825;
+      --text-muted: #5C554E;
+      --text-light: #8C827A;
+      --border-color: #E8E3D9;
+      --border-accent: #D4A373;
+      
+      --color-primary: #1B4332;
+      --color-primary-hover: #2D6A4F;
+      --color-primary-light: #E8F5E9;
+      --color-primary-dark: #0D281E;
+
+      --color-accent: #6B4226;
+      --color-accent-light: #F7EDE2;
+      --color-gold: #D4A373;
+
+      --color-success: #15803D;
+      --color-success-bg: #DCFCE7;
+      --color-warning: #B45309;
+      --color-warning-bg: #FEF3C7;
+      --color-danger: #B91C1C;
+      --color-danger-bg: #FEE2E2;
+      --color-info: #0E7490;
+      --color-info-bg: #CFFAFE;
+
+      --font-serif: 'Merriweather', Georgia, serif;
+      --font-sans: 'Inter', 'Be Vietnam Pro', -apple-system, sans-serif;
+      --font-mono: 'Fira Code', monospace;
+
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 16px;
+      --radius-xl: 24px;
+      --radius-pill: 9999px;
+
+      --shadow-sm: 0 2px 6px rgba(44, 40, 37, 0.04);
+      --shadow-md: 0 8px 24px rgba(44, 40, 37, 0.07);
+      --shadow-lg: 0 16px 36px rgba(44, 40, 37, 0.11);
+      --shadow-hover: 0 14px 32px rgba(27, 67, 50, 0.15);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: #EFEBE4;
+      font-family: var(--font-sans);
+      color: var(--text-main);
+      line-height: 1.5;
+      padding: 30px 15px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* Thanh điều khiển nổi phía trên */
+    .action-bar {
+      width: 100%;
+      max-width: 1200px;
+      background: white;
+      padding: 14px 24px;
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-md);
+      margin-bottom: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: gap;
+      gap: 16px;
+      border: 1px solid var(--border-color);
+    }
+
+    .action-bar-title {
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: var(--color-primary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-action-group {
+      display: flex;
+      gap: 10px;
+    }
+
+    .btn-export {
+      background: var(--color-primary);
+      color: white;
+      border: none;
+      padding: 8px 18px;
+      border-radius: var(--radius-pill);
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+      font-family: var(--font-sans);
+    }
+
+    .btn-export:hover {
+      background: var(--color-primary-hover);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(27, 67, 50, 0.2);
+    }
+
+    .btn-secondary-action {
+      background: var(--bg-warm-secondary);
+      color: var(--color-accent);
+      border: 1px solid var(--border-accent);
+      padding: 8px 16px;
+      border-radius: var(--radius-pill);
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+      font-family: var(--font-sans);
+    }
+
+    .btn-secondary-action:hover {
+      background: #EEDCC8;
+    }
+
+    /* ==========================================================================
+       CANVAS BẢN VẼ CHÍNH ĐỂ CHỤP ẢNH BÁO CÁO (FIG 14)
+       ========================================================================== */
+    .design-system-sheet {
+      width: 100%;
+      max-width: 1200px;
+      background-color: var(--bg-page);
+      border: 2px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 44px 48px;
+      box-shadow: var(--shadow-lg);
+      position: relative;
+    }
+
+    /* Tiêu đề đầu bảng */
+    .sheet-header {
+      border-bottom: 2px solid var(--border-color);
+      padding-bottom: 24px;
+      margin-bottom: 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+
+    .sheet-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--color-accent-light);
+      color: var(--color-accent);
+      padding: 4px 12px;
+      border-radius: var(--radius-pill);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+      border: 1px solid var(--border-accent);
+    }
+
+    .sheet-title {
+      font-family: var(--font-serif);
+      font-size: 1.85rem;
+      font-weight: 700;
+      color: var(--color-primary-dark);
+      letter-spacing: -0.5px;
+      line-height: 1.25;
+      margin-bottom: 6px;
+    }
+
+    .sheet-subtitle {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+    }
+
+    .sheet-meta {
+      text-align: right;
+      font-size: 0.82rem;
+      color: var(--text-light);
+      line-height: 1.4;
+    }
+
+    .sheet-meta strong {
+      color: var(--color-primary);
+      display: block;
+      font-size: 0.9rem;
+    }
+
+    /* Section Headings */
+    .section-title {
+      font-family: var(--font-serif);
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--color-primary);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding-bottom: 8px;
+      border-bottom: 1px dashed var(--border-color);
+    }
+
+    .section-title i {
+      color: var(--color-accent);
+      font-size: 1.1rem;
+    }
+
+    /* ==========================================================================
+       SECTION 1: BẢNG MÀU CHUẨN (PALETTE)
+       ========================================================================== */
+    .palette-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 14px;
+      margin-bottom: 32px;
+    }
+
+    .color-swatch-card {
+      background: white;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.2s ease;
+    }
+
+    .color-swatch-card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .swatch-preview {
+      height: 72px;
+      width: 100%;
+      position: relative;
+    }
+
+    .swatch-info {
+      padding: 10px;
+      background: white;
+    }
+
+    .swatch-name {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .swatch-hex {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--color-primary);
+      font-weight: 600;
+      display: block;
+    }
+
+    .swatch-role {
+      font-size: 0.68rem;
+      color: var(--text-light);
+      margin-top: 2px;
+      line-height: 1.2;
+    }
+
+    /* ==========================================================================
+       SECTION 2: NGHỆ THUẬT CHỮ (TYPOGRAPHY) & BADGES
+       ========================================================================== */
+    .typo-badges-row {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 24px;
+      margin-bottom: 32px;
+    }
+
+    .typo-card, .badges-card {
+      background: white;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .typo-item {
+      margin-bottom: 14px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #F4EFEA;
+    }
+
+    .typo-item:last-child {
+      margin-bottom: 0;
+      padding-bottom: 0;
+      border-bottom: none;
+    }
+
+    .typo-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--color-accent);
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .typo-spec {
+      font-family: var(--font-mono);
+      color: var(--text-light);
+      font-size: 0.68rem;
+      text-transform: none;
+    }
+
+    .serif-h1 {
+      font-family: var(--font-serif);
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--color-primary-dark);
+      line-height: 1.2;
+    }
+
+    .serif-h2 {
+      font-family: var(--font-serif);
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .sans-body {
+      font-family: var(--font-sans);
+      font-size: 0.88rem;
+      color: var(--text-main);
+      line-height: 1.45;
+    }
+
+    .sans-muted {
+      font-family: var(--font-sans);
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    .mono-code {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--color-primary);
+      background: #F4EFEA;
+      padding: 2px 6px;
+      border-radius: 4px;
+      display: inline-block;
+    }
+
+    /* Badges List */
+    .badge-collection {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+
+    .badge-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 5px 12px;
+      border-radius: var(--radius-pill);
+      font-size: 0.75rem;
+      font-weight: 600;
+      font-family: var(--font-sans);
+      border: 1px solid transparent;
+    }
+
+    .badge-available {
+      background: var(--color-success-bg);
+      color: var(--color-success);
+      border-color: #BBF7D0;
+    }
+
+    .badge-pending {
+      background: var(--color-warning-bg);
+      color: var(--color-warning);
+      border-color: #FDE68A;
+    }
+
+    .badge-borrowed {
+      background: #E0E7FF;
+      color: #3730A3;
+      border-color: #C7D2FE;
+    }
+
+    .badge-overdue {
+      background: var(--color-danger-bg);
+      color: var(--color-danger);
+      border-color: #FECACA;
+    }
+
+    .badge-damaged {
+      background: #F3E8FF;
+      color: #6B21A8;
+      border-color: #E9D5FF;
+    }
+
+    .badge-archived {
+      background: #F3F4F6;
+      color: #4B5563;
+      border-color: #E5E7EB;
+    }
+
+    /* Buttons row */
+    .buttons-collection {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .ui-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      font-family: var(--font-sans);
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 8px 16px;
+      border-radius: var(--radius-sm);
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .ui-btn-primary {
+      background: var(--color-primary);
+      color: white;
+    }
+
+    .ui-btn-accent {
+      background: var(--color-accent);
+      color: white;
+    }
+
+    .ui-btn-outline {
+      background: transparent;
+      border-color: var(--color-primary);
+      color: var(--color-primary);
+    }
+
+    .ui-btn-danger {
+      background: var(--color-danger);
+      color: white;
+    }
+
+    .ui-btn-sm {
+      padding: 5px 10px;
+      font-size: 0.72rem;
+    }
+
+    /* ==========================================================================
+       SECTION 3: THÀNH PHẦN GIAO DIỆN MẪU (BOOK CARD, DIGITAL CARD, KPI)
+       ========================================================================== */
+    .components-showcase-grid {
+      display: grid;
+      grid-template-columns: 280px 1fr 1fr;
+      gap: 22px;
+      margin-bottom: 24px;
+    }
+
+    /* 1. Book Card Sample */
+    .showcase-book-card {
+      background: white;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      box-shadow: var(--shadow-md);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    .book-cover-container {
+      height: 230px;
+      background: linear-gradient(135deg, #2D6A4F 0%, #1B4332 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 16px;
+      color: white;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .book-cover-container::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: radial-gradient(circle at 80% 20%, rgba(212, 163, 115, 0.3) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .book-cover-badge {
+      align-self: flex-end;
+      background: rgba(255, 255, 255, 0.95);
+      color: var(--color-success);
+      font-size: 0.68rem;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: var(--radius-pill);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+      z-index: 1;
+    }
+
+    .book-cover-title {
+      font-family: var(--font-serif);
+      font-size: 1.1rem;
+      font-weight: 700;
+      line-height: 1.25;
+      color: #FFF;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+      z-index: 1;
+    }
+
+    .book-cover-author {
+      font-size: 0.75rem;
+      color: #E8F5E9;
+      opacity: 0.9;
+      z-index: 1;
+    }
+
+    .book-card-body {
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+      justify-content: space-between;
+    }
+
+    .book-meta-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+    }
+
+    /* 2. Digital Reader Card */
+    .digital-reader-card {
+      background: linear-gradient(135deg, #1B4332 0%, #0D281E 100%);
+      border-radius: var(--radius-lg);
+      padding: 22px;
+      color: white;
+      box-shadow: 0 12px 28px rgba(13, 40, 30, 0.25);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 100%;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .digital-reader-card::before {
+      content: '';
+      position: absolute;
+      top: -40px; right: -40px;
+      width: 140px; height: 140px;
+      border-radius: 50%;
+      background: rgba(212, 163, 115, 0.15);
+      filter: blur(20px);
+    }
+
+    .card-top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .card-lib-brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .card-lib-logo {
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      background: var(--color-gold);
+      color: var(--color-primary-dark);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      font-weight: 700;
+    }
+
+    .card-lib-title {
+      font-family: var(--font-serif);
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      color: white;
+    }
+
+    .card-chip {
+      width: 32px;
+      height: 24px;
+      background: linear-gradient(135deg, #FFE082, #FFB300);
+      border-radius: 4px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+
+    .card-reader-info {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .card-avatar {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      border: 2px solid var(--color-gold);
+      background: #2D6A4F;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      color: white;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+
+    .card-name-block h4 {
+      font-family: var(--font-serif);
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 2px;
+      color: #FFF;
+    }
+
+    .card-code {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--color-gold);
+      letter-spacing: 1px;
+    }
+
+    .card-bottom-bar {
+      border-top: 1px solid rgba(255, 255, 255, 0.15);
+      padding-top: 12px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.72rem;
+      color: #E8F5E9;
+    }
+
+    /* 3. Right Column: Alerts & KPI */
+    .alerts-kpi-col {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      justify-content: space-between;
+    }
+
+    .kpi-card-sample {
+      background: white;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .kpi-sample-number {
+      font-family: var(--font-serif);
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--color-primary);
+      line-height: 1;
+      margin: 4px 0 2px 0;
+    }
+
+    .kpi-sample-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--color-primary-light);
+      color: var(--color-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+    }
+
+    .alert-sample {
+      padding: 12px 14px;
+      border-radius: var(--radius-md);
+      font-size: 0.78rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      line-height: 1.35;
+    }
+
+    .alert-danger-sample {
+      background: var(--color-danger-bg);
+      border: 1px solid #FECACA;
+      color: var(--color-danger);
+    }
+
+    .alert-success-sample {
+      background: var(--color-success-bg);
+      border: 1px solid #BBF7D0;
+      color: var(--color-success);
+    }
+
+    /* Sheet Footer */
+    .sheet-footer {
+      margin-top: 28px;
+      padding-top: 18px;
+      border-top: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .sheet-footer strong {
+      color: var(--color-primary);
+    }
+
+    /* Responsive */
+    @media (max-width: 992px) {
+      .typo-badges-row, .components-showcase-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Thanh công cụ hỗ trợ copy / xuất ảnh cho sinh viên -->
+  <div class="action-bar">
+    <div class="action-bar-title">
+      <i class="bi bi-palette-fill fs-5"></i>
+      <span>Design System Showcase: <strong>Warm Academic / Modern Library</strong></span>
+    </div>
+    <div class="btn-action-group">
+      <button class="btn-export" onclick="captureAndDownload()">
+        <i class="bi bi-camera-fill"></i> Tải Ảnh PNG Sắc Nét (Hình 14)
+      </button>
+      <button class="btn-secondary-action" onclick="window.print()">
+        <i class="bi bi-printer-fill"></i> In / Lưu PDF
+      </button>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       KHUNG BẢN VẼ CHÍNH (SẼ ĐƯỢC CHỤP RA ẢNH HÌNH 14 ĐỂ CHÈN VÀO BÁO CÁO)
+       ========================================================================= -->
+  <div class="design-system-sheet" id="designSystemSheet">
+    
+    <!-- Tiêu đề bản vẽ -->
+    <div class="sheet-header">
+      <div>
+        <div class="sheet-badge">
+          <i class="bi bi-mortarboard-fill"></i> Chuẩn Thiết Kế Đồ Án Chuyên Ngành CNTT - ĐH Cần Thơ
+        </div>
+        <h1 class="sheet-title">Bảng Màu & Thành Phần Giao Diện "Warm Academic"</h1>
+        <p class="sheet-subtitle">Hệ Thống Quản Lý Sách Và Mượn Trả Trực Tuyến (Thư Viện Tri Thức)</p>
+      </div>
+      <div class="sheet-meta">
+        <strong>Hình 14: Quy chuẩn Design System</strong>
+        <span>Đề tài: MEVN Monorepo (Vue 3 + Bootstrap 5)</span><br>
+        <span>Cập nhật: Học kỳ I (2026 - 2027)</span>
+      </div>
+    </div>
+
+    <!-- 1. BẢNG MÀU CHUẨN (COLOR PALETTE & TOKENS) -->
+    <div class="section-title">
+      <i class="bi bi-paint-bucket"></i> 1. Bảng Màu Chuẩn (Color Tokens & Palette)
+    </div>
+
+    <div class="palette-grid">
+      <!-- 1: Primary Forest -->
+      <div class="color-swatch-card">
+        <div class="swatch-preview" style="background-color: #1B4332;"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Forest Green</div>
+          <span class="swatch-hex">#1B4332</span>
+          <div class="swatch-role">Màu thương hiệu / CTA chính</div>
+        </div>
+      </div>
+
+      <!-- 2: Primary Hover -->
+      <div class="color-swatch-card">
+        <div class="swatch-preview" style="background-color: #2D6A4F;"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Emerald Deep</div>
+          <span class="swatch-hex">#2D6A4F</span>
+          <div class="swatch-role">Rê chuột / Nút phụ</div>
+        </div>
+      </div>
+
+      <!-- 3: Background Warm Ivory -->
+      <div class="color-swatch-card">
+        <div class="swatch-preview" style="background-color: #FDFBF7; border-bottom: 1px solid #E8E3D9;"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Warm Ivory</div>
+          <span class="swatch-hex">#FDFBF7</span>
+          <div class="swatch-role">Nền trang sách ấm cúng</div>
+        </div>
+      </div>
+
+      <!-- 4: Accent Warm Chestnut -->
+      <div class="color-swatch-card">
+        <div class="swatch-preview" style="background-color: #6B4226;"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Warm Chestnut</div>
+          <span class="swatch-hex">#6B4226</span>
+          <div class="swatch-role">Nâu hạt dẻ / Điểm nhấn kệ</div>
+        </div>
+      </div>
+
+      <!-- 5: Gold Amber -->
+      <div class="color-swatch-card">
+        <div class="swatch-preview" style="background-color: #D4A373;"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Antique Gold</div>
+          <span class="swatch-hex">#D4A373</span>
+          <div class="swatch-role">Thẻ điện tử / Viền thẻ</div>
+        </div>
+      </div>
+
+      <!-- 6: Charcoal Text -->
+      <div class="color-swatch-card">
+        <div class="swatch-preview" style="background-color: #2C2825;"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Charcoal Warm</div>
+          <span class="swatch-hex">#2C2825</span>
+          <div class="swatch-role">Văn bản chính dịu mắt</div>
+        </div>
+      </div>
+
+      <!-- 7: Success Green -->
+      <div class="color-swatch-card">
+        <div class="swatch-preview" style="background-color: #15803D;"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Leaf Green</div>
+          <span class="swatch-hex">#15803D</span>
+          <div class="swatch-role">Sẵn sàng / Đã trả</div>
+        </div>
+      </div>
+
+      <!-- 8: Warning Amber -->
+      <div class="color-swatch-card">
+        <div class="swatch-preview" style="background-color: #B45309;"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Amber Alert</div>
+          <span class="swatch-hex">#B45309</span>
+          <div class="swatch-role">Chờ duyệt / Hạn 48h</div>
+        </div>
+      </div>
+
+      <!-- 9: Danger Burgundy -->
+      <div class="color-swatch-card">
+        <div class="swatch-preview" style="background-color: #B91C1C;"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Burgundy Wine</div>
+          <span class="swatch-hex">#B91C1C</span>
+          <div class="swatch-role">Quá hạn / Hỏng / Khóa</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. TYPOGRAPHY & BADGES -->
+    <div class="typo-badges-row">
+      
+      <!-- Cột Trái: Nghệ Thuật Chữ -->
+      <div class="typo-card">
+        <div class="section-title" style="margin-bottom: 12px; border-bottom: none; padding-bottom: 0;">
+          <i class="bi bi-fonts"></i> 2. Hệ Thống Nghệ Thuật Chữ (Typography)
+        </div>
+
+        <div class="typo-item">
+          <div class="typo-label">
+            <span>Tiêu đề cấp cao (Heading 1 & 2)</span>
+            <span class="typo-spec">Merriweather Bold (Serif)</span>
+          </div>
+          <div class="serif-h1">Khơi Nguồn Tri Thức Thư Viện</div>
+        </div>
+
+        <div class="typo-item">
+          <div class="typo-label">
+            <span>Tựa ấn phẩm & Mục lớn (Heading 3)</span>
+            <span class="typo-spec">Merriweather SemiBold</span>
+          </div>
+          <div class="serif-h2">Lập Trình Web Hiện Đại Với Vue.js 3</div>
+        </div>
+
+        <div class="typo-item">
+          <div class="typo-label">
+            <span>Nội dung & Dữ liệu tác nghiệp (Body)</span>
+            <span class="typo-spec">Inter / Be Vietnam Pro 400</span>
+          </div>
+          <div class="sans-body">
+            Độc giả đăng ký giữ sách trực tuyến trong 48 giờ. Thời hạn mượn đọc tiêu chuẩn là 14 ngày kể từ khi thủ thư xuất sách tại quầy.
+          </div>
+        </div>
+
+        <div class="typo-item">
+          <div class="typo-label">
+            <span>Mã định danh kỹ thuật (Identifier)</span>
+            <span class="typo-spec">Fira Code / Roboto Mono</span>
+          </div>
+          <div style="display: flex; gap: 8px;">
+            <span class="mono-code">Mã Sách: S-00102</span>
+            <span class="mono-code">Mã ĐG: DG-0042</span>
+            <span class="mono-code">Mã BB: BB-0012</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Cột Phải: Huy Hiệu Trạng Thái & Nút Bấm -->
+      <div class="badges-card">
+        <div class="section-title" style="margin-bottom: 12px; border-bottom: none; padding-bottom: 0;">
+          <i class="bi bi-tags-fill"></i> 3. Huy Hiệu Trạng Thái & Nút Tác Nghiệp
+        </div>
+
+        <div style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 8px; font-weight: 600;">
+          Huy hiệu vòng đời ấn phẩm & đơn mượn (Semantic Chips):
+        </div>
+        <div class="badge-collection">
+          <span class="badge-item badge-available">
+            <i class="bi bi-check-circle-fill"></i> Còn trên kệ (12 cuốn)
+          </span>
+          <span class="badge-item badge-pending">
+            <i class="bi bi-hourglass-split"></i> Chờ duyệt (PENDING)
+          </span>
+          <span class="badge-item badge-borrowed">
+            <i class="bi bi-book-half"></i> Đang mượn (BORROWED)
+          </span>
+          <span class="badge-item badge-overdue">
+            <i class="bi bi-exclamation-triangle-fill"></i> Quá hạn trả (OVERDUE)
+          </span>
+          <span class="badge-item badge-damaged">
+            <i class="bi bi-tools"></i> Rách / Mất sách
+          </span>
+          <span class="badge-item badge-archived">
+            <i class="bi bi-archive-fill"></i> Kho lưu trữ
+          </span>
+        </div>
+
+        <div style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 8px; font-weight: 600;">
+          Các nút thao tác chuẩn (Interactive Buttons):
+        </div>
+        <div class="buttons-collection">
+          <button class="ui-btn ui-btn-primary">
+            <i class="bi bi-bookmark-plus-fill"></i> Đăng Ký Mượn
+          </button>
+          <button class="ui-btn ui-btn-accent">
+            <i class="bi bi-check2-circle"></i> Duyệt Đơn
+          </button>
+          <button class="ui-btn ui-btn-outline">
+            <i class="bi bi-arrow-repeat"></i> Gia Hạn (+7 ngày)
+          </button>
+          <button class="ui-btn ui-btn-danger ui-btn-sm">
+            <i class="bi bi-receipt"></i> Lập Biên Bản
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. THÀNH PHẦN GIAO DIỆN ĐẶC TRƯNG (SHOWCASE) -->
+    <div class="section-title">
+      <i class="bi bi-layout-text-window-reverse"></i> 4. Hiện Thực Hóa Thành Phần Đặc Trưng (Component Showcase)
+    </div>
+
+    <div class="components-showcase-grid">
+      
+      <!-- Thành phần 1: Thẻ Sách Book Card -->
+      <div class="showcase-book-card">
+        <div class="book-cover-container">
+          <span class="book-cover-badge">
+            <i class="bi bi-check-circle-fill"></i> Còn 8 cuốn
+          </span>
+          <div>
+            <div class="book-cover-title">Lập Trình Web Vue.js 3</div>
+            <div class="book-cover-author">Evan You & C.Sự</div>
+          </div>
+        </div>
+        <div class="book-card-body">
+          <div>
+            <div class="book-meta-row">
+              <span>Mã: <code>S-00102</code></span>
+              <span>Kệ: <strong>CNTT-02</strong></span>
+            </div>
+            <p style="font-size: 0.74rem; color: var(--text-muted); margin-bottom: 12px; line-height: 1.35;">
+              Cẩm nang kiến trúc Single Page Application, Composition API & Pinia.
+            </p>
+          </div>
+          <button class="ui-btn ui-btn-primary" style="width: 100%; border-radius: var(--radius-pill);">
+            <i class="bi bi-bookmark-plus"></i> Đăng Ký Mượn Sách
+          </button>
+        </div>
+      </div>
+
+      <!-- Thành phần 2: Thẻ Bạn Đọc Điện Tử (Digital Reader Card) -->
+      <div class="digital-reader-card">
+        <div>
+          <div class="card-top-bar">
+            <div class="card-lib-brand">
+              <div class="card-lib-logo">T</div>
+              <div class="card-lib-title">THƯ VIỆN TRI THỨC</div>
+            </div>
+            <div class="card-chip"></div>
+          </div>
+
+          <div class="card-reader-info">
+            <div class="card-avatar">
+              <i class="bi bi-person-fill"></i>
+            </div>
+            <div class="card-name-block">
+              <h4>NGUYỄN VĂN AN</h4>
+              <div class="card-code">MÃ ĐỘC GIẢ: DG-0042</div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div style="font-size: 0.72rem; color: var(--color-gold); margin-bottom: 6px;">
+            <i class="bi bi-shield-check"></i> Độc giả hợp lệ (Khoa CNTT - ĐH Cần Thơ)
+          </div>
+          <div class="card-bottom-bar">
+            <span>Hạn thẻ: <strong>Vô thời hạn</strong></span>
+            <span>Đang mượn: <strong>1/3 cuốn</strong></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Thành phần 3: Hộp Phản Hồi & Thẻ KPI Thống Kê -->
+      <div class="alerts-kpi-col">
+        <!-- KPI Card -->
+        <div class="kpi-card-sample">
+          <div>
+            <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 600;">Ấn Phẩm Đang Lưu Hành</div>
+            <div class="kpi-sample-number">185</div>
+            <div style="font-size: 0.7rem; color: var(--color-success);">
+              <i class="bi bi-graph-up-arrow"></i> +12% so với tháng trước
+            </div>
+          </div>
+          <div class="kpi-sample-icon">
+            <i class="bi bi-journal-arrow-up"></i>
+          </div>
+        </div>
+
+        <!-- Alert Cảnh Báo -->
+        <div class="alert-sample alert-danger-sample">
+          <i class="bi bi-exclamation-octagon-fill fs-5" style="color: var(--color-danger); flex-shrink: 0;"></i>
+          <div>
+            <strong>Cảnh báo quá hạn trả sách:</strong> Ấn phẩm <code>S-00105</code> đã trễ 4 ngày. Vui lòng hoàn trả tại quầy để mở lại quyền mượn.
+          </div>
+        </div>
+
+        <!-- Toast Thành Công -->
+        <div class="alert-sample alert-success-sample">
+          <i class="bi bi-check-circle-fill fs-5" style="color: var(--color-success); flex-shrink: 0;"></i>
+          <div>
+            <strong>Đăng ký giữ sách thành công!</strong> Hệ thống bảo lưu sách tại kệ <code>CNTT-02</code> trong 48 giờ.
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Chân trang của bản vẽ -->
+    <div class="sheet-footer">
+      <div>
+        <strong>Triết lý thiết kế:</strong> "Warm Academic" loại bỏ ánh sáng gắt, tối ưu công năng thư viện và tôn vinh văn hóa đọc.
+      </div>
+      <div>
+        <span>MEVN Stack: Vue 3 • Bootstrap 5 • Express • MongoDB</span>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // Hàm chụp ảnh chất lượng cao 2x để chèn vào báo cáo
+    function captureAndDownload() {
+      const element = document.getElementById('designSystemSheet');
+      const btn = document.querySelector('.btn-export');
+      const originalText = btn.innerHTML;
+      btn.innerHTML = '<i class="bi bi-hourglass-split"></i> Đang xuất ảnh...';
+      btn.disabled = true;
+
+      html2canvas(element, {
+        scale: 2, // 2x resolution for crystal clear print quality in Word/PDF
+        useCORS: true,
+        backgroundColor: '#FDFBF7'
+      }).then(canvas => {
+        const link = document.createElement('a');
+        link.download = 'Hinh_14_Design_System_Warm_Academic.png';
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+        
+        btn.innerHTML = '<i class="bi bi-check2"></i> Đã tải ảnh xong!';
+        setTimeout(() => {
+          btn.innerHTML = originalText;
+          btn.disabled = false;
+        }, 2000);
+      }).catch(err => {
+        alert('Lỗi xuất ảnh: ' + err);
+        btn.innerHTML = originalText;
+        btn.disabled = false;
+      });
+    }
+  </script>
+</body>
+</html>
