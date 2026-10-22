@@ -31,7 +31,7 @@ CREATE TABLE DocGia (
   MaDocGia            VARCHAR(50) NOT NULL UNIQUE, -- Mã độc giả (e.g. DG001, DG002 - Index Unique)
   HoLot               VARCHAR(150) NOT NULL,       -- Họ và tên lót độc giả
   Ten                 VARCHAR(100) NOT NULL,       -- Tên độc giả (Index)
-  NgaySinh            DATE DEFAULT NULL,           -- Ngày tháng năm sinh
+  NgaySinh            DATE DEFAULT NULL,           -- Ngày tháng năm sinh (Ràng buộc: Không ở tương lai & đủ 18 tuổi: NgaySinh <= CURRENT_DATE - INTERVAL 18 YEAR)
   Phai                VARCHAR(10) DEFAULT 'Nam',   -- Giới tính (Nam, Nữ, Khác)
   DiaChi              TEXT DEFAULT '',             -- Địa chỉ liên lạc
   DienThoai           VARCHAR(20) DEFAULT '',      -- Số điện thoại độc giả
@@ -44,7 +44,9 @@ CREATE TABLE DocGia (
   LyDoKhoa            TEXT DEFAULT NULL,           -- Lý do đưa vào danh sách đen
   NgayKhoa            TIMESTAMP NULL DEFAULT NULL, -- Thời điểm bị khóa quyền mượn
   createdAt           TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  updatedAt           TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  updatedAt           TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  -- Ràng buộc toàn vẹn kiểm tra độ tuổi (CHECK CONSTRAINT):
+  CONSTRAINT chk_DocGia_NgaySinh CHECK (NgaySinh IS NULL OR (NgaySinh <= CURRENT_DATE AND NgaySinh <= CURRENT_DATE - INTERVAL 18 YEAR))
 );
 
 CREATE UNIQUE INDEX idx_DocGia_MaDocGia ON DocGia(MaDocGia);

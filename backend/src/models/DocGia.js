@@ -24,7 +24,30 @@ const docGiaSchema = new mongoose.Schema(
     },
     NgaySinh: {
       type: Date,
-      default: null
+      default: null,
+      validate: [
+        {
+          validator: function (value) {
+            if (!value) return true;
+            const birth = new Date(value.getFullYear(), value.getMonth(), value.getDate());
+            const now = new Date();
+            const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+            return birth <= today;
+          },
+          message: 'Ngày sinh không hợp lệ. Ngày sinh không được là ngày trong tương lai.'
+        },
+        {
+          validator: function (value) {
+            if (!value) return true;
+            const birth = new Date(value.getFullYear(), value.getMonth(), value.getDate());
+            const now = new Date();
+            const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+            const eighteenthBirthday = new Date(birth.getFullYear() + 18, birth.getMonth(), birth.getDate());
+            return eighteenthBirthday <= today;
+          },
+          message: 'Người dùng chưa đủ 18 tuổi. Chỉ người từ đủ 18 tuổi trở lên mới được phép đăng ký tài khoản.'
+        }
+      ]
     },
     Phai: {
       type: String,
