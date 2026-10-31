@@ -11,7 +11,7 @@ dotenv.config();
 const requiredEnv = ['PORT', 'MONGODB_URI', 'JWT_SECRET', 'JWT_REFRESH_SECRET', 'FRONTEND_USER_URL', 'FRONTEND_ADMIN_URL'];
 const missingEnv = requiredEnv.filter((k) => !process.env[k]);
 if (missingEnv.length > 0) {
-  console.error(`❌ [Pre-flight Error] Thiếu các biến môi trường bắt buộc trong .env: ${missingEnv.join(', ')}`);
+  console.error(`[Pre-flight Error] Thiếu các biến môi trường bắt buộc trong .env: ${missingEnv.join(', ')}`);
   process.exit(1);
 }
 
@@ -114,27 +114,27 @@ app.use(errorHandler);
 
 // Khởi chạy Server Express
 const server = app.listen(PORT, () => {
-  logger.info(`🚀 Backend API Server đang vận hành tại http://localhost:${PORT}`);
+  logger.info(`Backend API Server đang vận hành tại http://localhost:${PORT}`);
 });
 
 // 10. Quy trình Tắt máy An Toàn (Graceful Shutdown)
 const gracefulShutdown = (signal) => {
-  logger.info(`⚠️ Nhận tín hiệu ${signal}. Bắt đầu quy trình tắt máy an toàn...`);
+  logger.info(`Nhận tín hiệu ${signal}. Bắt đầu quy trình tắt máy an toàn...`);
   server.close(async () => {
-    logger.info('🛑 Máy chủ HTTP đã đóng tiếp nhận request mới.');
+    logger.info('Máy chủ HTTP đã đóng tiếp nhận request mới.');
     try {
       await mongoose.connection.close(false);
-      logger.info('🛑 Kết nối MongoDB đã được đóng an toàn.');
+      logger.info('Kết nối MongoDB đã được đóng an toàn.');
       process.exit(0);
     } catch (err) {
-      logger.error('❌ Lỗi khi đóng kết nối MongoDB:', err);
+      logger.error('Lỗi khi đóng kết nối MongoDB:', err);
       process.exit(1);
     }
   });
 
   // Buộc tắt sau 10 giây nếu còn request bị nghẽn
   setTimeout(() => {
-    logger.error('❌ Hết hạn chờ 10 giây. Buộc dừng tiến trình Node.js!');
+    logger.error('Hết hạn chờ 10 giây. Buộc dừng tiến trình Node.js!');
     process.exit(1);
   }, 10000);
 };

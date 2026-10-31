@@ -32,7 +32,7 @@ const logAuditTrail = async (req, { hanhDong, collection, documentId, maDinhDanh
       DuLieuMoi: duLieuMoi || null
     });
   } catch (error) {
-    logger.error('❌ Lỗi khi ghi Audit Log:', error);
+    logger.error('Lỗi khi ghi Audit Log:', error);
   }
 };
 

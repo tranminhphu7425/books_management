@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bg-grad-male" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#E8F5E9"/>
+      <stop offset="100%" stop-color="#C8E6C9"/>
+    </linearGradient>
+    <linearGradient id="suit-grad-male" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1B4332"/>
+      <stop offset="100%" stop-color="#0D281E"/>
+    </linearGradient>
+  </defs>
+  <circle cx="64" cy="64" r="62" fill="url(#bg-grad-male)" stroke="#A3D9A5" stroke-width="2.5"/>
+  <!-- Body/Outfit -->
+  <path d="M28 120 C28 92 42 82 64 82 C86 82 100 92 100 120 Z" fill="url(#suit-grad-male)"/>
+  <!-- Shirt/Collar -->
+  <polygon points="64,82 54,98 64,108 74,98" fill="#FDFBF7"/>
+  <polygon points="64,96 61,114 67,114" fill="#D4A373"/>
+  <!-- Neck -->
+  <rect x="56" y="68" width="16" height="18" rx="4" fill="#F2C18D"/>
+  <!-- Head -->
+  <ellipse cx="64" cy="52" rx="20" ry="24" fill="#FFDBAC"/>
+  <!-- Hair -->
+  <path d="M43 46 C43 30 52 22 64 22 C76 22 85 30 85 46 C85 48 83 48 81 44 C77 36 71 34 64 34 C57 34 51 36 47 44 C45 48 43 48 43 46 Z" fill="#2C2825"/>
+  <!-- Ears -->
+  <ellipse cx="43" cy="53" rx="3.5" ry="6" fill="#FFDBAC"/>
+  <ellipse cx="85" cy="53" rx="3.5" ry="6" fill="#FFDBAC"/>
+  <!-- Eyes -->
+  <ellipse cx="56" cy="51" rx="2.5" ry="3" fill="#2C2825"/>
+  <ellipse cx="72" cy="51" rx="2.5" ry="3" fill="#2C2825"/>
+  <circle cx="57" cy="50" r="0.8" fill="#FFFFFF"/>
+  <circle cx="73" cy="50" r="0.8" fill="#FFFFFF"/>
+  <!-- Eyebrows -->
+  <path d="M52 44 Q56 42 60 44" stroke="#2C2825" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+  <path d="M68 44 Q72 42 76 44" stroke="#2C2825" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+  <!-- Smile -->
+  <path d="M58 63 Q64 68 70 63" stroke="#9E6138" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+</svg>

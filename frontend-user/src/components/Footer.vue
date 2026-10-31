@@ -68,7 +68,7 @@
       <!-- Bản quyền -->
       <div class="d-flex flex-column flex-md-row justify-content-between align-items-center text-white-50 small">
         <div>
-          © 2026 Thư viện Kiến thức. Bản quyền thuộc về Hệ thống Quản lý Thư viện Số.
+          &copy; 2026 Thư viện Kiến thức. Bản quyền thuộc về Hệ thống Quản lý Thư viện Số.
         </div>
         <div class="d-flex gap-3 mt-2 mt-md-0">
           <span>Chuẩn mực - Hiện đại - Thân thiện</span>

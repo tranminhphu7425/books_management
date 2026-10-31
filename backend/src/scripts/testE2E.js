@@ -4,7 +4,7 @@ const API_BASE = 'http://127.0.0.1:5000/api';
 
 async function runE2ETests() {
   console.log('====================================================');
-  console.log('🚀 BẮT ĐẦU CHẠY KIỂM THỬ E2E TOÀN HỆ THỐNG (14 TCs)');
+  console.log('BẮT ĐẦU CHẠY KIỂM THỬ E2E TOÀN HỆ THỐNG (14 TCs)');
   console.log('====================================================\n');
 
   let passed = 0;
@@ -13,10 +13,10 @@ async function runE2ETests() {
   async function testCase(id, name, testFn) {
     try {
       await testFn();
-      console.log(`✅ [PASS] ${id}: ${name}`);
+      console.log(`[PASS] ${id}: ${name}`);
       passed++;
     } catch (err) {
-      console.error(`❌ [FAIL] ${id}: ${name}`);
+      console.error(`[FAIL] ${id}: ${name}`);
       console.error(`   Lý do: ${err.response?.data?.error?.message || err.message}`);
       failed++;
     }
@@ -400,7 +400,7 @@ async function runE2ETests() {
   });
 
   console.log('\n====================================================');
-  console.log(`📊 TỔNG KẾT KẾT QUẢ KIỂM THỬ: ${passed}/16 PASS (${failed} FAIL)`);
+  console.log(`TỔNG KẾT KẾT QUẢ KIỂM THỬ: ${passed}/16 PASS (${failed} FAIL)`);
   console.log('====================================================');
 
   if (failed > 0) {

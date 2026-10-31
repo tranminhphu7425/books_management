@@ -399,7 +399,7 @@ exports.deleteBook = async (req, res, next) => {
       });
     }
 
-    // 🛑 CHẶN XÓA NẾU ĐANG CÓ NGƯỜI MƯỢN
+    // CHẶN XÓA NẾU ĐANG CÓ NGƯỜI MƯỢN
     if (book.SoQuyenDangMuon > 0) {
       return sendError(res, {
         code: "BOOK_CANNOT_DELETE_BORROWED",

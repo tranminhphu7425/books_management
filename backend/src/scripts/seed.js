@@ -18,7 +18,7 @@ async function seed() {
   try {
     const mongoUri = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/books_management';
     await mongoose.connect(mongoUri);
-    console.log('✅ Đã kết nối MongoDB để nạp dữ liệu mẫu...');
+    console.log('Đã kết nối MongoDB để nạp dữ liệu mẫu...');
 
     // 1. Xóa sạch dữ liệu cũ
     await Promise.all([
@@ -32,7 +32,7 @@ async function seed() {
       CauHinhHeThong.deleteMany({}),
       NhatKyHoatDong.deleteMany({})
     ]);
-    console.log('🧹 Đã dọn dẹp sạch toàn bộ dữ liệu cũ.');
+    console.log('Đã dọn dẹp sạch toàn bộ dữ liệu cũ.');
 
     // 2. Tạo Cấu hình hệ thống mặc định
     await CauHinhHeThong.create({
@@ -44,7 +44,7 @@ async function seed() {
       SoLanGiaHanToiDa: 1,
       SoNgayTreHanVaoDanhSachDen: 15
     });
-    console.log('⚙️ Đã khởi tạo Cấu hình hệ thống mặc định.');
+    console.log('Đã khởi tạo Cấu hình hệ thống mặc định.');
 
     // 3. Tạo Danh mục Thể loại mẫu (10 Thể loại chuẩn hóa)
     const categories = [
@@ -60,7 +60,7 @@ async function seed() {
       { MaTheLoai: 'TL10', TenTheLoai: 'Thiếu nhi & Giáo dục', MoTa: 'Truyện tranh giáo dục, sách phát triển trí tuệ cho lứa tuổi thiếu niên', TrangThai: 'ACTIVE' }
     ];
     await TheLoai.insertMany(categories);
-    console.log('📚 Đã tạo 10 Danh mục Thể loại chuẩn hóa.');
+    console.log('Đã tạo 10 Danh mục Thể loại chuẩn hóa.');
 
     // 4. Tạo Nhà xuất bản mẫu (11 NXB)
     const publishers = [
@@ -77,7 +77,7 @@ async function seed() {
       { MaNXB: 'NXB11', TenNXB: 'NXB Hồng Đức', DiaChi: '65 Tràng Thi, Hoàn Kiếm, Hà Nội', DienThoai: '02439260024', Email: 'hongduc@nxb.vn' }
     ];
     await NhaXuatBan.insertMany(publishers);
-    console.log('🏢 Đã tạo 11 Nhà xuất bản đối tác.');
+    console.log('Đã tạo 11 Nhà xuất bản đối tác.');
 
     // 5. Tạo Tài khoản Nhân viên (Băm mật khẩu Bcrypt)
     const hashAdminPass = await bcrypt.hash('Admin@123', 10);
@@ -104,7 +104,7 @@ async function seed() {
       SoDienThoai: '0902345678',
       HinhAnh: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80'
     });
-    console.log('👤 Đã tạo tài khoản Quản trị viên (NV001) và Thủ thư trưởng (NV002).');
+    console.log('Đã tạo tài khoản Quản trị viên (NV001) và Thủ thư trưởng (NV002).');
 
     // 6. Tạo Tài khoản Độc giả (Băm mật khẩu Bcrypt)
     const hashUserPass = await bcrypt.hash('User@123', 10);
@@ -136,7 +136,7 @@ async function seed() {
       HinhAnh: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80',
       DaBiKhoa: false
     });
-    console.log('📖 Đã tạo tài khoản độc giả mẫu DG001 (reader1@gmail.com) và DG002 (reader2@gmail.com).');
+    console.log('Đã tạo tài khoản độc giả mẫu DG001 (reader1@gmail.com) và DG002 (reader2@gmail.com).');
 
     // 7. Tạo 15 Đầu sách phong phú thể loại và hình ảnh bìa
     const sampleBooks = [
@@ -443,7 +443,7 @@ async function seed() {
     ];
 
     const insertedBooks = await Sach.insertMany(sampleBooks);
-    console.log(`📖 Đã tạo ${insertedBooks.length} cuốn sách mẫu đa dạng thể loại và bìa minh họa.`);
+    console.log(`Đã tạo ${insertedBooks.length} cuốn sách mẫu đa dạng thể loại và bìa minh họa.`);
 
     // 8. Tạo phiếu mượn mẫu đang hoạt động cho reader1 (S001)
     const activeBorrow = await TheoDoiMuonSach.create({
@@ -499,18 +499,18 @@ async function seed() {
       ChiTiet: 'Khởi tạo dữ liệu mẫu và nạp danh mục thể loại, nhà xuất bản, đầu sách chuẩn hóa toàn hệ thống'
     });
 
-    console.log('🎉 NẠP DỮ LIỆU MẪU BAN ĐẦU THÀNH CÔNG!');
+    console.log('NẠP DỮ LIỆU MẪU BAN ĐẦU THÀNH CÔNG!');
     console.log('================================================================');
-    console.log('👉 Tài khoản Admin:       admin@library.com   / Admin@123');
-    console.log('👉 Tài khoản Thủ thư:     manager@library.com / Manager@123');
-    console.log('👉 Tài khoản Độc giả 1:   reader1@gmail.com   / User@123 (Có 1 sách đang mượn)');
-    console.log('👉 Tài khoản Độc giả 2:   reader2@gmail.com   / User@123 (Có biên bản phạt UNPAID)');
+    console.log('- Tài khoản Admin:       admin@library.com   / Admin@123');
+    console.log('- Tài khoản Thủ thư:     manager@library.com / Manager@123');
+    console.log('- Tài khoản Độc giả 1:   reader1@gmail.com   / User@123 (Có 1 sách đang mượn)');
+    console.log('- Tài khoản Độc giả 2:   reader2@gmail.com   / User@123 (Có biên bản phạt UNPAID)');
     console.log('================================================================');
 
     await mongoose.connection.close();
     process.exit(0);
   } catch (error) {
-    console.error('❌ Lỗi nạp dữ liệu mẫu:', error);
+    console.error('Lỗi nạp dữ liệu mẫu:', error);
     process.exit(1);
   }
 }
