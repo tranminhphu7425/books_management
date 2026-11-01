@@ -125,6 +125,16 @@
                     <i class="bi bi-eye"></i>
                   </button>
 
+                  <!-- Chỉnh sửa thông tin Nhân sự / Thủ thư -->
+                  <button
+                    v-if="user.MSNV || ['ADMIN', 'BOOK_MANAGER'].includes(user.Role || user.ChucVu)"
+                    class="btn btn-outline-warning"
+                    @click="openEditStaff(user)"
+                    title="Chỉnh sửa thông tin nhân viên"
+                  >
+                    <i class="bi bi-pencil-square"></i>
+                  </button>
+
                   <!-- Đổi quyền (nếu không phải là chính mình) -->
                   <button
                     class="btn btn-outline-secondary"
@@ -202,6 +212,11 @@
               </div>
 
               <div class="mb-3">
+                <label class="form-label small fw-semibold">Địa chỉ nơi ở</label>
+                <input type="text" v-model="staffForm.DiaChi" class="form-control" placeholder="Ví dụ: Số 123 Đường 3/2, Ninh Kiều, Cần Thơ" />
+              </div>
+
+              <div class="mb-3">
                 <label class="form-label small fw-semibold">Phân quyền vai trò <span class="text-danger">*</span></label>
                 <select v-model="staffForm.Role" class="form-select" required>
                   <option value="BOOK_MANAGER">Thủ thư / Quản lý sách (BOOK_MANAGER)</option>
@@ -218,6 +233,92 @@
             <div class="modal-footer bg-light">
               <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Bỏ qua</button>
               <button type="submit" class="btn btn-primary btn-sm px-4">Tạo Tài Khoản</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Cập Nhật Thông Tin Nhân Sự / Thủ Thư -->
+    <div class="modal fade" id="editStaffModal" tabindex="-1" aria-hidden="true" ref="editStaffModalRef">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow">
+          <div class="modal-header bg-warning text-dark">
+            <h5 class="modal-title font-serif fs-6 d-flex align-items-center gap-2">
+              <i class="bi bi-pencil-square"></i> Cập Nhật Thông Tin Nhân Viên
+            </h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+
+          <form @submit.prevent="submitEditStaff">
+            <div class="modal-body p-4">
+              <div class="mb-3">
+                <label class="form-label small fw-semibold">Mã số nhân viên (MSNV)</label>
+                <input type="text" :value="editStaffTarget?.MSNV" class="form-control bg-light font-monospace" disabled />
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label small fw-semibold">Họ và tên nhân viên <span class="text-danger">*</span></label>
+                <input type="text" v-model="editStaffForm.HoTenNV" class="form-control" required placeholder="Ví dụ: Trần Văn Cương" />
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label small fw-semibold">Địa chỉ Email <span class="text-danger">*</span></label>
+                <input type="email" v-model="editStaffForm.Email" class="form-control" required placeholder="nhanvien@library.com" />
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label small fw-semibold">Số điện thoại liên hệ</label>
+                <input
+                  type="tel"
+                  inputmode="numeric"
+                  v-model="editStaffForm.SoDienThoai"
+                  class="form-control"
+                  placeholder="0987654321"
+                  maxlength="11"
+                  @keypress="filterNumeric"
+                  @input="editStaffForm.SoDienThoai = editStaffForm.SoDienThoai.replace(/\D/g, '')"
+                />
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label small fw-semibold">Địa chỉ nơi ở</label>
+                <input type="text" v-model="editStaffForm.DiaChi" class="form-control" placeholder="Ví dụ: Số 123 Đường 3/2, Ninh Kiều, Cần Thơ" />
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label small fw-semibold">Chức vụ vai trò <span class="text-danger">*</span></label>
+                <select
+                  v-model="editStaffForm.Role"
+                  class="form-select"
+                  required
+                  :disabled="editStaffTarget?._id === currentAdminId"
+                >
+                  <option value="BOOK_MANAGER">Thủ thư / Quản lý sách (BOOK_MANAGER)</option>
+                  <option value="ADMIN">Quản trị viên Hệ thống (ADMIN)</option>
+                </select>
+                <div v-if="editStaffTarget?._id === currentAdminId" class="form-text text-muted small">
+                  Bạn không thể tự thay đổi chức vụ của chính mình tại đây.
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label small fw-semibold">Mật khẩu mới (Bỏ trống nếu không đổi)</label>
+                <input type="password" v-model="editStaffForm.Password" class="form-control" minlength="6" placeholder="Để trống nếu giữ nguyên mật khẩu cũ" />
+              </div>
+            </div>
+
+            <div class="modal-footer bg-light">
+              <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Hủy bỏ</button>
+              <button
+                type="submit"
+                class="btn btn-warning btn-sm px-4 fw-semibold"
+                :disabled="isSubmittingEditStaff || !isEditStaffFormDirty"
+                :title="!isEditStaffFormDirty ? 'Vui lòng thay đổi thông tin trước khi lưu' : 'Lưu thông tin mới'"
+              >
+                <span v-if="isSubmittingEditStaff" class="spinner-border spinner-border-sm me-1"></span>
+                Lưu Thay Đổi
+              </button>
             </div>
           </form>
         </div>
@@ -422,6 +523,37 @@ const filterNumeric = (event) => {
 
 const currentTab = ref('READERS');
 const createStaffModalRef = ref(null);
+const editStaffModalRef = ref(null);
+const editStaffTarget = ref(null);
+const isSubmittingEditStaff = ref(false);
+
+const editStaffForm = reactive({
+  HoTenNV: '',
+  Email: '',
+  SoDienThoai: '',
+  DiaChi: '',
+  Role: 'BOOK_MANAGER',
+  Password: ''
+});
+
+const isEditStaffFormDirty = computed(() => {
+  if (!editStaffTarget.value) return false;
+  const initialHoTen = editStaffTarget.value.HoTenNV || editStaffTarget.value.HoTen || '';
+  const initialEmail = editStaffTarget.value.Email || '';
+  const initialSoDienThoai = editStaffTarget.value.SoDienThoai || editStaffTarget.value.DienThoai || '';
+  const initialDiaChi = editStaffTarget.value.DiaChi || '';
+  const initialRole = editStaffTarget.value.Role || editStaffTarget.value.ChucVu || 'BOOK_MANAGER';
+
+  const isChanged =
+    editStaffForm.HoTenNV.trim() !== initialHoTen.trim() ||
+    editStaffForm.Email.trim().toLowerCase() !== initialEmail.trim().toLowerCase() ||
+    editStaffForm.SoDienThoai.trim() !== initialSoDienThoai.trim() ||
+    editStaffForm.DiaChi.trim() !== initialDiaChi.trim() ||
+    editStaffForm.Role !== initialRole ||
+    Boolean(editStaffForm.Password && editStaffForm.Password.trim().length > 0);
+
+  return isChanged;
+});
 
 // Role change modal state
 const changeRoleModalRef = ref(null);
@@ -459,6 +591,7 @@ const openCreateStaffModal = () => {
   staffForm.HoTenNV = '';
   staffForm.Email = '';
   staffForm.SoDienThoai = '';
+  staffForm.DiaChi = '';
   staffForm.Role = 'BOOK_MANAGER';
   staffForm.Password = '';
   const modal = new window.bootstrap.Modal(createStaffModalRef.value);
@@ -473,6 +606,51 @@ const submitCreateStaff = async () => {
     toast.success(res.message);
   } else {
     toast.error(res.error);
+  }
+};
+
+const openEditStaff = (user) => {
+  editStaffTarget.value = user;
+  editStaffForm.HoTenNV = user.HoTenNV || user.HoTen || '';
+  editStaffForm.Email = user.Email || '';
+  editStaffForm.SoDienThoai = user.SoDienThoai || user.DienThoai || '';
+  editStaffForm.DiaChi = user.DiaChi || '';
+  editStaffForm.Role = user.Role || user.ChucVu || 'BOOK_MANAGER';
+  editStaffForm.Password = '';
+
+  if (editStaffModalRef.value && window.bootstrap) {
+    const modal = window.bootstrap.Modal.getOrCreateInstance(editStaffModalRef.value);
+    modal.show();
+  }
+};
+
+const submitEditStaff = async () => {
+  if (!editStaffTarget.value) return;
+  isSubmittingEditStaff.value = true;
+  try {
+    const payload = {
+      hoTenNV: editStaffForm.HoTenNV,
+      email: editStaffForm.Email,
+      soDienThoai: editStaffForm.SoDienThoai,
+      diaChi: editStaffForm.DiaChi,
+      role: editStaffForm.Role
+    };
+    if (editStaffForm.Password && editStaffForm.Password.trim()) {
+      payload.password = editStaffForm.Password;
+    }
+
+    const res = await userStore.updateStaff(editStaffTarget.value._id, payload);
+    if (res.success) {
+      if (editStaffModalRef.value && window.bootstrap) {
+        const modal = window.bootstrap.Modal.getInstance(editStaffModalRef.value);
+        if (modal) modal.hide();
+      }
+      toast.success(res.message);
+    } else {
+      toast.error(res.error);
+    }
+  } finally {
+    isSubmittingEditStaff.value = false;
   }
 };
 

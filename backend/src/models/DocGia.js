@@ -80,7 +80,7 @@ const docGiaSchema = new mongoose.Schema(
     },
     HinhAnh: {
       type: String,
-      default: '/uploads/avatars/default.png'
+      default: ''
     },
     GoogleId: {
       type: String,

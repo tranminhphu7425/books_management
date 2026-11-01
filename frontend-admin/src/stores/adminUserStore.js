@@ -44,6 +44,21 @@ export const useAdminUserStore = defineStore('adminUser', {
       }
     },
 
+    async updateStaff(id, staffData) {
+      this.isLoading = true;
+      this.error = null;
+      try {
+        const response = await api.put(`/users/${id}`, staffData);
+        await this.fetchUsers();
+        return { success: true, message: response.data.message || 'Cập nhật thông tin nhân viên thành công!' };
+      } catch (err) {
+        this.error = err.response?.data?.error?.message || 'Không thể cập nhật thông tin nhân viên.';
+        return { success: false, error: this.error };
+      } finally {
+        this.isLoading = false;
+      }
+    },
+
     async updateRole(id, newRole) {
       this.isLoading = true;
       this.error = null;

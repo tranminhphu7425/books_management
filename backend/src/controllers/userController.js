@@ -394,6 +394,107 @@ exports.toggleBlacklist = async (req, res, next) => {
   }
 };
 
+// Admin cập nhật thông tin Nhân sự / Thủ thư (Quyền: ADMIN)
+exports.updateStaff = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const hoTenNV = (req.body.hoTenNV || req.body.HoTenNV || '').trim();
+    const email = (req.body.email || req.body.Email || '').trim().toLowerCase();
+    const soDienThoai = (req.body.soDienThoai || req.body.SoDienThoai || req.body.dienThoai || req.body.DienThoai || '').toString().replace(/\D/g, '');
+    const diaChi = (req.body.diaChi || req.body.DiaChi || '').trim();
+    const password = req.body.password || req.body.Password;
+    const chucVu = (req.body.chucVu || req.body.ChucVu || req.body.role || req.body.Role || '').toUpperCase();
+
+    const staff = await NhanVien.findById(id);
+    if (!staff) {
+      return sendError(res, {
+        code: 'RESOURCE_NOT_FOUND',
+        message: 'Không tìm thấy tài khoản nhân viên cần cập nhật.',
+        statusCode: 404
+      });
+    }
+
+    if (!hoTenNV) {
+      return sendError(res, {
+        code: 'VALIDATION_FAILED',
+        message: 'Họ tên nhân viên không được để trống.',
+        statusCode: 422
+      });
+    }
+
+    if (email && email !== staff.Email) {
+      const existing = await NhanVien.findOne({ Email: email, _id: { $ne: staff._id } });
+      if (existing) {
+        return sendError(res, {
+          code: 'AUTH_EMAIL_EXISTS',
+          message: 'Địa chỉ Email này đã được sử dụng bởi một nhân viên khác.',
+          statusCode: 400
+        });
+      }
+      staff.Email = email;
+    }
+
+    // Không cho phép tự hạ quyền của chính mình nếu là Admin đang thao tác
+    if (chucVu && ['ADMIN', 'BOOK_MANAGER'].includes(chucVu)) {
+      if (staff._id.toString() === req.user._id.toString() && chucVu !== 'ADMIN') {
+        return sendError(res, {
+          code: 'FORBIDDEN_ACTION',
+          message: 'Quản trị viên không thể tự hạ quyền của chính mình.',
+          statusCode: 403
+        });
+      }
+      staff.ChucVu = chucVu;
+    }
+
+    staff.HoTenNV = hoTenNV;
+    staff.SoDienThoai = soDienThoai;
+    staff.DiaChi = diaChi;
+
+    if (password && password.trim() !== '') {
+      if (password.length < 6) {
+        return sendError(res, {
+          code: 'VALIDATION_FAILED',
+          message: 'Mật khẩu mới phải có tối thiểu 6 ký tự.',
+          statusCode: 422
+        });
+      }
+      staff.Password = await bcrypt.hash(password, 10);
+    }
+
+    await staff.save();
+
+    await logAuditTrail(req, {
+      hanhDong: 'UPDATE_STAFF',
+      collection: 'NhanVien',
+      documentId: staff._id,
+      maDinhDanh: staff.MSNV,
+      chiTiet: `Đã cập nhật thông tin nhân viên '${staff.HoTenNV}' (${staff.MSNV}) - Chức vụ: ${staff.ChucVu}`
+    });
+
+    return sendSuccess(res, {
+      data: {
+        id: staff._id,
+        _id: staff._id,
+        msnv: staff.MSNV,
+        MSNV: staff.MSNV,
+        hoTenNV: staff.HoTenNV,
+        HoTenNV: staff.HoTenNV,
+        email: staff.Email,
+        Email: staff.Email,
+        chucVu: staff.ChucVu,
+        ChucVu: staff.ChucVu,
+        soDienThoai: staff.SoDienThoai,
+        SoDienThoai: staff.SoDienThoai,
+        diaChi: staff.DiaChi,
+        DiaChi: staff.DiaChi
+      },
+      message: 'Cập nhật thông tin nhân viên thành công!'
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 // Lấy chi tiết người dùng / độc giả theo ID hoặc Mã (Quyền: STAFF)
 exports.getUserById = async (req, res, next) => {
   try {

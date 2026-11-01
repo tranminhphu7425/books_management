@@ -13,6 +13,7 @@ router.get('/:id', requireStaff, userController.getUserById);
 // Các thao tác quản trị cấp cao chỉ dành cho Admin
 router.get('/', requireAdmin, userController.getUsers);
 router.post('/', requireAdmin, userController.createStaff);
+router.put('/:id', requireAdmin, userController.updateStaff);
 router.put('/:id/role', requireAdmin, userController.updateRole);
 router.put('/:id/blacklist', requireAdmin, userController.toggleBlacklist);
 

@@ -49,7 +49,7 @@ const nhanVienSchema = new mongoose.Schema(
     },
     HinhAnh: {
       type: String,
-      default: '/uploads/avatars/default-staff.png'
+      default: ''
     }
   },
   {

@@ -520,7 +520,12 @@
 
             <div class="modal-footer bg-light">
               <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Bỏ qua</button>
-              <button type="submit" class="btn btn-primary btn-sm px-4" :disabled="bookStore.isLoading">
+              <button
+                type="submit"
+                class="btn btn-primary btn-sm px-4"
+                :disabled="bookStore.isLoading || (isEditing && !isBookFormDirty)"
+                :title="isEditing && !isBookFormDirty ? 'Vui lòng thay đổi thông tin ấn phẩm trước khi lưu' : ''"
+              >
                 <span v-if="bookStore.isLoading" class="spinner-border spinner-border-sm me-2"></span>
                 {{ isEditing ? 'Lưu Thay Đổi' : 'Thêm Sách Vào Kho' }}
               </button>
@@ -558,6 +563,7 @@ const selectedSort = ref('MaSach_asc');
 const modalRef = ref(null);
 const isEditing = ref(false);
 const editingBookId = ref(null);
+const initialBookData = ref(null);
 const isUploadingCover = ref(false);
 const coverFileInput = ref(null);
 const defaultCover = 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=400&q=80';
@@ -616,6 +622,27 @@ const formData = reactive({
   HinhAnh: '',
   MoTa: '',
   ISBN: ''
+});
+
+const isBookFormDirty = computed(() => {
+  if (!isEditing.value) return true; // Khi thêm mới thì luôn cho phép Submit nếu hợp lệ
+  if (!initialBookData.value) return false;
+
+  const init = initialBookData.value;
+  return (
+    formData.TenSach.trim() !== (init.TenSach || '').trim() ||
+    formData.MaSach.trim() !== (init.MaSach || '').trim() ||
+    formData.TacGia.trim() !== (init.TacGia || '').trim() ||
+    formData.TheLoai !== (init.TheLoai || '') ||
+    Number(formData.DonGia) !== Number(init.DonGia ?? 0) ||
+    Number(formData.SoQuyen) !== Number(init.SoQuyen ?? 0) ||
+    Number(formData.NamXuatBan) !== Number(init.NamXuatBan ?? 0) ||
+    formData.MaNXB.trim() !== (init.MaNXB || '').trim() ||
+    formData.ViTri.trim() !== (init.ViTri || '').trim() ||
+    formData.HinhAnh.trim() !== (init.HinhAnh || '').trim() ||
+    formData.MoTa.trim() !== (init.MoTa || '').trim() ||
+    formData.ISBN.trim() !== (init.ISBN || '').trim()
+  );
 });
 
 const formatCurrency = (val) => {
@@ -681,6 +708,7 @@ const goToPage = (page) => {
 const openCreateModal = () => {
   isEditing.value = false;
   editingBookId.value = null;
+  initialBookData.value = null;
   formData.TenSach = '';
   formData.MaSach = '';
   formData.TacGia = '';
@@ -713,6 +741,22 @@ const openEditModal = (book) => {
   formData.HinhAnh = book.HinhAnh || '';
   formData.MoTa = book.MoTa || '';
   formData.ISBN = book.ISBN || '';
+
+  // Lưu bản snapshot dữ liệu ban đầu để kiểm tra thay đổi
+  initialBookData.value = {
+    TenSach: formData.TenSach,
+    MaSach: formData.MaSach,
+    TacGia: formData.TacGia,
+    TheLoai: formData.TheLoai,
+    DonGia: formData.DonGia,
+    SoQuyen: formData.SoQuyen,
+    NamXuatBan: formData.NamXuatBan,
+    MaNXB: formData.MaNXB,
+    ViTri: formData.ViTri,
+    HinhAnh: formData.HinhAnh,
+    MoTa: formData.MoTa,
+    ISBN: formData.ISBN
+  };
 
   const modal = new window.bootstrap.Modal(modalRef.value);
   modal.show();

@@ -75,10 +75,6 @@
                 <i class="bi bi-slash-circle me-1"></i>
                 Tất cả ấn phẩm đang được mượn
               </button>
-
-              <div class="text-center small text-muted mt-2">
-                <i class="bi bi-shield-check text-success me-1"></i> Miễn phí phục vụ cho bạn đọc có thẻ
-              </div>
             </div>
           </div>
         </div>
