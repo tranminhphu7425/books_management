@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <!-- Background Gradient (Deep Emerald Green) -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0a1f17" />
+      <stop offset="45%" stop-color="#143e2e" />
+      <stop offset="100%" stop-color="#1b4332" />
+    </linearGradient>
+
+    <!-- Warm Gold Gradient for Accents and Embellishments -->
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#faedcd" />
+      <stop offset="25%" stop-color="#e0b080" />
+      <stop offset="70%" stop-color="#d4a373" />
+      <stop offset="100%" stop-color="#a8794f" />
+    </linearGradient>
+
+    <!-- Left Book Page Gradient -->
+    <linearGradient id="pageLeftGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" />
+      <stop offset="60%" stop-color="#fdfbf7" />
+      <stop offset="100%" stop-color="#ebd8c3" />
+    </linearGradient>
+
+    <!-- Right Book Page Gradient -->
+    <linearGradient id="pageRightGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fcf9f2" />
+      <stop offset="65%" stop-color="#f4ebe1" />
+      <stop offset="100%" stop-color="#dfcfbe" />
+    </linearGradient>
+
+    <!-- Radiant Glow Filter -->
+    <filter id="softGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="6" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <!-- Squircle Base Container with Dual Gold Rings -->
+  <rect x="24" y="24" width="464" height="464" rx="112" fill="url(#bgGrad)" />
+  <rect x="24" y="24" width="464" height="464" rx="112" fill="none" stroke="url(#goldGrad)" stroke-width="8" stroke-opacity="0.45" />
+  <rect x="36" y="36" width="440" height="440" rx="100" fill="none" stroke="url(#goldGrad)" stroke-width="2" stroke-opacity="0.25" />
+
+  <!-- Radiant Knowledge Spark / Star Above Book Spine -->
+  <path d="M 256 76 Q 256 116 288 116 Q 256 116 256 156 Q 256 116 224 116 Q 256 116 256 76 Z" fill="url(#goldGrad)" filter="url(#softGlow)" />
+  <circle cx="256" cy="116" r="5" fill="#ffffff" />
+
+  <!-- Sparkle Stars -->
+  <path d="M 166 115 Q 166 128 178 128 Q 166 128 166 141 Q 166 128 154 128 Q 166 128 166 115 Z" fill="url(#goldGrad)" opacity="0.85" />
+  <path d="M 346 115 Q 346 128 358 128 Q 346 128 346 141 Q 346 128 334 128 Q 346 128 346 115 Z" fill="url(#goldGrad)" opacity="0.85" />
+
+  <!-- Hardcover Backing (Book Cover Base) -->
+  <path d="M 256 368 C 196 346, 126 350, 80 374 C 74 340, 72 230, 78 194 C 128 168, 202 173, 256 198 Z" fill="#7a4e2b" opacity="0.95" />
+  <path d="M 256 368 C 316 346, 386 350, 432 374 C 438 340, 440 230, 434 194 C 384 168, 310 173, 256 198 Z" fill="#633d1e" opacity="0.95" />
+
+  <!-- Book Pages Stack (Sub-layers) -->
+  <path d="M 256 352 C 202 332, 138 336, 92 358 L 96 204 C 142 182, 204 180, 256 200 Z" fill="#d9c5b2" />
+  <path d="M 256 352 C 310 332, 374 336, 420 358 L 416 204 C 370 182, 308 180, 256 200 Z" fill="#c9b4a1" />
+
+  <!-- Open Main Pages (Foreground Pages) -->
+  <!-- Left Page -->
+  <path d="M 256 340 C 206 319, 140 323, 102 344 C 98 296, 98 238, 104 188 C 146 170, 210 168, 256 192 Z" fill="url(#pageLeftGrad)" />
+
+  <!-- Right Page -->
+  <path d="M 256 340 C 306 319, 372 323, 410 344 C 414 296, 414 238, 408 188 C 366 170, 302 168, 256 192 Z" fill="url(#pageRightGrad)" />
+
+  <!-- Stylized Lines of Knowledge / Typography (Golden Inscription) -->
+  <path d="M 136 220 C 168 210, 208 210, 232 219" stroke="#c49b71" stroke-width="5" stroke-linecap="round" fill="none" opacity="0.65" />
+  <path d="M 132 245 C 166 235, 208 235, 232 244" stroke="#c49b71" stroke-width="5" stroke-linecap="round" fill="none" opacity="0.65" />
+  <path d="M 134 270 C 166 260, 204 260, 232 269" stroke="#c49b71" stroke-width="5" stroke-linecap="round" fill="none" opacity="0.65" />
+  <path d="M 144 295 C 172 287, 204 287, 232 294" stroke="#c49b71" stroke-width="5" stroke-linecap="round" fill="none" opacity="0.55" />
+
+  <path d="M 376 220 C 344 210, 304 210, 280 219" stroke="#b0885f" stroke-width="5" stroke-linecap="round" fill="none" opacity="0.65" />
+  <path d="M 380 245 C 346 235, 304 235, 280 244" stroke="#b0885f" stroke-width="5" stroke-linecap="round" fill="none" opacity="0.65" />
+  <path d="M 378 270 C 346 260, 308 260, 280 269" stroke="#b0885f" stroke-width="5" stroke-linecap="round" fill="none" opacity="0.65" />
+  <path d="M 368 295 C 340 287, 308 287, 280 294" stroke="#b0885f" stroke-width="5" stroke-linecap="round" fill="none" opacity="0.55" />
+
+  <!-- Center Book Spine Line -->
+  <path d="M 256 192 L 256 344" stroke="#8c6239" stroke-width="6" stroke-linecap="round" />
+
+  <!-- Golden Bookmark Ribbon -->
+  <path d="M 251 342 L 251 422 L 256 414 L 261 422 L 261 342 Z" fill="url(#goldGrad)" filter="url(#softGlow)" />
+</svg>

@@ -70,7 +70,6 @@ export const useAuthStore = defineStore('auth', {
       this.error = null;
       try {
         const response = await api.post('/auth/google', {
-          credential,
           idToken: credential
         });
         const { user, accessToken, refreshToken } = response.data.data;

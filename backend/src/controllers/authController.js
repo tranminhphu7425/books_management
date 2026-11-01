@@ -6,6 +6,7 @@ const { secret, expiresIn, refreshSecret, refreshExpiresIn } = require('../confi
 const { verifyGoogleToken } = require('../config/googleOAuth');
 const { sendSuccess, sendError } = require('../middlewares/responseEnvelope');
 const { generateNextCode } = require('../utils/codeGenerator');
+const { parseDateOnly, validateBirthDateAndAge } = require('../utils/dateValidator');
 
 // Helper cấp Access và Refresh Token
 const generateTokens = (user, role) => {
@@ -17,65 +18,6 @@ const generateTokens = (user, role) => {
   const accessToken = jwt.sign(payload, secret, { expiresIn });
   const refreshToken = jwt.sign(payload, refreshSecret, { expiresIn: refreshExpiresIn });
   return { accessToken, refreshToken };
-};
-
-// Helper bóc tách ngày tháng chuẩn (tránh lệch timezone khi parse yyyy-mm-dd)
-const parseDateOnly = (val) => {
-  if (!val) return null;
-  if (typeof val === 'string' && /^\d{4}-\d{2}-\d{2}/.test(val)) {
-    const parts = val.substring(0, 10).split('-').map(Number);
-    return new Date(parts[0], parts[1] - 1, parts[2]);
-  }
-  const d = new Date(val);
-  if (isNaN(d.getTime())) return null;
-  return new Date(d.getFullYear(), d.getMonth(), d.getDate());
-};
-
-// Helper kiểm tra tính hợp lệ của ngày sinh và tuổi (>= 18 tuổi, không ở tương lai)
-const validateBirthDateAndAge = (dateInput, isRequired = true) => {
-  if (!dateInput) {
-    if (isRequired) {
-      return {
-        isValid: false,
-        code: 'VALIDATION_FAILED',
-        message: 'Vui lòng cung cấp ngày tháng năm sinh để xác minh độ tuổi (yêu cầu từ đủ 18 tuổi trở lên).'
-      };
-    }
-    return { isValid: true, date: null };
-  }
-
-  const birth = parseDateOnly(dateInput);
-  if (!birth) {
-    return {
-      isValid: false,
-      code: 'VALIDATION_FAILED',
-      message: 'Định dạng ngày tháng năm sinh không hợp lệ.'
-    };
-  }
-
-  const now = new Date();
-  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-
-  // 1. Ràng buộc: không được là ngày trong tương lai
-  if (birth > today) {
-    return {
-      isValid: false,
-      code: 'VALIDATION_FAILED',
-      message: 'Ngày sinh không hợp lệ. Ngày sinh không được là ngày trong tương lai.'
-    };
-  }
-
-  // 2. Ràng buộc: kiểm tra người dùng đã đủ 18 tuổi hay chưa
-  const eighteenthBirthday = new Date(birth.getFullYear() + 18, birth.getMonth(), birth.getDate());
-  if (eighteenthBirthday > today) {
-    return {
-      isValid: false,
-      code: 'AUTH_UNDERAGE',
-      message: 'Người dùng chưa đủ 18 tuổi. Chỉ người từ đủ 18 tuổi trở lên mới được phép đăng ký tài khoản.'
-    };
-  }
-
-  return { isValid: true, date: birth };
 };
 
 // Đăng ký độc giả mới
@@ -119,7 +61,7 @@ exports.register = async (req, res, next) => {
       });
     }
 
-    // Tự động sinh mã độc giả DGxxx duy nhất, an toàn chống trùng lặp
+    // Sinh mã độc giả
     const maDocGia = await generateNextCode(DocGia, 'MaDocGia', 'DG', 3);
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -356,51 +298,10 @@ exports.adminLogin = async (req, res, next) => {
   }
 };
 
-// =========================================================================
-// 3. Đăng nhập tương thích ngược (/api/auth/login)
-// Điều hướng dựa trên tham số portal hoặc tự động nhận diện loại tài khoản
-// =========================================================================
-exports.login = async (req, res, next) => {
-  try {
-    const portal = req.body.portal || req.headers['x-portal'];
-    if (portal === 'admin' || portal === 'staff') {
-      return exports.adminLogin(req, res, next);
-    }
-    if (portal === 'reader' || portal === 'user') {
-      return exports.readerLogin(req, res, next);
-    }
-
-    // Tự động phân luồng để tương thích ngược với API test/client cũ:
-    const rawEmail = req.body.email || req.body.emailOrPhone;
-    if (rawEmail) {
-      const cleanInput = rawEmail.trim();
-      const searchEmail = cleanInput.toLowerCase();
-      const phoneDigits = cleanInput.replace(/\D/g, '');
-
-      let staffQuery = [{ Email: searchEmail }];
-      if (phoneDigits && phoneDigits.length >= 9) {
-        staffQuery.push({ SoDienThoai: phoneDigits });
-      }
-      const staff = await NhanVien.findOne({ $or: staffQuery });
-      if (staff) {
-        return exports.adminLogin(req, res, next);
-      }
-    }
-
-    return exports.readerLogin(req, res, next);
-  } catch (error) {
-    next(error);
-  }
-};
-
-// Aliases
-exports.userLogin = exports.readerLogin;
-exports.staffLogin = exports.adminLogin;
-
 // Đăng nhập / Đăng ký qua Google OAuth 2.0
 exports.googleLogin = async (req, res, next) => {
   try {
-    const idToken = req.body.idToken || req.body.credential || req.body.token;
+    const {idToken} = req.body;
     if (!idToken) {
       return sendError(res, {
         code: 'VALIDATION_FAILED',

@@ -104,7 +104,7 @@ const handleLogin = async () => {
   errorMessage.value = '';
 
   const res = await authStore.login({
-    emailOrPhone: form.emailOrPhone.trim(),
+    email: form.emailOrPhone.trim(),
     password: form.password
   });
 
