@@ -81,7 +81,7 @@ const validateBirthDateAndAge = (dateInput, isRequired = true) => {
 // Đăng ký độc giả mới
 exports.register = async (req, res, next) => {
   try {
-    // Chấp nhận cả camelCase (frontend gửi) lẫn PascalCase
+    
     const hoLot = req.body.hoLot || req.body.HoLot;
     const ten = req.body.ten || req.body.Ten;
     const email = req.body.email || req.body.Email;

@@ -187,21 +187,39 @@ h1, h2, h3, h4, .font-serif {
 
 /* Huy hiệu trạng thái sách */
 .badge-available {
-  background-color: var(--color-success-bg);
-  color: var(--color-success);
+  background-color: #15803D !important;
+  color: #FFFFFF !important;
   font-weight: 600;
   font-size: 0.75rem;
   padding: 0.35rem 0.65rem;
   border-radius: var(--radius-pill);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  backdrop-filter: blur(4px);
+}
+
+.badge-unavailable {
+  background-color: #DC2626 !important;
+  color: #FFFFFF !important;
+  font-weight: 600;
+  font-size: 0.75rem;
+  padding: 0.35rem 0.65rem;
+  border-radius: var(--radius-pill);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  backdrop-filter: blur(4px);
 }
 
 .badge-out-of-stock {
-  background-color: #F3F4F6;
-  color: var(--text-light);
+  background-color: #DC2626 !important;
+  color: #FFFFFF !important;
   font-weight: 600;
   font-size: 0.75rem;
   padding: 0.35rem 0.65rem;
   border-radius: var(--radius-pill);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  backdrop-filter: blur(4px);
 }
 
 /* ==========================================================================

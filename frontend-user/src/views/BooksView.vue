@@ -62,23 +62,144 @@
               </div>
             </div>
 
-            <!-- Lọc Nhà Xuất Bản -->
-            <div class="mb-3">
-              <label class="form-label fw-bold small text-uppercase text-muted">Nhà Xuất Bản</label>
-              <select
-                class="form-select form-select-sm"
-                v-model="selectedPublisher"
-                @change="applyFilter"
-              >
-                <option value="">Tất cả nhà xuất bản</option>
-                <option
-                  v-for="pub in bookStore.publishers"
-                  :key="pub.MaNXB || pub._id"
-                  :value="pub.MaNXB"
+            <!-- Lọc Nhà Xuất Bản Tự Thiết Kế Kèm Tìm Kiếm Không Dấu -->
+            <div class="mb-3 position-relative" ref="publisherDropdownRef">
+              <div class="d-flex align-items-center justify-content-between mb-1">
+                <label class="form-label fw-bold small text-uppercase text-muted mb-0">Nhà Xuất Bản</label>
+                <button
+                  v-if="selectedPublisher"
+                  type="button"
+                  class="btn btn-link btn-sm text-decoration-none text-muted p-0 extra-small"
+                  @click="clearPublisher"
+                  title="Xóa lựa chọn NXB"
                 >
-                  {{ pub.TenNXB }}
-                </option>
-              </select>
+                  Xóa chọn
+                </button>
+              </div>
+
+              <!-- Nút bấm hiển thị Dropdown tùy chỉnh -->
+              <div
+                class="form-select form-select-sm custom-pub-trigger d-flex align-items-center justify-content-between"
+                :class="{ 'is-open': isPublisherOpen, 'border-primary': isPublisherOpen || selectedPublisher }"
+                tabindex="0"
+                @click="togglePublisherDropdown"
+                @keydown.down.prevent="openPublisherDropdown"
+                @keydown.enter.prevent="togglePublisherDropdown"
+                @keydown.esc="closePublisherDropdown"
+              >
+                <div class="text-truncate pe-1">
+                  <span v-if="selectedPublisherName" class="fw-semibold text-dark">
+                    <i class="bi bi-building me-1 text-primary"></i>
+                    {{ selectedPublisherName }}
+                  </span>
+                  <span v-else class="text-muted">
+                    <i class="bi bi-funnel me-1"></i> Tất cả nhà xuất bản
+                  </span>
+                </div>
+                <div class="d-flex align-items-center gap-1 flex-shrink-0">
+                  <i
+                    class="bi bi-chevron-down text-muted trigger-arrow"
+                    :class="{ 'rotate-180': isPublisherOpen }"
+                  ></i>
+                </div>
+              </div>
+
+              <!-- Menu Dropdown Tìm Kiếm & Danh Sách NXB -->
+              <div
+                v-if="isPublisherOpen"
+                class="custom-pub-menu shadow-lg border rounded-3 bg-white"
+                @click.stop
+              >
+                <!-- Thanh tìm kiếm nhanh không dấu -->
+                <div class="p-2 border-bottom bg-light">
+                  <div class="input-group input-group-sm">
+                    <span class="input-group-text bg-white border-end-0 text-muted">
+                      <i class="bi bi-search"></i>
+                    </span>
+                    <input
+                      ref="publisherSearchInputRef"
+                      type="text"
+                      v-model="publisherSearchQuery"
+                      class="form-control border-start-0 ps-0"
+                      placeholder="Tìm NXB (không dấu, mã, tên)..."
+                      @click.stop
+                      @keydown.esc="closePublisherDropdown"
+                    />
+                    <button
+                      v-if="publisherSearchQuery"
+                      class="btn btn-outline-secondary border-start-0 bg-white text-muted"
+                      type="button"
+                      @click="publisherSearchQuery = ''"
+                    >
+                      <i class="bi bi-x"></i>
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Danh sách NXB -->
+                <div class="custom-pub-list">
+                  <!-- Tùy chọn tất cả NXB -->
+                  <div
+                    class="custom-pub-item px-3 py-2 d-flex align-items-center justify-content-between border-bottom border-light"
+                    :class="{ 'is-selected': !selectedPublisher }"
+                    @click="selectPublisherOption('')"
+                  >
+                    <span class="small fw-semibold">
+                      <i class="bi bi-collection me-1 text-secondary"></i> Tất cả nhà xuất bản
+                    </span>
+                    <i v-if="!selectedPublisher" class="bi bi-check-circle-fill text-primary"></i>
+                  </div>
+
+                  <!-- Trạng thái không tìm thấy -->
+                  <div
+                    v-if="filteredPublishers.length === 0"
+                    class="p-3 text-center text-muted small"
+                  >
+                    <i class="bi bi-building-slash fs-4 text-muted d-block mb-1"></i>
+                    <div>Không tìm thấy NXB khớp với "{{ publisherSearchQuery }}"</div>
+                  </div>
+
+                  <!-- Danh sách các NXB khớp kết quả -->
+                  <div
+                    v-for="pub in filteredPublishers"
+                    :key="pub.MaNXB || pub._id"
+                    class="custom-pub-item px-3 py-2 d-flex align-items-center justify-content-between"
+                    :class="{ 'is-selected': selectedPublisher === pub.MaNXB }"
+                    @click="selectPublisherOption(pub.MaNXB)"
+                  >
+                    <div class="me-2 text-truncate">
+                      <div class="small fw-semibold text-dark text-truncate">
+                        <i class="bi bi-building me-1 text-primary opacity-75"></i>
+                        {{ pub.TenNXB }}
+                      </div>
+                      <div v-if="pub.DiaChi" class="extra-small text-muted text-truncate">
+                        <i class="bi bi-geo-alt me-1"></i>{{ pub.DiaChi }}
+                      </div>
+                    </div>
+                    <div class="d-flex align-items-center gap-1 flex-shrink-0">
+                      <span class="badge bg-light text-secondary border font-monospace extra-small">
+                        {{ pub.MaNXB }}
+                      </span>
+                      <i v-if="selectedPublisher === pub.MaNXB" class="bi bi-check-circle-fill text-primary ms-1"></i>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Footer thống kê số lượng NXB -->
+                <div class="p-2 border-top bg-light d-flex justify-content-between align-items-center">
+                  <span class="extra-small text-muted">
+                    {{ filteredPublishers.length }} / {{ bookStore.publishers.length }} nhà xuất bản
+                  </span>
+                  <button
+                    v-if="selectedPublisher"
+                    type="button"
+                    class="btn btn-link btn-sm text-decoration-none text-danger p-0 extra-small"
+                    @click="clearPublisher"
+                  >
+                    Bỏ chọn
+                  </button>
+                </div>
+              </div>
             </div>
 
             <!-- Lọc Sách Còn Sẵn Trên Kệ -->
@@ -247,10 +368,11 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, watch } from 'vue';
+import { ref, computed, onMounted, onBeforeUnmount, watch, nextTick } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useBookStore } from '../stores/bookStore';
 import { useToast } from '../composables/useToast';
+import { removeVietnameseTones } from '../utils/vietnameseUtils';
 import BookCard from '../components/BookCard.vue';
 
 const route = useRoute();
@@ -263,6 +385,58 @@ const selectedGenre = ref('');
 const selectedPublisher = ref('');
 const availableOnly = ref(false);
 const selectedSort = ref('createdAt_desc');
+
+// Quản lý trạng thái Custom Dropdown NXB & Tìm kiếm không dấu
+const publisherDropdownRef = ref(null);
+const publisherSearchInputRef = ref(null);
+const isPublisherOpen = ref(false);
+const publisherSearchQuery = ref('');
+
+// Danh sách NXB được lọc theo từ khóa tiếng Việt không dấu
+const filteredPublishers = computed(() => {
+  const list = bookStore.publishers || [];
+  const query = removeVietnameseTones(publisherSearchQuery.value).toLowerCase().trim();
+  if (!query) return list;
+
+  return list.filter((pub) => {
+    const name = removeVietnameseTones(pub.TenNXB || '').toLowerCase();
+    const code = removeVietnameseTones(pub.MaNXB || '').toLowerCase();
+    const address = removeVietnameseTones(pub.DiaChi || '').toLowerCase();
+    return name.includes(query) || code.includes(query) || address.includes(query);
+  });
+});
+
+const openPublisherDropdown = () => {
+  isPublisherOpen.value = true;
+  nextTick(() => {
+    publisherSearchInputRef.value?.focus();
+  });
+};
+
+const closePublisherDropdown = () => {
+  isPublisherOpen.value = false;
+  publisherSearchQuery.value = '';
+};
+
+const togglePublisherDropdown = () => {
+  if (isPublisherOpen.value) {
+    closePublisherDropdown();
+  } else {
+    openPublisherDropdown();
+  }
+};
+
+const selectPublisherOption = (maNXB) => {
+  selectedPublisher.value = maNXB || '';
+  closePublisherDropdown();
+  applyFilter();
+};
+
+const handleClickOutsidePublisher = (event) => {
+  if (publisherDropdownRef.value && !publisherDropdownRef.value.contains(event.target)) {
+    closePublisherDropdown();
+  }
+};
 
 // Tìm tên NXB tương ứng từ mã NXB
 const selectedPublisherName = computed(() => {
@@ -435,12 +609,17 @@ watch(
 );
 
 onMounted(async () => {
+  document.addEventListener('click', handleClickOutsidePublisher);
   await Promise.all([
     bookStore.fetchCategories(),
     bookStore.fetchPublishers()
   ]);
   const page = syncStateFromQuery();
   await bookStore.fetchBooks(page);
+});
+
+onBeforeUnmount(() => {
+  document.removeEventListener('click', handleClickOutsidePublisher);
 });
 </script>
 
@@ -463,5 +642,86 @@ onMounted(async () => {
 .filter-genre-list::-webkit-scrollbar-thumb {
   background-color: rgba(0, 0, 0, 0.2);
   border-radius: 4px;
+}
+
+/* Custom Publisher Dropdown Styling */
+.custom-pub-trigger {
+  min-height: 34px;
+  cursor: pointer;
+  background-color: #ffffff;
+  user-select: none;
+  transition: all 0.2s ease;
+}
+
+.custom-pub-trigger:hover {
+  border-color: #94a3b8;
+}
+
+.custom-pub-trigger.is-open {
+  border-color: var(--color-primary, #8b4513);
+  box-shadow: 0 0 0 0.2rem rgba(139, 69, 19, 0.15);
+}
+
+.trigger-arrow {
+  transition: transform 0.2s ease;
+  font-size: 0.75rem;
+}
+
+.trigger-arrow.rotate-180 {
+  transform: rotate(180deg);
+}
+
+.custom-pub-menu {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  z-index: 1050;
+  max-height: 320px;
+  display: flex;
+  flex-direction: column;
+  animation: pubDropdownSlide 0.18s ease-out;
+}
+
+@keyframes pubDropdownSlide {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.custom-pub-list {
+  overflow-y: auto;
+  max-height: 200px;
+}
+
+.custom-pub-list::-webkit-scrollbar {
+  width: 4px;
+}
+
+.custom-pub-list::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.15);
+  border-radius: 4px;
+}
+
+.custom-pub-item {
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.custom-pub-item:hover {
+  background-color: #f8fafc;
+}
+
+.custom-pub-item.is-selected {
+  background-color: #f0f7ff;
+}
+
+.extra-small {
+  font-size: 0.75rem;
 }
 </style>

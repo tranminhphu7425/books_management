@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sơ đồ Luồng CI/CD & Triển khai Đám mây - Đơn sắc Tối giản</title>
+  <style>
+    :root {
+      --bg-color: #f8f9fa;
+      --card-bg: #ffffff;
+      --border-color: #1a1a1a;
+      --border-light: #666666;
+      --text-main: #111111;
+      --text-muted: #555555;
+      --accent-gray: #f0f0f0;
+      --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      font-family: var(--font-family);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 30px 20px;
+      min-height: 100vh;
+    }
+
+    .toolbar {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 25px;
+      background: white;
+      padding: 12px 24px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+      border: 1px solid #e2e8f0;
+    }
+
+    .btn {
+      background: #111;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+
+    .btn:hover {
+      background: #333;
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      background: #ffffff;
+      color: #111;
+      border: 1px solid #ccc;
+    }
+
+    .btn-secondary:hover {
+      background: #f5f5f5;
+    }
+
+    .canvas-wrapper {
+      background: #ffffff;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 4px 25px rgba(0,0,0,0.08);
+      border: 1px solid #e0e0e0;
+      max-width: 1050px;
+      width: 100%;
+    }
+
+    .header-text {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .header-text h1 {
+      font-size: 20px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 6px;
+    }
+
+    .header-text p {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    svg {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .caption {
+      text-align: center;
+      margin-top: 25px;
+      font-size: 13.5px;
+      font-style: italic;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="toolbar">
+    <button class="btn" onclick="downloadPNG()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+        <polyline points="7 10 12 15 17 10"></polyline>
+        <line x1="12" y1="15" x2="12" y2="3"></line>
+      </svg>
+      Tải ảnh PNG độ nét cao (2x) cho Báo cáo
+    </button>
+    <button class="btn btn-secondary" onclick="downloadSVG()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="12" y1="8" x2="12" y2="12"></line>
+        <line x1="12" y1="16" x2="12.01" y2="16"></line>
+      </svg>
+      Tải file vector SVG gốc
+    </button>
+  </div>
+
+  <div class="canvas-wrapper" id="diagram-container">
+    <div class="header-text">
+      <h1>HỆ THỐNG QUẢN LÝ SÁCH VÀ MƯỢN TRẢ TRỰC TUYẾN</h1>
+      <p>SƠ ĐỒ KIẾN TRÚC MẠNG VÀ LUỒNG CI/CD TỰ ĐỘNG HÓA QUA GITHUB WEBHOOKS</p>
+    </div>
+
+    <!-- PURE VECTOR SVG - MONOCHROME MINIMALIST -->
+    <svg id="architecture-svg" viewBox="0 0 960 760" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <!-- Marker Arrow Heads -->
+        <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#111111" />
+        </marker>
+        <marker id="arrow-dashed" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#333333" />
+        </marker>
+      </defs>
+
+      <style>
+        .box { fill: #ffffff; stroke: #111111; stroke-width: 1.8; rx: 6px; }
+        .box-dashed { fill: #fafafa; stroke: #444444; stroke-width: 1.4; stroke-dasharray: 5,4; rx: 6px; }
+        .box-db { fill: #ffffff; stroke: #111111; stroke-width: 1.8; rx: 6px; }
+        .sub-bg { fill: #fcfcfc; stroke: #cccccc; stroke-width: 1.2; stroke-dasharray: 6,4; rx: 10px; }
+        .title { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-size: 13.5px; font-weight: 700; fill: #111111; text-anchor: middle; }
+        .sub-title { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-size: 12px; font-style: italic; fill: #444444; text-anchor: middle; }
+        .badge { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-size: 11px; font-weight: 600; fill: #222222; text-anchor: middle; }
+        .code-text { font-family: "Courier New", Courier, monospace; font-size: 12.5px; font-weight: bold; fill: #000000; text-anchor: middle; }
+        .wire { stroke: #111111; stroke-width: 1.6; fill: none; marker-end: url(#arrow); }
+        .wire-dashed { stroke: #444444; stroke-width: 1.4; stroke-dasharray: 4,3; fill: none; marker-end: url(#arrow-dashed); }
+        .wire-no-arrow { stroke: #111111; stroke-width: 1.6; fill: none; }
+        .flow-label { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-size: 11.5px; font-weight: 600; fill: #222222; text-anchor: middle; }
+        .tag-bg { fill: #ffffff; stroke: #444444; stroke-width: 1; rx: 4px; }
+      </style>
+
+      <!-- OUTER BOUNDARY -->
+      <rect x="15" y="15" width="930" height="730" fill="none" stroke="#222222" stroke-width="1.5" rx="8" />
+
+      <!-- STEP 1: DEVELOPER -->
+      <g transform="translate(480, 55)">
+        <rect x="-170" y="-28" width="340" height="56" class="box" />
+        <text y="-6" class="title">LẬP TRÌNH VIÊN THỰC HIỆN</text>
+        <text y="14" class="code-text">[ git push origin main ]</text>
+      </g>
+
+      <!-- WIRE 1 -->
+      <line x1="480" y1="83" x2="480" y2="122" class="wire" />
+
+      <!-- STEP 2: GITHUB REPO -->
+      <g transform="translate(480, 150)">
+        <rect x="-180" y="-28" width="360" height="56" class="box" />
+        <text y="-6" class="title">KHO MÃ NGUỒN GITHUB</text>
+        <text y="14" class="sub-title">(Repository: books_management)</text>
+      </g>
+
+      <!-- WIRE 2: WEBHOOK TRIGGER -->
+      <line x1="480" y1="178" x2="480" y2="216" class="wire-no-arrow" />
+
+      <!-- WEBHOOK LABEL BOX -->
+      <g transform="translate(480, 230)">
+        <rect x="-165" y="-14" width="330" height="28" class="tag-bg" />
+        <text y="4" class="flow-label">Kích hoạt tín hiệu HTTP POST Webhook</text>
+      </g>
+
+      <!-- SPLIT WIRE TO VERCEL & RENDER -->
+      <path d="M 480 244 L 480 270 L 255 270 L 255 305" class="wire" />
+      <path d="M 480 244 L 480 270 L 705 270 L 705 305" class="wire" />
+
+      <!-- LEFT COLUMN: VERCEL FRONTEND -->
+      <g id="vercel-column">
+        <!-- VERCEL PLATFORM -->
+        <g transform="translate(255, 340)">
+          <rect x="-175" y="-35" width="350" height="70" class="box" />
+          <text y="-14" class="title">NỀN TẢNG VERCEL</text>
+          <text y="4" class="sub-title">Cổng Độc giả (Thư mục: /frontend-user)</text>
+          <text y="20" class="sub-title">Cổng Quản trị (Thư mục: /frontend-admin)</text>
+        </g>
+
+        <!-- WIRE VERCEL TO BUILD -->
+        <line x1="255" y1="375" x2="255" y2="408" class="wire" />
+
+        <!-- VERCEL BUILD STEP -->
+        <g transform="translate(255, 432)">
+          <rect x="-160" y="-24" width="320" height="48" class="box-dashed" />
+          <text y="-5" class="sub-title">Biên dịch tối ưu hóa tài nguyên tĩnh:</text>
+          <text y="13" class="code-text">npm run build (Vite + Vue 3)</text>
+        </g>
+
+        <!-- WIRE BUILD TO CDN -->
+        <line x1="255" y1="456" x2="255" y2="492" class="wire" />
+
+        <!-- GLOBAL EDGE CDN -->
+        <g transform="translate(255, 532)">
+          <rect x="-175" y="-40" width="350" height="80" class="box" />
+          <text y="-18" class="title">DỰ ÁN ĐƯỢC TRIỂN KHAI</text>
+          <text y="0" class="sub-title">Dự án đã được triển khai thành công</text>
+          <text y="22" class="code-text">[ Trạng thái: READY ]</text>
+        </g>
+      </g>
+
+      <!-- RIGHT COLUMN: RENDER BACKEND -->
+      <g id="render-column">
+        <!-- RENDER PLATFORM -->
+        <g transform="translate(705, 340)">
+          <rect x="-175" y="-35" width="350" height="70" class="box" />
+          <text y="-14" class="title">NỀN TẢNG RENDER</text>
+          <text y="4" class="sub-title">Máy chủ API tập trung (Thư mục: /backend)</text>
+          <text y="20" class="sub-title">Môi trường thực thi Node.js Runtime</text>
+        </g>
+
+        <!-- WIRE RENDER TO BUILD -->
+        <line x1="705" y1="375" x2="705" y2="408" class="wire" />
+
+        <!-- RENDER BUILD STEP -->
+        <g transform="translate(705, 432)">
+          <rect x="-160" y="-24" width="320" height="48" class="box-dashed" />
+          <text y="-5" class="sub-title">Cài đặt gói phụ thuộc & Chạy tiến trình:</text>
+          <text y="13" class="code-text">npm install && node src/server.js</text>
+        </g>
+
+        <!-- WIRE BUILD TO CONTAINER -->
+        <line x1="705" y1="456" x2="705" y2="492" class="wire" />
+
+        <!-- RENDER CONTAINER WEB SERVICE -->
+        <g transform="translate(705, 532)">
+          <rect x="-175" y="-40" width="350" height="80" class="box" />
+          <text y="-20" class="title">DỊCH VỤ WEB CONTAINER (EXPRESS API)</text>
+          <text y="-3" class="sub-title">Health Check: GET /api/health -> HTTP 200</text>
+          <text y="14" class="sub-title">Zero-Downtime Rolling Update</text>
+          <text y="30" class="code-text">[ Trạng thái: LIVE ]</text>
+        </g>
+      </g>
+
+      <!-- CROSS-COMMUNICATION: FRONTEND TO BACKEND API -->
+      <path d="M 255 572 L 255 615 L 705 615 L 705 578" class="wire" />
+      <g transform="translate(480, 615)">
+        <rect x="-140" y="-12" width="280" height="24" class="tag-bg" />
+        <text y="4" class="flow-label">Truy vấn dữ liệu RESTful API (HTTPS / CORS)</text>
+      </g>
+
+      <!-- WIRE TO MONGODB ATLAS -->
+      <line x1="705" y1="615" x2="705" y2="648" class="wire" />
+      <g transform="translate(780, 632)">
+        <text class="badge">mongodb+srv://</text>
+      </g>
+
+      <!-- STEP 4: MONGODB ATLAS CLUSTER -->
+      <g transform="translate(705, 685)">
+        <rect x="-165" y="-30" width="330" height="30" class="box-db" />
+        <text y="-10" class="title">CỤM CƠ SỞ DỮ LIỆU MONGODB ATLAS</text>
+      </g>
+    </svg>
+
+    <div class="caption">
+      <strong>Hình 2.4:</strong> Sơ đồ kiến trúc mạng và luồng CI/CD tự động hóa kết nối GitHub với các nền tảng Vercel, Render và MongoDB Atlas (Thiết kế đơn sắc tối giản)
+    </div>
+  </div>
+
+  <script>
+    function downloadPNG() {
+      const svgElement = document.getElementById('architecture-svg');
+      const svgString = new XMLSerializer().serializeToString(svgElement);
+      const svgBlob = new Blob([svgString], { type: 'image/svg+xml;charset=utf-8' });
+      const URL = window.URL || window.webkitURL || window;
+      const blobURL = URL.createObjectURL(svgBlob);
+
+      const image = new Image();
+      image.onload = function () {
+        const canvas = document.createElement('canvas');
+        const scale = 2; // High Resolution 2x (300 DPI)
+        canvas.width = svgElement.viewBox.baseVal.width * scale;
+        canvas.height = svgElement.viewBox.baseVal.height * scale;
+        const context = canvas.getContext('2d');
+        
+        // Fill white background for Word document
+        context.fillStyle = '#ffffff';
+        context.fillRect(0, 0, canvas.width, canvas.height);
+        
+        context.scale(scale, scale);
+        context.drawImage(image, 0, 0);
+
+        const pngURL = canvas.toDataURL('image/png');
+        const downloadLink = document.createElement('a');
+        downloadLink.href = pngURL;
+        downloadLink.download = 'Hinh_2_4_So_Do_CI_CD_Architecture_Monochrome.png';
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+      };
+      image.src = blobURL;
+    }
+
+    function downloadSVG() {
+      const svgElement = document.getElementById('architecture-svg');
+      const svgString = new XMLSerializer().serializeToString(svgElement);
+      const svgBlob = new Blob([svgString], { type: 'image/svg+xml;charset=utf-8' });
+      const URL = window.URL || window.webkitURL || window;
+      const downloadLink = document.createElement('a');
+      downloadLink.href = URL.createObjectURL(svgBlob);
+      downloadLink.download = 'Hinh_2_4_So_Do_CI_CD_Architecture_Monochrome.svg';
+      document.body.appendChild(downloadLink);
+      downloadLink.click();
+      document.body.removeChild(downloadLink);
+    }
+  </script>
+</body>
+</html>

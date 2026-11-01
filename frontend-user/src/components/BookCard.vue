@@ -149,4 +149,20 @@ const formatCurrency = (val) => {
 .book-title a:hover {
   color: var(--color-primary) !important;
 }
+
+.badge-available {
+  background-color: #15803D !important;
+  color: #FFFFFF !important;
+  font-weight: 600;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.28);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+}
+
+.badge-unavailable {
+  background-color: #DC2626 !important;
+  color: #FFFFFF !important;
+  font-weight: 600;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.28);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+}
 </style>
