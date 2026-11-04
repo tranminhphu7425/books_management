@@ -44,12 +44,12 @@
             <div class="fw-bold small text-dark">{{ authStore.staffName }}</div>
             <div class="small text-muted">{{ authStore.adminUser?.email || authStore.adminUser?.Email }}</div>
             <div class="small text-muted" v-if="authStore.adminUser?.msnv || authStore.adminUser?.MSNV">
-              MSNV: <code>{{ authStore.adminUser?.msnv || authStore.adminUser?.MSNV }}</code>
+              Mã NV: <code>{{ authStore.adminUser?.msnv || authStore.adminUser?.MSNV }}</code>
             </div>
           </li>
           <li>
             <button class="dropdown-item py-2 text-danger small" @click="handleLogout">
-              <i class="bi bi-box-arrow-right me-2"></i> Kết thúc ca & Đăng xuất
+              <i class="bi bi-box-arrow-right me-2"></i> Đăng xuất
             </button>
           </li>
         </ul>

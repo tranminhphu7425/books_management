@@ -9,7 +9,7 @@
               <div class="auth-brand-icon mx-auto mb-2">
                 <i class="bi bi-book-half"></i>
               </div>
-              <h3 class="font-serif fw-bold text-dark mb-1">Đăng Nhập Độc Giả</h3>
+              <h3 class="font-serif fw-bold text-dark mb-1">Đăng nhập tài khoản bạn đọc</h3>
               <p class="text-muted small">
                 Chào mừng bạn đọc quay trở lại với Thư viện Kiến thức
               </p>
@@ -35,7 +35,7 @@
                     id="emailOrPhone"
                     v-model="form.emailOrPhone"
                     class="form-control"
-                    placeholder="Điền email hoặc số điện thoại"
+                    placeholder="Nhập địa chỉ email hoặc số điện thoại"
                     required
                     autocomplete="username"
                   />
@@ -58,7 +58,7 @@
                     id="password"
                     v-model="form.password"
                     class="form-control"
-                    placeholder="Nhập mật khẩu tài khoản"
+                    placeholder="Nhập mật khẩu"
                     required
                     autocomplete="current-password"
                   />
@@ -87,7 +87,7 @@
                 :disabled="isLoading"
               >
                 <span v-if="isLoading" class="spinner-border spinner-border-sm me-2" role="status"></span>
-                Đăng Nhập
+                Đăng nhập
               </button>
             </form>
 
@@ -105,7 +105,7 @@
             <div class="text-center small text-muted">
               Bạn chưa có thẻ bạn đọc?
               <router-link to="/register" class="fw-bold text-primary text-decoration-none ms-1">
-                Đăng ký mở thẻ ngay
+                Đăng ký mở thẻ
               </router-link>
             </div>
           </div>
@@ -158,7 +158,7 @@ const handleLogin = async () => {
 };
 
 const alertContactStaff = () => {
-  toast.info('Để bảo mật thông tin tài khoản, nếu quên mật khẩu vui lòng liên hệ trực tiếp quầy thủ thư hoặc gửi thư về email: thuvienkienthuc@edu.vn để được cấp lại.');
+  toast.info('Để đặt lại mật khẩu, bạn đọc vui lòng liên hệ quầy thủ thư hoặc gửi thư đến thuvienkienthuc@edu.vn để được hỗ trợ.');
 };
 </script>
 

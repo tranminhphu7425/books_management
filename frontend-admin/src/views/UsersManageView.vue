@@ -39,7 +39,7 @@
           :class="{ active: currentTab === 'BLACKLIST' }"
           @click="currentTab = 'BLACKLIST'"
         >
-          <i class="bi bi-slash-circle-fill me-1"></i> Danh Sách Vi Phạm Blacklist ({{ userStore.blacklistedUsers.length }})
+          <i class="bi bi-slash-circle-fill me-1"></i> Danh Sách Bị Khóa Quyền Mượn ({{ userStore.blacklistedUsers.length }})
         </button>
       </li>
     </ul>
@@ -106,7 +106,7 @@
                   class="badge"
                   :class="(user.trangThai || user.TrangThai) === 'BLACKLISTED' || user.isBlacklisted || user.IsBlacklisted ? 'bg-danger' : 'bg-success'"
                 >
-                  {{ (user.trangThai || user.TrangThai) === 'BLACKLISTED' || user.isBlacklisted || user.IsBlacklisted ? 'Tạm khóa (Blacklist)' : 'Hoạt động' }}
+                  {{ (user.trangThai || user.TrangThai) === 'BLACKLISTED' || user.isBlacklisted || user.IsBlacklisted ? 'Bị khóa quyền mượn' : 'Đang hoạt động' }}
                 </span>
               </td>
               <td class="text-end">
@@ -214,8 +214,8 @@
               <div class="mb-3">
                 <label class="form-label small fw-semibold">Phân quyền vai trò <span class="text-danger">*</span></label>
                 <select v-model="staffForm.role" class="form-select" required>
-                  <option value="BOOK_MANAGER">Thủ thư / Quản lý sách (BOOK_MANAGER)</option>
-                  <option value="ADMIN">Quản trị viên Hệ thống (ADMIN)</option>
+                  <option value="BOOK_MANAGER">Thủ thư / Quản lý sách</option>
+                  <option value="ADMIN">Quản trị viên hệ thống</option>
                 </select>
               </div>
 
@@ -248,7 +248,7 @@
           <form @submit.prevent="submitEditStaff">
             <div class="modal-body p-4">
               <div class="mb-3">
-                <label class="form-label small fw-semibold">Mã số nhân viên (MSNV)</label>
+                <label class="form-label small fw-semibold">Mã nhân viên</label>
                 <input type="text" :value="editStaffTarget?.msnv || editStaffTarget?.MSNV" class="form-control bg-light font-monospace" disabled />
               </div>
 
@@ -289,8 +289,8 @@
                   required
                   :disabled="editStaffTarget?._id === currentAdminId"
                 >
-                  <option value="BOOK_MANAGER">Thủ thư / Quản lý sách (BOOK_MANAGER)</option>
-                  <option value="ADMIN">Quản trị viên Hệ thống (ADMIN)</option>
+                  <option value="BOOK_MANAGER">Thủ thư / Quản lý sách</option>
+                  <option value="ADMIN">Quản trị viên hệ thống</option>
                 </select>
                 <div v-if="editStaffTarget?._id === currentAdminId" class="form-text text-muted small">
                   Bạn không thể tự thay đổi chức vụ của chính mình tại đây.
@@ -298,7 +298,7 @@
               </div>
 
               <div class="mb-3">
-                <label class="form-label small fw-semibold">Mật khẩu mới (Bỏ trống nếu không đổi)</label>
+                <label class="form-label small fw-semibold">Mật khẩu mới (không bắt buộc)</label>
                 <input type="password" v-model="editStaffForm.password" class="form-control" minlength="6" placeholder="Để trống nếu giữ nguyên mật khẩu cũ" />
               </div>
             </div>
@@ -327,7 +327,7 @@
           <div class="modal-header bg-danger text-white">
             <h5 class="modal-title font-serif fs-6 d-flex align-items-center gap-2">
               <i class="bi bi-slash-circle-fill"></i>
-              <span>Đưa Vào Danh Sách Vi Phạm (Blacklist)</span>
+              <span>Khóa Quyền Mượn Sách</span>
             </h5>
             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
           </div>
@@ -448,7 +448,7 @@
                     <div class="form-check mb-0">
                       <input class="form-check-input" type="radio" name="selectedRole" value="USER" v-model="selectedNewRole" />
                       <div class="form-check-label ms-2">
-                        <div class="fw-bold text-dark">Bạn Đọc / Độc Giả (USER)</div>
+                        <div class="fw-bold text-dark">Bạn đọc</div>
                         <div class="small text-muted">Quyền độc giả: tra cứu sách, gửi yêu cầu mượn sách trực tuyến và quản lý tài khoản cá nhân.</div>
                       </div>
                     </div>
@@ -458,7 +458,7 @@
                     <div class="form-check mb-0">
                       <input class="form-check-input" type="radio" name="selectedRole" value="BOOK_MANAGER" v-model="selectedNewRole" />
                       <div class="form-check-label ms-2">
-                        <div class="fw-bold text-dark">Thủ Thư / Quản Lý Sách (BOOK_MANAGER)</div>
+                        <div class="fw-bold text-dark">Thủ thư / Quản lý sách</div>
                         <div class="small text-muted">Quyền thủ thư: quản lý kho sách, duyệt đơn mượn/trả sách, lập biên bản vi phạm & bồi thường.</div>
                       </div>
                     </div>
@@ -468,7 +468,7 @@
                     <div class="form-check mb-0">
                       <input class="form-check-input" type="radio" name="selectedRole" value="ADMIN" v-model="selectedNewRole" />
                       <div class="form-check-label ms-2">
-                        <div class="fw-bold text-dark">Quản Trị Viên Tối Cao (ADMIN)</div>
+                        <div class="fw-bold text-dark">Quản trị viên hệ thống</div>
                         <div class="small text-muted">Toàn quyền hệ thống: phân quyền nhân sự, quản lý độc giả, thống kê hệ thống và cài đặt.</div>
                       </div>
                     </div>
@@ -747,10 +747,10 @@ const handleToggleBlacklist = async (user, isBlacklisted) => {
   } else {
     const userName = user.hoTenNV || user.HoTenNV || user.hoTen || `${user.hoLot || user.HoLot || ''} ${user.ten || user.Ten || ''}`.trim() || user.email || user.Email;
     const isConfirmed = await confirm({
-      title: 'Gỡ khỏi danh sách vi phạm',
-      message: `Xác nhận gỡ tài khoản "${userName}" (${user.email || user.Email}) khỏi danh sách vi phạm Blacklist và khôi phục quyền mượn sách?`,
-      confirmText: 'Xác nhận gỡ vi phạm',
-      cancelText: 'Hủy bỏ',
+      title: 'Mở lại quyền mượn sách',
+      message: `Bạn có muốn mở lại quyền mượn sách cho tài khoản "${userName}" (${user.email || user.Email})?`,
+      confirmText: 'Mở lại quyền mượn',
+      cancelText: 'Bỏ qua',
       type: 'success',
       icon: 'bi-shield-check'
     });

@@ -250,7 +250,7 @@ CREATE TABLE CauHinhHeThong (
   SoSachMuonToiDa               INT NOT NULL DEFAULT 3,      -- Số lượng sách độc giả được mượn tối đa cùng lúc
   SoNgayMuonToiDa               INT NOT NULL DEFAULT 14,     -- Thời gian mượn tối đa cho mỗi lượt (ngày)
   ThoiGianGiuSachGio            INT NOT NULL DEFAULT 48,     -- Thời hạn giữ sách sau khi duyệt đơn (giờ)
-  HanTraGiaHanNgay              INT NOT NULL DEFAULT 7,      -- Số ngày được gia hạn thêm cho mỗi lượt
+  SoNgayGiaHan                  INT NOT NULL DEFAULT 7,      -- Số ngày được gia hạn thêm cho mỗi lượt
   SoLanGiaHanToiDa              INT NOT NULL DEFAULT 1,      -- Số lần tối đa được phép gia hạn cho 1 cuốn sách
   SoNgayTreHanVaoDanhSachDen    INT NOT NULL DEFAULT 15,     -- Số ngày quá hạn tối đa trước khi đưa vào Blacklist
   createdAt                     TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

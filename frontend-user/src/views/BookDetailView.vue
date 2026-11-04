@@ -83,7 +83,7 @@
                 @click="openBorrowModal"
               >
                 <i class="bi bi-bookmark-plus-fill fs-5"></i>
-                Đăng Ký Mượn Sách Này
+                Đăng ký mượn sách
               </button>
 
               <!-- Trường hợp 3: Tạm hết sách trong kho -->
@@ -143,7 +143,7 @@
             <!-- Tóm tắt nội dung -->
             <div class="mb-4">
               <h5 class="font-serif fw-bold text-dark mb-2">
-                <i class="bi bi-card-text me-2 text-primary"></i> Tóm Tắt Nội Dung
+                <i class="bi bi-card-text me-2 text-primary"></i> Tóm tắt nội dung
               </h5>
               <p class="text-secondary lh-lg mb-0" style="white-space: pre-line;">
                 {{ (book.moTa || book.MoTa) || 'Ấn phẩm được tuyển chọn và lưu giữ tại Thư viện Kiến thức phục vụ mục đích nghiên cứu học tập, tham khảo chuyên sâu và phát triển kỹ năng cho bạn đọc.' }}
@@ -153,7 +153,7 @@
             <!-- Hướng dẫn và cam kết trách nhiệm mượn -->
             <div class="p-3 bg-light rounded border">
               <h6 class="font-serif fw-bold text-dark mb-2">
-                <i class="bi bi-info-circle-fill text-info me-2"></i> Lưu Ý Về Mượn & Hoàn Trả
+                <i class="bi bi-info-circle-fill text-info me-2"></i> Quy định mượn và hoàn trả
               </h6>
               <ul class="small text-muted mb-0 ps-3">
                 <li>Thời gian mượn tiêu chuẩn là <strong>{{ settingsStore.borrowDays }} ngày</strong> kể từ khi bạn đọc ký nhận tại quầy.</li>
@@ -167,7 +167,7 @@
           <div class="card border-0 shadow-sm p-4 bg-white">
             <div class="d-flex align-items-center justify-content-between mb-4 border-bottom pb-3 flex-wrap gap-2">
               <h4 class="font-serif fw-bold text-dark mb-0 d-flex align-items-center gap-2">
-                <i class="bi bi-chat-heart text-primary"></i> Đánh Giá & Nhận Xét
+                <i class="bi bi-chat-heart text-primary"></i> Đánh giá và nhận xét
               </h4>
               <div class="d-flex align-items-center gap-2" v-if="totalReviews > 0">
                 <div class="text-warning fs-5">
@@ -247,7 +247,7 @@
                 >
                   <span v-if="isSubmittingReview" class="spinner-border spinner-border-sm"></span>
                   <i v-else class="bi bi-send-fill"></i>
-                  <span>{{ myReview ? 'Lưu Thay Đổi' : 'Gửi Nhận Xét' }}</span>
+                  <span>{{ myReview ? 'Cập nhật nhận xét' : 'Gửi nhận xét' }}</span>
                 </button>
               </div>
             </div>
@@ -471,7 +471,7 @@ const handleDeleteReview = async (reviewId) => {
   const confirmed = await showConfirm({
     title: 'Xóa nhận xét',
     message: 'Bạn có chắc chắn muốn xóa nhận xét của mình cho ấn phẩm này?',
-    confirmText: 'Xác nhận xóa',
+    confirmText: 'Xóa nhận xét',
     cancelText: 'Giữ lại',
     type: 'danger'
   });

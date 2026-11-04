@@ -9,10 +9,10 @@
 
       <div class="d-flex flex-wrap gap-2" v-if="authStore.isAdmin">
         <button class="btn btn-outline-success btn-sm px-3 shadow-sm" @click="handleExportBorrows" :disabled="isExporting">
-          <i class="bi bi-file-earmark-spreadsheet me-1"></i> Xuất Báo Cáo Mượn Trả (CSV)
+          <i class="bi bi-file-earmark-spreadsheet me-1"></i> Xuất báo cáo mượn trả (CSV)
         </button>
         <button class="btn btn-outline-danger btn-sm px-3 shadow-sm" @click="handleExportFines" :disabled="isExporting">
-          <i class="bi bi-file-earmark-excel me-1"></i> Xuất Báo Cáo Bồi Thường (CSV)
+          <i class="bi bi-file-earmark-excel me-1"></i> Xuất báo cáo bồi thường (CSV)
         </button>
       </div>
     </div>

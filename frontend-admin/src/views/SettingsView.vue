@@ -4,7 +4,7 @@
     <div class="mb-4">
       <h3 class="font-serif fw-bold text-dark mb-1">Cấu Hình Quy Chế Lưu Thông Thư Viện</h3>
       <p class="text-muted small mb-0">
-        Điều chỉnh các tham số nghiệp vụ toàn hệ thống (Áp dụng tự động cho mọi độc giả đăng ký mượn sách).
+        Điều chỉnh các tham số nghiệp vụ toàn hệ thống.
       </p>
     </div>
 
@@ -74,19 +74,19 @@
 
               <div class="col-md-6">
                 <label class="form-label small fw-semibold">
-                  Số ngày quá hạn tự động đưa vào Blacklist <span class="text-danger">*</span>
+                  Số ngày trễ hạn để khóa quyền mượn <span class="text-danger">*</span>
                 </label>
                 <div class="input-group">
                   <input type="number" v-model.number="settings.blacklistAfterOverdueDays" class="form-control" min="1" max="60" required />
                   <span class="input-group-text bg-light text-muted small">ngày</span>
                 </div>
-                <div class="form-text small">Khóa quyền mượn sách nếu trễ hạn trả quá số ngày này.</div>
+                <div class="form-text small">Tự động tạm khóa quyền mượn nếu bạn đọc quá hạn số ngày này.</div>
               </div>
 
               <div class="col-12 mt-4 text-end">
                 <button type="submit" class="btn btn-primary px-4" :disabled="isLoading || isSaving">
                   <span v-if="isSaving" class="spinner-border spinner-border-sm me-2"></span>
-                  Lưu Thay Đổi Quy Chế
+                  Lưu quy chế
                 </button>
               </div>
             </div>
@@ -100,7 +100,7 @@
             <i class="bi bi-info-circle-fill text-info me-2"></i> Hướng Dẫn Vận Hành
           </h6>
           <p class="small text-muted mb-3">
-            Các tham số trên được lưu trực tiếp vào cơ sở dữ liệu MongoDB và tác động thời gian thực đến toàn bộ hệ thống:
+            Các tham số trên được lưu vào hệ thống và áp dụng ngay lập tức cho toàn bộ quy trình:
           </p>
           <ul class="small text-muted ps-3 mb-3">
             <li class="mb-2">Kiểm tra giới hạn số lượng ấn phẩm bạn đọc được phép mượn cùng lúc.</li>
@@ -110,7 +110,7 @@
           </ul>
           <div class="p-3 bg-light rounded small border">
             <div class="fw-bold text-dark mb-1"><i class="bi bi-shield-check text-success me-1"></i> Ghi nhận tác vụ:</div>
-            Mọi thao tác thay đổi quy chế đều được ghi vào Nhật ký Kiểm toán hệ thống (Audit Trail) phục vụ giám sát.
+            Mọi thao tác thay đổi quy chế đều được lưu vào Nhật ký hoạt động hệ thống phục vụ đối soát.
           </div>
         </div>
       </div>
@@ -145,7 +145,7 @@ const loadSettings = async () => {
     }
   } catch (err) {
     console.error('Không thể tải cấu hình quy chế:', err);
-    toast.error('Không thể kết nối máy chủ để tải cấu hình quy chế.');
+    toast.error('Không thể tải cấu hình quy chế. Vui lòng thử lại sau.');
   } finally {
     isLoading.value = false;
   }
@@ -158,9 +158,9 @@ const saveSettings = async () => {
     if (res.data?.data) {
       Object.assign(settings, res.data.data);
     }
-    toast.success(res.data?.message || 'Đã lưu và áp dụng thành công các quy chế lưu thông mới của thư viện!');
+    toast.success(res.data?.message || 'Đã cập nhật quy chế thư viện thành công.');
   } catch (err) {
-    toast.error(err.response?.data?.error?.message || 'Lưu cấu hình quy chế thất bại.');
+    toast.error(err.response?.data?.error?.message || 'Không thể lưu cấu hình quy chế. Vui lòng thử lại.');
   } finally {
     isSaving.value = false;
   }

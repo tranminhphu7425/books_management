@@ -6,10 +6,10 @@
         <div class="row align-items-center">
           <div class="col-lg-7 text-center text-lg-start mb-4 mb-lg-0">
             <span class="badge bg-warning text-white px-3 py-2 rounded-pill fw-bold mb-3">
-              <i class="bi bi-stars me-1"></i> Khơi Nguồn Tri Thức - Nâng Tầm Tương Lai
+              <i class="bi bi-stars me-1"></i> Khơi nguồn tri thức, nâng tầm tương lai
             </span>
             <h1 class="hero-title mb-3">
-              Hệ Thống Tra Cứu & Đặt Mượn Sách Trực Tuyến
+              Hệ thống tra cứu và mượn sách trực tuyến
             </h1>
             <p class="hero-lead text-white mb-4 pe-lg-5" style="opacity: 0.9;">
               Khám phá hàng ngàn đầu sách phong phú từ công nghệ, khoa học đến văn học nghệ thuật. Đặt trước dễ dàng, nhận sách nhanh chóng tại thư viện.
@@ -22,7 +22,7 @@
                 type="text"
                 v-model="heroKeyword"
                 class="form-control border-0 shadow-none ps-2"
-                placeholder="Nhập tên sách, tác giả hoặc chủ đề cần tìm..."
+                placeholder="Nhập tên sách, tác giả hoặc chủ đề..."
               />
               <button class="btn btn-search-hero rounded-pill flex-shrink-0 px-4 py-2 fw-semibold" type="submit">
                 Tìm kiếm
@@ -60,7 +60,7 @@
         <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end mb-4">
           <div>
             <span class="text-primary fw-bold text-uppercase small tracking-wide">Mới bổ sung vào kho</span>
-            <h2 class="section-heading mb-0 font-serif">Ấn Phẩm Nổi Bật</h2>
+            <h2 class="section-heading mb-0 font-serif">Ấn phẩm nổi bật</h2>
           </div>
           <router-link to="/books" class="btn btn-outline-primary mt-3 mt-md-0 rounded-pill px-4">
             Xem toàn bộ kho sách <i class="bi bi-arrow-right ms-1"></i>
@@ -102,15 +102,15 @@
       <div class="container">
         <div class="text-center mb-5">
           <span class="text-primary fw-bold text-uppercase small">Quy trình đơn giản</span>
-          <h2 class="font-serif">Các Bước Mượn Sách Tại Thư Viện</h2>
-          <p class="text-muted">Chỉ với 4 thao tác nhanh chóng để tiếp cận cuốn sách yêu thích</p>
+          <h2 class="font-serif">Quy trình mượn sách tại thư viện</h2>
+          <p class="text-muted">4 bước đơn giản để tìm và mượn ấn phẩm tại thư viện</p>
         </div>
 
         <div class="row g-4">
           <div class="col-md-3">
             <div class="card h-100 border-0 p-4 text-center shadow-sm step-card">
               <div class="step-number mb-3">1</div>
-              <h5 class="fw-bold font-serif mb-2">Tìm & Chọn Sách</h5>
+              <h5 class="fw-bold font-serif mb-2">Tìm kiếm sách</h5>
               <p class="small text-muted mb-0">
                 Tra cứu sách theo tên, tác giả hoặc chủ đề trên hệ thống mục lục trực tuyến.
               </p>
@@ -120,9 +120,9 @@
           <div class="col-md-3">
             <div class="card h-100 border-0 p-4 text-center shadow-sm step-card">
               <div class="step-number mb-3">2</div>
-              <h5 class="fw-bold font-serif mb-2">Đăng Ký Đặt Mượn</h5>
+              <h5 class="fw-bold font-serif mb-2">Đăng ký mượn</h5>
               <p class="small text-muted mb-0">
-                Gửi yêu cầu mượn kèm ngày hẹn đến nhận sách. Thủ thư sẽ giữ sách trong {{ settingsStore.holdHours }}h.
+                Gửi yêu cầu mượn và chọn ngày hẹn nhận sách. Thư viện sẽ giữ ấn phẩm trong {{ settingsStore.holdHours }} giờ.
               </p>
             </div>
           </div>
@@ -130,7 +130,7 @@
           <div class="col-md-3">
             <div class="card h-100 border-0 p-4 text-center shadow-sm step-card">
               <div class="step-number mb-3">3</div>
-              <h5 class="fw-bold font-serif mb-2">Nhận Sách Tại Quầy</h5>
+              <h5 class="fw-bold font-serif mb-2">Nhận sách tại quầy</h5>
               <p class="small text-muted mb-0">
                 Xuất trình thẻ bạn đọc tại quầy giao dịch thư viện để nhận ấn phẩm mang về.
               </p>
@@ -140,9 +140,9 @@
           <div class="col-md-3">
             <div class="card h-100 border-0 p-4 text-center shadow-sm step-card">
               <div class="step-number mb-3">4</div>
-              <h5 class="fw-bold font-serif mb-2">Đọc & Trả Sách Đúng Hạn</h5>
+              <h5 class="fw-bold font-serif mb-2">Đọc và trả sách đúng hạn</h5>
               <p class="small text-muted mb-0">
-                Thời gian đọc {{ settingsStore.borrowDays }} ngày. Có thể tự thực hiện gia hạn thêm {{ settingsStore.maxRenew }} lần ({{ settingsStore.renewDays }} ngày) trên website.
+                Thời hạn mượn tiêu chuẩn là {{ settingsStore.borrowDays }} ngày. Bạn đọc có thể gia hạn trực tuyến {{ settingsStore.maxRenew }} lần (thêm {{ settingsStore.renewDays }} ngày).
               </p>
             </div>
           </div>

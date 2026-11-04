@@ -110,14 +110,14 @@ export const useAdminAuthStore = defineStore('adminAuth', {
 
         // Kiểm tra phân quyền: Tuyệt đối không cho phép độc giả thông thường (USER) đăng nhập Admin Portal
         if (userRole === 'USER' || userRole === '') {
-          throw new Error('Tài khoản độc giả không có thẩm quyền truy cập Cổng Quản Trị & Thủ Thư.');
+          throw new Error('Tài khoản này không có quyền truy cập cổng quản trị.');
         }
 
         const normalizedUser = normalizeAdminUser(user);
         this.setAuth(normalizedUser, accessToken, refreshToken);
         return { success: true };
       } catch (err) {
-        this.error = err.response?.data?.error?.message || err.message || 'Đăng nhập cổng quản trị thất bại.';
+        this.error = err.response?.data?.error?.message || err.message || 'Không thể đăng nhập lúc này. Vui lòng thử lại sau.';
         return { success: false, error: this.error };
       } finally {
         this.isLoading = false;

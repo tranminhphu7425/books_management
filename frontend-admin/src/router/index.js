@@ -60,7 +60,7 @@ const routes = [
     path: '/audit-logs',
     name: 'AuditLogs',
     component: () => import('../views/AuditLogsView.vue'),
-    meta: { requiresAuth: true, roles: ['ADMIN'], title: 'Nhật ký Kiểm toán Tác nghiệp' }
+    meta: { requiresAuth: true, roles: ['ADMIN'], title: 'Nhật ký Hoạt động Hệ thống' }
   },
   {
     path: '/:pathMatch(.*)*',

@@ -46,7 +46,7 @@
         <div class="d-flex align-items-center justify-content-between mb-3 border-bottom pb-2">
           <div class="d-flex align-items-center gap-2">
             <i class="bi bi-google text-danger fs-5"></i>
-            <h6 class="font-serif fw-bold text-dark mb-0">Xác Thực & Kiểm Thử Tài Khoản Google</h6>
+            <h6 class="font-serif fw-bold text-dark mb-0">Xác thực tài khoản Google</h6>
           </div>
           <button type="button" class="btn-close" @click="showDevModal = false"></button>
         </div>
@@ -55,9 +55,9 @@
           <div class="d-flex gap-2">
             <i class="bi bi-info-circle text-primary fs-6 mt-1"></i>
             <div>
-              <strong>Lưu ý về danh sách tài khoản Google của trình duyệt:</strong>
+              <strong>Xác thực tài khoản Google:</strong>
               <div class="text-muted mt-1" style="font-size: 0.825rem;">
-                Để trình duyệt mở popup danh sách các tài khoản Gmail/Google có sẵn, cần cấu hình <code>VITE_GOOGLE_CLIENT_ID</code> từ Google Cloud Console. Hiện tại hệ thống hỗ trợ bạn <strong>kiểm thử trực tiếp luồng đăng ký/đăng nhập tự động</strong> bên dưới:
+                Nhập địa chỉ email Google bên dưới để tiến hành xác thực tài khoản và tiếp tục:
               </div>
             </div>
           </div>
@@ -91,7 +91,7 @@
             </button>
             <button type="submit" class="btn btn-primary btn-sm px-3" :disabled="isLoading">
               <span v-if="isLoading" class="spinner-border spinner-border-sm me-1"></span>
-              {{ mode === 'signup' ? 'Đăng Ký & Đăng Nhập Ngay' : 'Xác Nhận Đăng Nhập' }}
+              {{ mode === 'signup' ? 'Đăng ký và đăng nhập' : 'Xác nhận đăng nhập' }}
             </button>
           </div>
         </form>

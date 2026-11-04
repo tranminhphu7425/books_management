@@ -9,7 +9,7 @@
               <div class="auth-brand-icon mx-auto mb-2">
                 <i class="bi bi-person-vcard"></i>
               </div>
-              <h3 class="font-serif fw-bold text-dark mb-1">Mở Thẻ Bạn Đọc Mới</h3>
+              <h3 class="font-serif fw-bold text-dark mb-1">Đăng ký thẻ bạn đọc</h3>
               <p class="text-muted small">
                 Đăng ký tài khoản để khai thác nguồn tài liệu phong phú và mượn sách trực tuyến
               </p>
@@ -115,7 +115,7 @@
 
                 <!-- Mật khẩu có mắt toggle -->
                 <div class="col-md-6">
-                  <label for="regPassword" class="form-label small fw-semibold">Mật khẩu khởi tạo <span class="text-danger">*</span></label>
+                  <label for="regPassword" class="form-label small fw-semibold">Mật khẩu <span class="text-danger">*</span></label>
                   <div class="input-group input-group-unified">
                     <input
                       :type="showPassword ? 'text' : 'password'"
@@ -187,7 +187,7 @@
                     :disabled="isLoading || !agreeTerms"
                   >
                     <span v-if="isLoading" class="spinner-border spinner-border-sm me-2" role="status"></span>
-                    Hoàn Tất Mở Thẻ Bạn Đọc
+                    Đăng ký tài khoản
                   </button>
                 </div>
               </div>
@@ -269,19 +269,19 @@ const form = reactive({
 
 const handleRegister = async () => {
   if (form.password !== form.confirmPassword) {
-    const msg = 'Mật khẩu và xác nhận mật khẩu không trùng khớp nhau.';
+    const msg = 'Mật khẩu xác nhận không khớp với mật khẩu đã nhập.';
     errorMessage.value = msg;
     toast.warning(msg);
     return;
   }
 
   if (!agreeTerms.value) {
-    toast.warning('Vui lòng đồng ý với các cam kết và nội quy của thư viện.');
+    toast.warning('Vui lòng đồng ý với nội quy của thư viện để tiếp tục.');
     return;
   }
 
   if (!form.ngaySinh) {
-    const msg = 'Vui lòng chọn ngày tháng năm sinh để xác minh độ tuổi.';
+    const msg = 'Vui lòng nhập ngày tháng năm sinh để xác minh độ tuổi.';
     errorMessage.value = msg;
     toast.warning(msg);
     return;
@@ -294,7 +294,7 @@ const handleRegister = async () => {
   const todayDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 
   if (birthDate > todayDate) {
-    const msg = 'Ngày sinh không hợp lệ. Ngày sinh không được là ngày trong tương lai.';
+    const msg = 'Ngày sinh không hợp lệ. Vui lòng kiểm tra lại ngày sinh.';
     errorMessage.value = msg;
     toast.warning(msg);
     return;
@@ -302,7 +302,7 @@ const handleRegister = async () => {
 
   const eighteenthBirthday = new Date(birthDate.getFullYear() + 18, birthDate.getMonth(), birthDate.getDate());
   if (eighteenthBirthday > todayDate) {
-    const msg = 'Bạn chưa đủ 18 tuổi. Chỉ người từ đủ 18 tuổi trở lên mới được phép đăng ký tài khoản.';
+    const msg = 'Bạn đọc phải từ đủ 18 tuổi trở lên để mở thẻ bạn đọc.';
     errorMessage.value = msg;
     toast.warning(msg);
     return;

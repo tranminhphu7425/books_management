@@ -11,7 +11,7 @@
       <div class="modal-content border-0 shadow">
         <div class="modal-header bg-primary text-white">
           <h5 class="modal-title font-serif fs-5 text-white" id="borrowModalLabel">
-            <i class="bi bi-bookmark-plus me-2"></i> Xác nhận Đăng ký Mượn Sách
+            <i class="bi bi-bookmark-plus me-2"></i> Xác nhận đăng ký mượn sách
           </h5>
           <button
             type="button"
@@ -80,7 +80,7 @@
               class="alert alert-danger py-2 small mb-3"
             >
               <i class="bi bi-cash-coin me-1"></i>
-              Tài khoản đang có khoản bồi thường chưa thanh toán. Vui lòng nộp phạt trực tiếp tại quầy thư viện.
+              Tài khoản đang có khoản phí bồi thường chưa thanh toán. Vui lòng thanh toán trực tiếp tại quầy thư viện để tiếp tục mượn sách.
             </div>
 
             <!-- Cảnh báo nếu đã đăng ký mượn cuốn sách này rồi -->
@@ -125,7 +125,7 @@
                 </div>
                 <ul class="mb-0 ps-3">
                   <li>Thời hạn mượn sách tiêu chuẩn: <strong>{{ settingsStore.borrowDays }} ngày</strong> kể từ khi thủ thư quét xuất kho.</li>
-                  <li>Nếu sau ngày hẹn lấy sách <strong>{{ settingsStore.holdHours }} giờ</strong> bạn đọc không tới nhận, yêu cầu sẽ tự động hủy.</li>
+                  <li>Nếu quá <strong>{{ settingsStore.holdHours }} giờ</strong> kể từ ngày hẹn mà bạn đọc không đến nhận, yêu cầu sẽ tự động hủy.</li>
                 </ul>
               </div>
 
@@ -147,7 +147,7 @@
                   data-bs-dismiss="modal"
                   :disabled="isLoading"
                 >
-                  Bỏ qua
+                  Đóng
                 </button>
                 <button
                   type="submit"

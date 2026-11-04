@@ -89,7 +89,7 @@
           <!-- Card 1: Cập nhật thông tin cá nhân -->
           <div class="card border-0 shadow-sm p-4 bg-white mb-4">
             <h5 class="font-serif fw-bold text-dark mb-3 border-bottom pb-2">
-              <i class="bi bi-person-gear text-primary me-2"></i> Cập Nhật Thông Tin Cá Nhân
+              <i class="bi bi-person-gear text-primary me-2"></i> Cập nhật thông tin cá nhân
             </h5>
 
             <form @submit.prevent="handleUpdateProfile">
@@ -175,7 +175,7 @@
                 <div class="col-12 text-end mt-4">
                   <button type="submit" class="btn btn-primary px-4" :disabled="authStore.isLoading">
                     <span v-if="authStore.isLoading" class="spinner-border spinner-border-sm me-2"></span>
-                    Lưu thông tin cá nhân
+                    Lưu thay đổi
                   </button>
                 </div>
               </div>
@@ -185,7 +185,7 @@
           <!-- Card 2: Đổi mật khẩu có nút Toggle mắt -->
           <div class="card border-0 shadow-sm p-4 bg-white mb-4">
             <h5 class="font-serif fw-bold text-dark mb-3 border-bottom pb-2">
-              <i class="bi bi-shield-lock text-primary me-2"></i> Thiết Lập Mật Khẩu
+              <i class="bi bi-shield-lock text-primary me-2"></i> Đổi mật khẩu
             </h5>
 
             <form @submit.prevent="handleChangePassword">
@@ -198,7 +198,7 @@
                       :type="showCurrentPassword ? 'text' : 'password'"
                       v-model="passwordForm.currentPassword"
                       class="form-control"
-                      placeholder="Nhập mật khẩu đang sử dụng"
+                      placeholder="Nhập mật khẩu hiện tại"
                       required
                     />
                     <button
@@ -261,7 +261,7 @@
                 <div class="col-12 text-end mt-4">
                   <button type="submit" class="btn btn-outline-primary px-4" :disabled="authStore.isLoading">
                     <span v-if="authStore.isLoading" class="spinner-border spinner-border-sm me-2"></span>
-                    Cập nhật mật khẩu mới
+                    Đổi mật khẩu
                   </button>
                 </div>
               </div>
@@ -276,7 +276,7 @@
           >
             <div class="d-flex justify-content-between align-items-center mb-3 border-bottom pb-2 flex-wrap gap-2">
               <h5 class="font-serif fw-bold text-dark mb-0">
-                <i class="bi bi-receipt text-primary me-2"></i> Lịch Sử Biên Bản Bồi Thường
+                <i class="bi bi-receipt text-primary me-2"></i> Lịch sử bồi thường
               </h5>
               <span
                 v-if="borrowStore.totalUnpaidFineAmount > 0"
@@ -438,7 +438,7 @@ const onAvatarFileSelected = async (event) => {
   // Kiểm tra kích thước tối đa 2MB
   const maxSizeBytes = 2 * 1024 * 1024;
   if (file.size > maxSizeBytes) {
-    toast.error('Kích thước ảnh đại diện vượt quá dung lượng cho phép (Tối đa 2MB).');
+    toast.error('Dung lượng ảnh vượt quá giới hạn 2 MB. Vui lòng chọn ảnh có kích thước nhỏ hơn.');
     event.target.value = '';
     return;
   }
@@ -446,7 +446,7 @@ const onAvatarFileSelected = async (event) => {
   // Kiểm tra định dạng
   const allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
   if (!allowedTypes.includes(file.type)) {
-    toast.error('Định dạng ảnh không hợp lệ. Chỉ chấp nhận .jpg, .jpeg, .png, .webp.');
+    toast.error('Định dạng tệp không được hỗ trợ. Vui lòng chọn tệp ảnh JPG, PNG hoặc WebP.');
     event.target.value = '';
     return;
   }
@@ -542,13 +542,13 @@ const handleUpdateProfile = async () => {
     const todayDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 
     if (birthDate > todayDate) {
-      toast.warning('Ngày sinh không hợp lệ. Ngày sinh không được là ngày trong tương lai.');
+      toast.warning('Ngày sinh không hợp lệ. Vui lòng kiểm tra lại ngày sinh.');
       return;
     }
 
     const eighteenthBirthday = new Date(birthDate.getFullYear() + 18, birthDate.getMonth(), birthDate.getDate());
     if (eighteenthBirthday > todayDate) {
-      toast.warning('Người dùng phải từ đủ 18 tuổi trở lên.');
+      toast.warning('Bạn đọc phải từ đủ 18 tuổi trở lên để sử dụng dịch vụ thư viện.');
       return;
     }
   }
@@ -568,7 +568,7 @@ const handleUpdateProfile = async () => {
 
 const handleChangePassword = async () => {
   if (passwordForm.newPassword !== passwordForm.confirmPassword) {
-    toast.warning('Mật khẩu mới và xác nhận mật khẩu không khớp nhau.');
+    toast.warning('Mật khẩu xác nhận không khớp với mật khẩu mới.');
     return;
   }
 

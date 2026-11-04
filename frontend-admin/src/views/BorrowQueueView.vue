@@ -32,7 +32,7 @@
           :class="{ active: currentTab === 'APPROVED' }"
           @click="currentTab = 'APPROVED'"
         >
-          <i class="bi bi-box-seam me-1"></i> Đã Duyệt - Chờ Xuất Sách (48h)
+          <i class="bi bi-box-seam me-1"></i> Đã Duyệt - Chờ Xuất Sách
           <span class="badge rounded-pill ms-1" :class="currentTab === 'APPROVED' ? 'bg-white text-primary' : 'bg-primary text-white'">
             {{ borrowStore.approvedBorrows.length }}
           </span>
@@ -43,15 +43,15 @@
     <!-- Loading State -->
     <div v-if="borrowStore.isLoading" class="card border-0 shadow-sm p-5 text-center bg-white">
       <div class="spinner-border spinner-border-sm text-primary mx-auto mb-2"></div>
-      <div class="text-muted small">Đang đồng bộ hàng đợi mượn sách...</div>
+      <div class="text-muted small">Đang tải danh sách yêu cầu mượn...</div>
     </div>
 
     <!-- Content Tab 1: PENDING -->
     <div v-else-if="currentTab === 'PENDING'">
       <div v-if="borrowStore.pendingBorrows.length === 0" class="card border-0 shadow-sm p-5 text-center bg-white">
         <i class="bi bi-inbox fs-1 text-muted mb-2"></i>
-        <h6 class="font-serif">Hiện không có yêu cầu mượn nào đang chờ duyệt</h6>
-        <p class="text-muted small mb-0">Khi bạn đọc đặt mượn trực tuyến, danh sách sẽ tức thời hiển thị tại đây.</p>
+        <h6 class="font-serif">Chưa có yêu cầu mượn nào đang chờ duyệt</h6>
+        <p class="text-muted small mb-0">Khi bạn đọc gửi yêu cầu mượn, thông tin sẽ hiển thị tại đây.</p>
       </div>
 
       <div v-else class="card border-0 shadow-sm bg-white overflow-hidden">
@@ -64,7 +64,7 @@
                 <th>Độc giả mượn</th>
                 <th>Ngày yêu cầu</th>
                 <th>Hẹn nhận</th>
-                <th class="text-end">Hành động của thủ thư</th>
+                <th class="text-end">Thao tác</th>
               </tr>
             </thead>
             <tbody>
@@ -117,8 +117,8 @@
     <div v-else-if="currentTab === 'APPROVED'">
       <div v-if="borrowStore.approvedBorrows.length === 0" class="card border-0 shadow-sm p-5 text-center bg-white">
         <i class="bi bi-check2-circle fs-1 text-muted mb-2"></i>
-        <h6 class="font-serif">Không có đơn mượn nào đang chờ xuất sách</h6>
-        <p class="text-muted small mb-0">Các đơn mượn sau khi được thủ thư duyệt sẽ nằm tại đây chờ bạn đọc đến nhận tại quầy.</p>
+        <h6 class="font-serif">Chưa có đơn mượn nào đang chờ xuất sách</h6>
+        <p class="text-muted small mb-0">Các đơn mượn sau khi duyệt sẽ hiển thị tại đây chờ bạn đọc đến nhận tại quầy.</p>
       </div>
 
       <div v-else class="card border-0 shadow-sm bg-white overflow-hidden">
@@ -129,8 +129,8 @@
                 <th>Mã đơn</th>
                 <th>Ấn phẩm cần xuất</th>
                 <th>Bạn đọc nhận sách</th>
-                <th>Thời hạn giữ sách (48h)</th>
-                <th class="text-end">Thao tác quầy</th>
+                <th>Hạn nhận sách</th>
+                <th class="text-end">Thao tác</th>
               </tr>
             </thead>
             <tbody>

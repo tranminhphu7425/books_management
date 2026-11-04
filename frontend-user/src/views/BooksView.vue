@@ -15,7 +15,7 @@
           <div class="card border-0 shadow-sm p-3 filter-card sticky-top" style="top: 85px;">
             <div class="d-flex align-items-center justify-content-between mb-3 border-bottom pb-2">
               <h5 class="font-serif fs-6 fw-bold mb-0">
-                <i class="bi bi-funnel me-1 text-primary"></i> Bộ Lọc Tìm Kiếm
+                <i class="bi bi-funnel me-1 text-primary"></i> Bộ lọc tìm kiếm
               </h5>
               <button
                 type="button"
@@ -23,13 +23,13 @@
                 @click="resetAllFilters"
                 title="Đặt lại bộ lọc"
               >
-                <i class="bi bi-arrow-counterclockwise"></i> Xóa lọc
+                <i class="bi bi-arrow-counterclockwise"></i> Xóa bộ lọc
               </button>
             </div>
 
             <!-- Lọc Thể Loại -->
             <div class="mb-4">
-              <label class="form-label fw-bold small text-uppercase text-muted">Chủ Đề & Thể Loại</label>
+              <label class="form-label fw-bold small text-uppercase text-muted">Chủ đề và thể loại</label>
               <div class="filter-genre-list">
                 <div class="form-check mb-1">
                   <input
@@ -65,7 +65,7 @@
             <!-- Lọc Nhà Xuất Bản Tự Thiết Kế Kèm Tìm Kiếm Không Dấu -->
             <div class="mb-3 position-relative" ref="publisherDropdownRef">
               <div class="d-flex align-items-center justify-content-between mb-1">
-                <label class="form-label fw-bold small text-uppercase text-muted mb-0">Nhà Xuất Bản</label>
+                <label class="form-label fw-bold small text-uppercase text-muted mb-0">Nhà xuất bản</label>
                 <button
                   v-if="selectedPublisher"
                   type="button"
@@ -73,7 +73,7 @@
                   @click="clearPublisher"
                   title="Xóa lựa chọn NXB"
                 >
-                  Xóa chọn
+                  Bỏ chọn
                 </button>
               </div>
 
@@ -121,7 +121,7 @@
                       type="text"
                       v-model="publisherSearchQuery"
                       class="form-control border-start-0 ps-0"
-                      placeholder="Tìm NXB (không dấu, mã, tên)..."
+                      placeholder="Tìm theo tên hoặc mã nhà xuất bản..."
                       @click.stop
                       @keydown.esc="closePublisherDropdown"
                     />
@@ -156,7 +156,7 @@
                     class="p-3 text-center text-muted small"
                   >
                     <i class="bi bi-building-slash fs-4 text-muted d-block mb-1"></i>
-                    <div>Không tìm thấy NXB khớp với "{{ publisherSearchQuery }}"</div>
+                    <div>Không tìm thấy nhà xuất bản phù hợp với "{{ publisherSearchQuery }}"</div>
                   </div>
 
                   <!-- Danh sách các NXB khớp kết quả -->
@@ -231,11 +231,11 @@
                     type="text"
                     v-model="searchKeyword"
                     class="form-control"
-                    placeholder="Tìm theo tên tác phẩm, tác giả..."
+                    placeholder="Tìm theo tên sách, tác giả..."
                     @keyup.enter="handleSearch"
                   />
                   <button class="btn btn-primary" type="button" @click="handleSearch">
-                    <i class="bi bi-search me-1"></i> Tìm
+                    <i class="bi bi-search me-1"></i> Tìm kiếm
                   </button>
                   <button
                     v-if="searchKeyword"
@@ -257,11 +257,11 @@
                 >
                   <option value="createdAt_desc">Mới nhập kho</option>
                   <option value="createdAt_asc">Cũ nhất</option>
-                  <option value="TenSach_asc">Tên sách: A - Z</option>
-                  <option value="TenSach_desc">Tên sách: Z - A</option>
-                  <option value="DonGia_asc">Giá: Thấp đến cao</option>
-                  <option value="DonGia_desc">Giá: Cao đến thấp</option>
-                  <option value="NamXuatBan_desc">Năm XB: Mới nhất</option>
+                  <option value="TenSach_asc">Tên sách (A – Z)</option>
+                  <option value="TenSach_desc">Tên sách (Z – A)</option>
+                  <option value="DonGia_asc">Giá trị sách (thấp đến cao)</option>
+                  <option value="DonGia_desc">Giá trị sách (cao đến thấp)</option>
+                  <option value="NamXuatBan_desc">Năm xuất bản (mới nhất)</option>
                 </select>
               </div>
             </div>
@@ -293,7 +293,7 @@
                 <i class="bi bi-x cursor-pointer" @click="clearAvailableOnly" title="Bỏ lọc còn sẵn"></i>
               </span>
               <button class="btn btn-link btn-sm text-danger text-decoration-none p-0 ms-auto small" @click="resetAllFilters">
-                <i class="bi bi-arrow-counterclockwise"></i> Xóa tất cả
+                <i class="bi bi-arrow-counterclockwise"></i> Xóa tất cả bộ lọc
               </button>
             </div>
           </div>
@@ -323,13 +323,13 @@
           <!-- Empty State -->
           <div v-else class="card border-0 shadow-sm p-5 text-center my-4 bg-white">
             <i class="bi bi-search fs-1 text-muted mb-3"></i>
-            <h5 class="font-serif">Không tìm thấy ấn phẩm nào phù hợp</h5>
+            <h5 class="font-serif">Không tìm thấy ấn phẩm phù hợp</h5>
             <p class="text-muted small mb-3">
               Vui lòng thử lại với từ khóa khác hoặc xóa bớt các bộ lọc thể loại / nhà xuất bản.
             </p>
             <div>
               <button class="btn btn-outline-primary btn-sm" @click="resetAllFilters">
-                Đặt lại toàn bộ lọc
+                Đặt lại bộ lọc
               </button>
             </div>
           </div>

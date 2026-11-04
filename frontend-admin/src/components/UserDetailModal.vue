@@ -5,7 +5,7 @@
         <!-- Header -->
         <div class="modal-header bg-primary text-white py-3">
           <h5 class="modal-title font-serif fs-5 d-flex align-items-center">
-            <i class="bi bi-person-badge me-2 text-warning"></i> Hồ Sơ Chi Tiết Bạn Đọc / Người Dùng
+            <i class="bi bi-person-badge me-2 text-warning"></i> Thông Tin Bạn Đọc
           </h5>
           <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
@@ -25,7 +25,7 @@
 
             <h5 class="font-serif fw-bold text-dark mb-1">{{ userFullName }}</h5>
             <div class="font-monospace text-muted small mb-2">
-              MÃ ĐỊNH DANH: <strong class="text-primary">{{ userCode }}</strong>
+              Mã bạn đọc: <strong class="text-primary">{{ userCode }}</strong>
             </div>
 
             <!-- Badges Role & Status -->
@@ -46,7 +46,7 @@
                 :class="(user.trangThai || user.TrangThai) === 'BLACKLISTED' || user.isBlacklisted || user.IsBlacklisted || user.daBiKhoa || user.DaBiKhoa ? 'bg-danger' : 'bg-success'"
               >
                 <i :class="(user.trangThai || user.TrangThai) === 'BLACKLISTED' || user.isBlacklisted || user.IsBlacklisted || user.daBiKhoa || user.DaBiKhoa ? 'bi bi-slash-circle me-1' : 'bi bi-check-circle me-1'"></i>
-                {{ (user.trangThai || user.TrangThai) === 'BLACKLISTED' || user.isBlacklisted || user.IsBlacklisted || user.daBiKhoa || user.DaBiKhoa ? 'Đang Tạm Khóa (Blacklist)' : 'Đang Hoạt Động' }}
+                {{ (user.trangThai || user.TrangThai) === 'BLACKLISTED' || user.isBlacklisted || user.IsBlacklisted || user.daBiKhoa || user.DaBiKhoa ? 'Bị khóa quyền mượn' : 'Đang hoạt động' }}
               </span>
             </div>
           </div>
@@ -102,7 +102,7 @@
             @click="goToUserManageAndEdit"
           >
             <i class="bi bi-person-gear"></i>
-            <span>Quản Lý & Phân Quyền Người Dùng</span>
+            <span>Quản lý tài khoản</span>
           </button>
           <div v-else></div>
 

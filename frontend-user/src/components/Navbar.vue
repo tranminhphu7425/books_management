@@ -56,7 +56,7 @@
                 type="text"
                 v-model="searchKeyword"
                 class="form-control border-start-0 border-end-0 ps-1"
-                placeholder="Tìm tên tác phẩm, tác giả, NXB..."
+                placeholder="Tìm theo tên sách, tác giả, nhà xuất bản..."
                 aria-label="Tìm kiếm ấn phẩm"
               />
               <button class="btn btn-search-nav px-3 flex-shrink-0 text-nowrap" type="submit">
@@ -199,8 +199,9 @@ const handleQuickSearch = () => {
 const handleLogout = async () => {
   const isConfirmed = await confirm({
     title: 'Đăng xuất tài khoản',
-    message: 'Bạn có chắc chắn muốn đăng xuất khỏi cổng độc giả?',
+    message: 'Bạn có chắc chắn muốn đăng xuất khỏi cổng bạn đọc?',
     confirmText: 'Đăng xuất',
+    cancelText: 'Ở lại',
     type: 'danger',
     icon: 'bi-box-arrow-right'
   });

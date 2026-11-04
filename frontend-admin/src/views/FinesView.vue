@@ -25,7 +25,7 @@
           :class="{ active: currentTab === 'UNPAID' }"
           @click="currentTab = 'UNPAID'"
         >
-          <i class="bi bi-exclamation-octagon-fill me-1"></i> Chưa Nộp Tiền ({{ fineStore.unpaidFines.length }})
+          <i class="bi bi-exclamation-octagon-fill me-1"></i> Chưa Thanh Toán ({{ fineStore.unpaidFines.length }})
         </button>
       </li>
       <li class="nav-item">
@@ -34,7 +34,7 @@
           :class="{ active: currentTab === 'PAID' }"
           @click="currentTab = 'PAID'"
         >
-          <i class="bi bi-check-circle-fill me-1"></i> Đã Thu Tiền Hoàn Tất ({{ fineStore.paidFines.length }})
+          <i class="bi bi-check-circle-fill me-1"></i> Đã Thanh Toán ({{ fineStore.paidFines.length }})
         </button>
       </li>
     </ul>
@@ -58,13 +58,13 @@
               <th>Mô tả chi tiết</th>
               <th>Số tiền bồi thường</th>
               <th>Ngày lập</th>
-              <th class="text-end">Hành động</th>
+              <th class="text-end">Thao tác</th>
             </tr>
           </thead>
           <tbody>
             <tr v-if="displayedFines.length === 0">
               <td colspan="8" class="text-center py-5 text-muted">
-                Không có biên bản bồi thường nào trong danh mục này.
+                Chưa có biên bản bồi thường nào trong danh mục này.
               </td>
             </tr>
 
@@ -179,9 +179,9 @@ const handlePayFine = async (fine) => {
 
   const isConfirmed = await confirm({
     title: 'Xác nhận thu tiền bồi thường',
-    message: `Xác nhận độc giả "${readerName}" đã nộp đủ số tiền ${amountStr} tại quầy thư viện? Hệ thống sẽ tự động mở lại quyền mượn sách cho độc giả này.`,
-    confirmText: 'Xác nhận đã thu đủ tiền',
-    cancelText: 'Hủy bỏ',
+    message: `Xác nhận bạn đọc "${readerName}" đã thanh toán đủ ${amountStr} tại quầy? Quyền mượn sách sẽ được khôi phục ngay sau khi hoàn tất.`,
+    confirmText: 'Xác nhận thu tiền',
+    cancelText: 'Bỏ qua',
     type: 'success',
     icon: 'bi-cash-coin'
   });

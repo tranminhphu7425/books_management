@@ -289,10 +289,10 @@ const fetchReviews = async (bookId) => {
 
 const handleDeleteReview = async (reviewId) => {
   const confirmed = await showConfirm({
-    title: 'Xóa nhận xét độc giả',
-    message: 'Bạn có chắc chắn muốn xóa nhận xét này? Thao tác này sẽ gỡ bỏ nhận xét vĩnh viễn và lưu lại trong nhật ký kiểm duyệt (Audit Log).',
-    confirmText: 'Xác nhận xóa',
-    cancelText: 'Hủy bỏ',
+    title: 'Xóa nhận xét',
+    message: 'Bạn có chắc chắn muốn xóa nhận xét này? Thao tác này sẽ gỡ bỏ nhận xét vĩnh viễn và lưu lại trong nhật ký hoạt động hệ thống.',
+    confirmText: 'Xóa nhận xét',
+    cancelText: 'Giữ lại',
     type: 'danger'
   });
   if (!confirmed) return;

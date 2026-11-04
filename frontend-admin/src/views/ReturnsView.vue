@@ -26,10 +26,10 @@
     <div v-else class="card border-0 shadow-sm bg-white overflow-hidden">
       <div class="p-3 border-bottom d-flex justify-content-between align-items-center bg-light">
         <span class="small fw-bold text-dark">
-          <i class="bi bi-journal-check text-primary me-2"></i> Danh Sách Sách Đang Lưu Hành Ngoài Thư Viện ({{
+          <i class="bi bi-journal-check text-primary me-2"></i> Danh Sách Sách Đang Cho Mượn ({{
             filteredBorrows.length }})
         </span>
-        <span class="badge bg-white text-dark border">Thời hạn mượn: 14 ngày</span>
+        <span class="badge bg-white text-dark border">Thời hạn tiêu chuẩn: 14 ngày</span>
       </div>
 
       <div class="table-responsive">
@@ -42,7 +42,7 @@
               <th>Ngày xuất mượn</th>
               <th>Hạn trả sách</th>
               <th>Tình trạng</th>
-              <th class="text-end">Xử lý hoàn trả</th>
+              <th class="text-end">Thao tác</th>
             </tr>
           </thead>
           <tbody>
@@ -105,7 +105,7 @@
                 <div class="btn-group btn-group-sm">
                   <button class="btn btn-success" @click="handleNormalCheckin(item)"
                     title="Sách nguyên vẹn, nhận trả lại kệ">
-                    <i class="bi bi-check2-circle me-1"></i> Nhận trả bình thường
+                    <i class="bi bi-check2-circle me-1"></i> Nhận trả sách
                   </button>
                   <button class="btn btn-outline-danger" @click="openIncidentModal(item)"
                     title="Sách bị rách, hỏng hoặc làm mất">
@@ -254,10 +254,10 @@ const refreshData = () => {
 const handleNormalCheckin = async (item) => {
   const bookTitle = item.sachId?.tenSach || item.SachId?.TenSach || item.maSach || item.MaSach;
   const isConfirmed = await confirm({
-    title: 'Nhận trả ấn phẩm nguyên vẹn',
-    message: `Xác nhận nhận lại cuốn sách "${bookTitle}" nguyên vẹn từ bạn đọc và hoàn trả lại kệ kho khả dụng?`,
-    confirmText: 'Xác nhận nhận trả',
-    cancelText: 'Hủy bỏ',
+    title: 'Nhận trả sách',
+    message: `Bạn có chắc chắn muốn xác nhận nhận lại cuốn sách "${bookTitle}" và đưa vào kho khả dụng?`,
+    confirmText: 'Nhận trả sách',
+    cancelText: 'Bỏ qua',
     type: 'success',
     icon: 'bi-check2-circle'
   });

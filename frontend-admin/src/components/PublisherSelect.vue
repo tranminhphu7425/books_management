@@ -252,7 +252,7 @@
                 v-if="isAdmin"
                 type="button"
                 class="btn btn-outline-danger btn-sm border-0 py-0 px-1 rounded btn-action"
-                title="Xóa Nhà xuất bản (Dành riêng cho ADMIN)"
+                title="Xóa Nhà xuất bản"
                 @click.stop="handleDeletePublisher(pub)"
               >
                 <i class="bi bi-trash"></i>
@@ -484,7 +484,7 @@ const handleQuickAddPublisher = async () => {
       toast.error(res.error || 'Thêm nhà xuất bản mới thất bại.');
     }
   } catch (err) {
-    toast.error('Lỗi khi kết nối hệ thống tạo nhà xuất bản.');
+    toast.error('Không thể thêm nhà xuất bản lúc này. Vui lòng thử lại.');
   } finally {
     isSubmittingQuickAdd.value = false;
   }

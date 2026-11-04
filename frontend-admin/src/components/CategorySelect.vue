@@ -476,7 +476,7 @@ const handleUpdateCategory = async () => {
       toast.error(res.error || 'Cập nhật thể loại thất bại.');
     }
   } catch (err) {
-    toast.error('Lỗi khi kết nối hệ thống cập nhật thể loại.');
+    toast.error('Không thể cập nhật thể loại lúc này. Vui lòng thử lại.');
   } finally {
     isSubmittingEdit.value = false;
   }

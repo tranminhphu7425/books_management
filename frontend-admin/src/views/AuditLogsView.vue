@@ -3,7 +3,7 @@
     <!-- Header -->
     <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4 gap-3">
       <div>
-        <h3 class="font-serif fw-bold text-dark mb-1">Nhật Ký Kiểm Toán Tác Nghiệp (Audit Trail)</h3>
+        <h3 class="font-serif fw-bold text-dark mb-1">Nhật Ký Hoạt Động Hệ Thống</h3>
         
       </div>
 
@@ -15,16 +15,16 @@
     <!-- Loading State -->
     <div v-if="statsStore.isLoading" class="card border-0 shadow-sm p-5 text-center bg-white">
       <div class="spinner-border spinner-border-sm text-primary mx-auto mb-2"></div>
-      <div class="text-muted small">Đang tải dữ liệu nhật ký kiểm toán...</div>
+      <div class="text-muted small">Đang tải nhật ký hoạt động...</div>
     </div>
 
     <!-- Bảng Nhật Ký -->
     <div v-else class="card border-0 shadow-sm bg-white overflow-hidden">
       <div class="p-3 border-bottom d-flex justify-content-between align-items-center bg-light">
         <span class="small fw-bold text-dark">
-          <i class="bi bi-shield-lock-fill text-primary me-2"></i> Lịch Sử Thao Tác Hệ Thống ({{ statsStore.auditLogs.length }} bản ghi)
+          <i class="bi bi-shield-lock-fill text-primary me-2"></i> Lịch Sử Thao Tác ({{ statsStore.auditLogs.length }} bản ghi)
         </span>
-        <span class="badge bg-secondary">Chuẩn an toàn bảo mật</span>
+        <span class="badge bg-secondary">Bảo mật hệ thống</span>
       </div>
 
       <div class="table-responsive">
@@ -61,7 +61,7 @@
                 </span>
               </td>
               <td><code>{{ log.doiTuongTacDong?.collection || log.DoiTuongTacDong?.Collection || log.resource || log.Resource || log.target || log.Target || 'Chung' }}</code></td>
-              <td class="font-monospace text-muted">{{ log.nguoiThucHien?.diaChiIP || log.NguoiThucHien?.DiaChiIP || log.ipAddress || log.IpAddress || '127.0.0.1' }}</td>
+              <td class="font-monospace text-muted">{{ log.nguoiThucHien?.diaChiIP || log.NguoiThucHien?.DiaChiIP || log.ipAddress || log.IpAddress || 'Nội bộ' }}</td>
               <td>
                 <div class="text-secondary" style="max-width: 320px; word-break: break-word;">
                   {{ log.chiTiet || log.ChiTiet || log.details || log.Details || log.description || log.Description || 'Hoàn tất tác vụ thành công.' }}

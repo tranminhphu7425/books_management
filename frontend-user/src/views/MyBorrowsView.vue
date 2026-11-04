@@ -5,7 +5,7 @@
       <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4 pb-2 border-bottom">
         <div>
           <h1 class="h3 font-serif fw-bold text-dark mb-1">
-            <i class="bi bi-journal-bookmark-fill text-primary me-2"></i> Tủ Sách Của Tôi
+            <i class="bi bi-journal-bookmark-fill text-primary me-2"></i> Tủ sách của tôi
           </h1>
          
         </div>
@@ -69,7 +69,7 @@
             @click="activeTab = 'borrowed'"
             type="button"
           >
-            <i class="bi bi-book-half me-1"></i> Đang Mượn
+            <i class="bi bi-book-half me-1"></i> Đang mượn
             <span class="badge rounded-pill ms-1" :class="activeTab === 'borrowed' ? 'bg-white text-primary' : 'bg-primary text-white'">
               {{ borrowStore.activeBorrowCount }}
             </span>
@@ -82,7 +82,7 @@
             @click="activeTab = 'pending'"
             type="button"
           >
-            <i class="bi bi-hourglass-split me-1"></i> Yêu Cầu Chờ Duyệt
+            <i class="bi bi-hourglass-split me-1"></i> Yêu cầu chờ duyệt
             <span class="badge rounded-pill ms-1" :class="activeTab === 'pending' ? 'bg-white text-warning' : 'bg-warning text-dark'">
               {{ borrowStore.pendingBorrowCount }}
             </span>
@@ -95,7 +95,7 @@
             @click="activeTab = 'history'"
             type="button"
           >
-            <i class="bi bi-clock-history me-1"></i> Lịch Sử Hoàn Tất
+            <i class="bi bi-clock-history me-1"></i> Lịch sử mượn trả
           </button>
         </li>
       </ul>
@@ -455,8 +455,9 @@ const getBookDetailLink = (item) => {
 const handleRenew = async (id) => {
   const isConfirmed = await confirm({
     title: 'Gia hạn mượn sách',
-    message: `Bạn có chắc chắn muốn gia hạn ấn phẩm này thêm ${settingsStore.renewDays} ngày mượn đọc không?`,
-    confirmText: 'Xác nhận gia hạn',
+    message: `Bạn có chắc chắn muốn gia hạn ấn phẩm này thêm ${settingsStore.renewDays} ngày không?`,
+    confirmText: 'Gia hạn',
+    cancelText: 'Giữ nguyên',
     type: 'primary',
     icon: 'bi-arrow-repeat'
   });
@@ -472,8 +473,9 @@ const handleRenew = async (id) => {
 const handleCancel = async (id) => {
   const isConfirmed = await confirm({
     title: 'Hủy yêu cầu mượn sách',
-    message: 'Bạn có chắc chắn muốn hủy bỏ yêu cầu mượn cuốn sách này?',
+    message: 'Bạn có chắc chắn muốn hủy yêu cầu mượn ấn phẩm này?',
     confirmText: 'Hủy yêu cầu',
+    cancelText: 'Giữ lại',
     type: 'danger',
     icon: 'bi-trash3-fill'
   });

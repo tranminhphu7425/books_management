@@ -43,8 +43,8 @@
 
         <div class="col-lg-2 col-md-6">
           <select class="form-select" v-model="selectedStatus" @change="handleSearch">
-            <option value="ACTIVE">Đang lưu hành (ACTIVE)</option>
-            <option value="ARCHIVED">Kho lưu trữ (ARCHIVED)</option>
+            <option value="ACTIVE">Đang lưu hành</option>
+            <option value="ARCHIVED">Đã lưu trữ</option>
             <option value="ALL">Tất cả trạng thái</option>
           </select>
         </div>
@@ -252,7 +252,7 @@
                       class="btn btn-outline-danger"
                       @click="handleDelete(book)"
                       :disabled="(book.soQuyenDangMuon ?? book.SoQuyenDangMuon ?? 0) > 0"
-                      :title="(book.soQuyenDangMuon ?? book.SoQuyenDangMuon ?? 0) > 0 ? 'Không thể xóa khi có bản sách đang được độc giả mượn' : 'Lưu trữ (Soft delete)'"
+                      :title="(book.soQuyenDangMuon ?? book.SoQuyenDangMuon ?? 0) > 0 ? 'Không thể lưu trữ khi có sách đang được bạn đọc mượn' : 'Chuyển vào kho lưu trữ'"
                     >
                       <i class="bi bi-archive"></i>
                     </button>
@@ -802,17 +802,17 @@ const handleSubmitBook = async () => {
 const handleDelete = async (book) => {
   const borrowingCount = book.soQuyenDangMuon ?? book.SoQuyenDangMuon ?? 0;
   if (borrowingCount > 0) {
-    toast.warning('Cảnh báo an toàn: Sách đang có bản in được độc giả mượn chưa trả. Không thể xóa ấn phẩm này!');
+    toast.warning('Không thể lưu trữ do vẫn còn sách đang được bạn đọc mượn.');
     return;
   }
 
   const bookTitle = book.tenSach || book.TenSach;
   const bookCode = book.maSach || book.MaSach;
   const isConfirmed = await confirm({
-    title: 'Lưu trữ ấn phẩm (Xóa mềm)',
-    message: `Bạn có chắc chắn muốn chuyển ấn phẩm "${bookTitle}" (${bookCode}) vào kho lưu trữ? Ấn phẩm sẽ bị ẩn khỏi danh mục bạn đọc.`,
-    confirmText: 'Chuyển vào lưu trữ',
-    cancelText: 'Bỏ qua',
+    title: 'Lưu trữ ấn phẩm',
+    message: `Bạn có chắc chắn muốn chuyển ấn phẩm "${bookTitle}" (${bookCode}) vào kho lưu trữ? Sách sẽ tạm ẩn khỏi danh mục tìm kiếm của bạn đọc.`,
+    confirmText: 'Lưu trữ',
+    cancelText: 'Giữ lại',
     type: 'danger',
     icon: 'bi-archive-fill'
   });
@@ -828,9 +828,9 @@ const handleRestore = async (book) => {
   const bookCode = book.maSach || book.MaSach;
   const isConfirmed = await confirm({
     title: 'Khôi phục ấn phẩm',
-    message: `Xác nhận khôi phục ấn phẩm "${bookTitle}" (${bookCode}) từ kho lưu trữ về kệ kho lưu hành?`,
-    confirmText: 'Khôi phục ấn phẩm',
-    cancelText: 'Hủy bỏ',
+    message: `Bạn có muốn đưa ấn phẩm "${bookTitle}" (${bookCode}) từ kho lưu trữ trở lại danh mục lưu hành?`,
+    confirmText: 'Khôi phục',
+    cancelText: 'Bỏ qua',
     type: 'success',
     icon: 'bi-arrow-counterclockwise'
   });

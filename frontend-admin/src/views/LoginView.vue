@@ -21,7 +21,7 @@
       <form @submit.prevent="handleLogin">
         <div class="mb-3">
           <label for="emailOrPhone" class="form-label small fw-semibold">
-            Tài khoản Email / Số điện thoại nhân viên
+            Email hoặc số điện thoại nhân viên
           </label>
           <div class="input-group input-group-unified">
             <span class="input-group-text">
@@ -32,7 +32,7 @@
               id="emailOrPhone"
               v-model="form.emailOrPhone"
               class="form-control"
-              placeholder="Nhập email hoặc số điện thoại nhân viên"
+              placeholder="Ví dụ: nhanvien@library.com"
               required
               autocomplete="username"
             />
@@ -41,7 +41,7 @@
 
         <div class="mb-4">
           <label for="password" class="form-label small fw-semibold">
-            Mật khẩu quản trị
+            Mật khẩu
           </label>
           <div class="input-group input-group-unified">
             <span class="input-group-text">
@@ -74,7 +74,7 @@
           :disabled="isLoading"
         >
           <span v-if="isLoading" class="spinner-border spinner-border-sm me-2"></span>
-          Đăng Nhập
+          Đăng nhập
         </button>
       </form>
     </div>
