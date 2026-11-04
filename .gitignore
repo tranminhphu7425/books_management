@@ -13,12 +13,12 @@ logs/
 npm-debug.log*
 *-audit.json
 
-# Static uploaded files
-uploads/
-backend/uploads/covers/*
-!backend/uploads/covers/.gitkeep
-backend/uploads/avatars/*
-!backend/uploads/avatars/.gitkeep
+# # Static uploaded files
+# uploads/
+# backend/uploads/covers/*
+# !backend/uploads/covers/.gitkeep
+# backend/uploads/avatars/*
+# !backend/uploads/avatars/.gitkeep
 
 # Build outputs & Vite cache
 dist/
