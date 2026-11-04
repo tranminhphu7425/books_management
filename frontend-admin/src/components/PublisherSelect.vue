@@ -13,8 +13,8 @@
       <div class="selected-publisher-display text-truncate pe-2">
         <span v-if="selectedPublisher" class="fw-semibold text-dark">
           <i class="bi bi-building me-1 text-primary"></i>
-          {{ selectedPublisher.TenNXB }}
-          <span class="badge bg-light text-secondary border ms-1 font-monospace">{{ selectedPublisher.MaNXB }}</span>
+          {{ selectedPublisher.tenNXB || selectedPublisher.TenNXB }}
+          <span class="badge bg-light text-secondary border ms-1 font-monospace">{{ selectedPublisher.maNXB || selectedPublisher.MaNXB }}</span>
         </span>
         <span v-else class="text-muted">
           <i class="bi bi-search me-1"></i> Chọn hoặc tìm kiếm nhà xuất bản...
@@ -137,8 +137,74 @@
         </div>
       </div>
 
+      <!-- Khung Form Chỉnh Sửa NXB (Inline Edit) -->
+      <div v-if="showEditForm" class="p-3 bg-warning-subtle border-bottom quick-section" @click.stop>
+        <div class="d-flex align-items-center justify-content-between mb-2">
+          <h6 class="font-serif fw-bold text-dark mb-0 small">
+            <i class="bi bi-pencil-square text-warning-emphasis me-1"></i> Chỉnh Sửa NXB: <span class="font-monospace text-primary">{{ editForm.maNXB }}</span>
+          </h6>
+          <button type="button" class="btn-close btn-sm" @click="showEditForm = false" style="font-size: 0.7rem;"></button>
+        </div>
+
+        <div class="quick-edit-form" @keydown.enter.prevent="handleUpdatePublisher">
+          <div class="mb-2">
+            <label class="form-label extra-small fw-semibold mb-1">Tên Nhà Xuất Bản <span class="text-danger">*</span></label>
+            <input
+              type="text"
+              v-model="editForm.tenNXB"
+              class="form-control form-control-sm"
+              required
+            />
+          </div>
+
+          <div class="row g-2 mb-2">
+            <div class="col-6">
+              <label class="form-label extra-small fw-semibold mb-1">Số điện thoại</label>
+              <input
+                type="tel"
+                v-model="editForm.dienThoai"
+                class="form-control form-control-sm"
+              />
+            </div>
+            <div class="col-6">
+              <label class="form-label extra-small fw-semibold mb-1">Email liên hệ</label>
+              <input
+                type="email"
+                v-model="editForm.email"
+                class="form-control form-control-sm"
+              />
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label extra-small fw-semibold mb-1">Địa chỉ trụ sở</label>
+            <input
+              type="text"
+              v-model="editForm.diaChi"
+              class="form-control form-control-sm"
+            />
+          </div>
+
+          <div class="d-flex justify-content-end gap-2">
+            <button type="button" class="btn btn-secondary btn-sm py-1 px-2 extra-small" @click="showEditForm = false">
+              Hủy
+            </button>
+            <button
+              type="button"
+              class="btn btn-warning btn-sm py-1 px-3 extra-small fw-semibold"
+              :disabled="isSubmittingEdit"
+              @click="handleUpdatePublisher"
+            >
+              <span v-if="isSubmittingEdit" class="spinner-border spinner-border-sm me-1" style="width: 12px; height: 12px;"></span>
+              <i v-else class="bi bi-save me-1"></i>
+              Lưu Thay Đổi
+            </button>
+          </div>
+        </div>
+      </div>
+
       <!-- Danh Sách NXB Đã Lọc -->
-      <div class="publisher-list-container" v-if="!showQuickAddForm">
+      <div class="publisher-list-container" v-if="!showQuickAddForm && !showEditForm">
         <div v-if="filteredPublishers.length === 0" class="p-3 text-center text-muted small">
           <i class="bi bi-building-slash fs-3 text-muted d-block mb-1"></i>
           <div>Không tìm thấy Nhà xuất bản nào khớp với "<strong>{{ searchQuery }}</strong>"</div>
@@ -154,40 +220,51 @@
         <ul v-else class="list-unstyled mb-0 py-1">
           <li
             v-for="pub in filteredPublishers"
-            :key="pub.MaNXB || pub._id"
+            :key="pub.maNXB || pub.MaNXB || pub._id"
             class="publisher-list-item px-3 py-2 d-flex align-items-center justify-content-between"
-            :class="{ 'is-selected': modelValue === pub.MaNXB }"
+            :class="{ 'is-selected': modelValue === (pub.maNXB || pub.MaNXB) }"
             @click="selectPublisher(pub)"
           >
             <div class="me-2 text-truncate">
               <div class="fw-semibold text-dark item-title text-truncate">
                 <i class="bi bi-building me-1 text-primary opacity-75"></i>
-                {{ pub.TenNXB }}
+                {{ pub.tenNXB || pub.TenNXB }}
               </div>
-              <div class="text-muted extra-small text-truncate" v-if="pub.DiaChi">
-                <i class="bi bi-geo-alt me-1"></i>{{ pub.DiaChi }}
+              <div class="text-muted extra-small text-truncate" v-if="pub.diaChi || pub.DiaChi">
+                <i class="bi bi-geo-alt me-1"></i>{{ pub.diaChi || pub.DiaChi }}
               </div>
             </div>
 
-            <div class="d-flex align-items-center gap-2 flex-shrink-0">
-              <span class="badge bg-light text-secondary border font-monospace">{{ pub.MaNXB }}</span>
+            <div class="d-flex align-items-center gap-1 flex-shrink-0">
+              <span class="badge bg-light text-secondary border font-monospace">{{ pub.maNXB || pub.MaNXB }}</span>
+              
+              <!-- Nút Chỉnh sửa NXB -->
+              <button
+                type="button"
+                class="btn btn-outline-secondary btn-sm border-0 py-0 px-1 rounded btn-action"
+                title="Chỉnh sửa thông tin Nhà xuất bản"
+                @click.stop="openEditPublisher(pub)"
+              >
+                <i class="bi bi-pencil-square text-primary"></i>
+              </button>
+
               <button
                 v-if="isAdmin"
                 type="button"
-                class="btn btn-outline-danger btn-sm border-0 py-0 px-1 rounded"
+                class="btn btn-outline-danger btn-sm border-0 py-0 px-1 rounded btn-action"
                 title="Xóa Nhà xuất bản (Dành riêng cho ADMIN)"
                 @click.stop="handleDeletePublisher(pub)"
               >
                 <i class="bi bi-trash"></i>
               </button>
-              <i v-if="modelValue === pub.MaNXB" class="bi bi-check-circle-fill text-primary"></i>
+              <i v-if="modelValue === (pub.maNXB || pub.MaNXB)" class="bi bi-check-circle-fill text-primary ms-1"></i>
             </div>
           </li>
         </ul>
       </div>
 
       <!-- Footer Tạo NXB Mới nếu không mở form -->
-      <div v-if="!showQuickAddForm" class="p-2 border-top bg-light d-flex justify-content-between align-items-center">
+      <div v-if="!showQuickAddForm && !showEditForm" class="p-2 border-top bg-light d-flex justify-content-between align-items-center">
         <span class="text-muted extra-small">Tổng cộng: {{ filteredPublishers.length }} / {{ publishers.length }} NXB</span>
         <button
           type="button"
@@ -234,7 +311,9 @@ const searchInputRef = ref(null);
 const isOpen = ref(false);
 const searchQuery = ref('');
 const showQuickAddForm = ref(false);
+const showEditForm = ref(false);
 const isSubmittingQuickAdd = ref(false);
+const isSubmittingEdit = ref(false);
 
 const quickForm = reactive({
   tenNXB: '',
@@ -243,11 +322,24 @@ const quickForm = reactive({
   dienThoai: ''
 });
 
+const editForm = reactive({
+  id: '',
+  maNXB: '',
+  tenNXB: '',
+  diaChi: '',
+  dienThoai: '',
+  email: ''
+});
+
 const publishers = computed(() => bookStore.publishers || []);
 
 const selectedPublisher = computed(() => {
   if (!props.modelValue) return null;
-  return publishers.value.find((p) => p.MaNXB === props.modelValue || p._id === props.modelValue) || null;
+  return (
+    publishers.value.find(
+      (p) => (p.maNXB || p.MaNXB) === props.modelValue || p._id === props.modelValue
+    ) || null
+  );
 });
 
 // Hàm loại bỏ dấu tiếng Việt để tìm kiếm không dấu
@@ -271,9 +363,9 @@ const filteredPublishers = computed(() => {
   if (!query) return publishers.value;
 
   return publishers.value.filter((pub) => {
-    const name = removeVietnameseTones(pub.TenNXB || '');
-    const code = removeVietnameseTones(pub.MaNXB || '');
-    const address = removeVietnameseTones(pub.DiaChi || '');
+    const name = removeVietnameseTones(pub.tenNXB || pub.TenNXB || '');
+    const code = removeVietnameseTones(pub.maNXB || pub.MaNXB || '');
+    const address = removeVietnameseTones(pub.diaChi || pub.DiaChi || '');
     return name.includes(query) || code.includes(query) || address.includes(query);
   });
 });
@@ -281,6 +373,7 @@ const filteredPublishers = computed(() => {
 const openDropdown = () => {
   isOpen.value = true;
   showQuickAddForm.value = false;
+  showEditForm.value = false;
   nextTick(() => {
     searchInputRef.value?.focus();
   });
@@ -289,6 +382,7 @@ const openDropdown = () => {
 const closeDropdown = () => {
   isOpen.value = false;
   showQuickAddForm.value = false;
+  showEditForm.value = false;
   searchQuery.value = '';
 };
 
@@ -301,7 +395,8 @@ const toggleDropdown = () => {
 };
 
 const selectPublisher = (pub) => {
-  emit('update:modelValue', pub.MaNXB);
+  const maNXB = pub.maNXB || pub.MaNXB;
+  emit('update:modelValue', maNXB);
   emit('change', pub);
   closeDropdown();
 };
@@ -317,6 +412,50 @@ const openQuickAddWithQuery = () => {
   quickForm.diaChi = '';
   quickForm.dienThoai = '';
   showQuickAddForm.value = true;
+  showEditForm.value = false;
+};
+
+const openEditPublisher = (pub) => {
+  editForm.id = pub._id || pub.id || pub.maNXB || pub.MaNXB;
+  editForm.maNXB = pub.maNXB || pub.MaNXB;
+  editForm.tenNXB = pub.tenNXB || pub.TenNXB;
+  editForm.diaChi = pub.diaChi || pub.DiaChi || '';
+  editForm.dienThoai = pub.dienThoai || pub.DienThoai || '';
+  editForm.email = pub.email || pub.Email || '';
+  showEditForm.value = true;
+  showQuickAddForm.value = false;
+};
+
+const handleUpdatePublisher = async () => {
+  if (!editForm.tenNXB.trim()) {
+    toast.warning('Vui lòng nhập tên nhà xuất bản.');
+    return;
+  }
+
+  isSubmittingEdit.value = true;
+  try {
+    const res = await bookStore.updatePublisher(editForm.id, {
+      tenNXB: editForm.tenNXB.trim(),
+      diaChi: editForm.diaChi.trim(),
+      dienThoai: editForm.dienThoai.trim(),
+      email: editForm.email.trim()
+    });
+
+    if (res.success && res.data) {
+      toast.success(`Cập nhật nhà xuất bản "${res.data.tenNXB || res.data.TenNXB}" thành công!`);
+      const currentCode = res.data.maNXB || res.data.MaNXB;
+      if (props.modelValue === currentCode || props.modelValue === editForm.id) {
+        emit('change', res.data);
+      }
+      showEditForm.value = false;
+    } else {
+      toast.error(res.error || 'Cập nhật nhà xuất bản thất bại.');
+    }
+  } catch (err) {
+    toast.error('Lỗi khi kết nối hệ thống cập nhật nhà xuất bản.');
+  } finally {
+    isSubmittingEdit.value = false;
+  }
 };
 
 const handleQuickAddPublisher = async () => {
@@ -335,9 +474,10 @@ const handleQuickAddPublisher = async () => {
     });
 
     if (res.success && res.data) {
-      toast.success(`Đã thêm nhà xuất bản "${res.data.TenNXB}" thành công!`);
+      toast.success(`Đã thêm nhà xuất bản "${res.data.tenNXB || res.data.TenNXB}" thành công!`);
       // Tự động chọn NXB vừa tạo
-      emit('update:modelValue', res.data.MaNXB);
+      const createdCode = res.data.maNXB || res.data.MaNXB;
+      emit('update:modelValue', createdCode);
       emit('change', res.data);
       closeDropdown();
     } else {
@@ -352,15 +492,17 @@ const handleQuickAddPublisher = async () => {
 
 // Xử lý xóa Nhà xuất bản (Dành riêng cho ADMIN)
 const handleDeletePublisher = async (pub) => {
-  if (!confirm(`Bạn có chắc chắn muốn xóa Nhà xuất bản "${pub.TenNXB}" (${pub.MaNXB}) khỏi hệ thống?`)) {
+  const pubName = pub.tenNXB || pub.TenNXB;
+  const pubCode = pub.maNXB || pub.MaNXB;
+  if (!confirm(`Bạn có chắc chắn muốn xóa Nhà xuất bản "${pubName}" (${pubCode}) khỏi hệ thống?`)) {
     return;
   }
 
-  const res = await bookStore.deletePublisher(pub._id || pub.MaNXB);
+  const res = await bookStore.deletePublisher(pub._id || pubCode);
   if (res.success) {
     toast.success(res.message);
     // Nếu NXB bị xóa đang được chọn trong form thì reset
-    if (props.modelValue === pub.MaNXB || props.modelValue === pub._id) {
+    if (props.modelValue === pubCode || props.modelValue === pub._id) {
       emit('update:modelValue', '');
       emit('change', null);
     }
@@ -474,11 +616,22 @@ defineExpose({
   background-color: #e8f5e9;
 }
 
+.btn-action {
+  opacity: 0.7;
+  transition: opacity 0.15s ease, transform 0.1s ease;
+}
+
+.btn-action:hover {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
 .extra-small {
   font-size: 0.75rem;
 }
 
-.quick-add-section {
+.quick-add-section,
+.quick-section {
   background-color: #f8fafc;
 }
 </style>

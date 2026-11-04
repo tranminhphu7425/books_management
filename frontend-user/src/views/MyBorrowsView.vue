@@ -114,7 +114,7 @@
             <i class="bi bi-journal-check fs-1 text-muted mb-3"></i>
             <h5 class="font-serif">Bạn hiện không có sách nào đang mượn</h5>
             <p class="text-muted small mb-3">
-              Mỗi độc giả có thể mượn tối đa 3 cuốn sách cùng lúc với thời hạn 14 ngày.
+              Mỗi độc giả có thể mượn tối đa {{ settingsStore.maxBooks }} cuốn sách cùng lúc với thời hạn {{ settingsStore.borrowDays }} ngày.
             </p>
             <div>
               <router-link to="/books" class="btn btn-primary btn-sm px-4">
@@ -132,10 +132,10 @@
               <div class="card border-0 shadow-sm h-100 p-3 bg-white borrow-card">
                 <div class="d-flex gap-3">
                   <!-- Ảnh sách có Link -->
-                  <router-link :to="getBookDetailLink(item)" class="flex-shrink-0" :title="`Xem chi tiết: ${item.SachId?.TenSach || item.MaSach}`">
+                  <router-link :to="getBookDetailLink(item)" class="flex-shrink-0" :title="`Xem chi tiết: ${(item.SachId?.tenSach || item.SachId?.TenSach) || (item.maSach || item.MaSach)}`">
                     <img
                       :src="getCover(item)"
-                      :alt="item.SachId?.TenSach || item.MaSach"
+                      :alt="(item.SachId?.tenSach || item.SachId?.TenSach) || (item.maSach || item.MaSach)"
                       class="rounded shadow-sm book-thumbnail-hover"
                       style="width: 85px; height: 125px; object-fit: cover;"
                       @error="onImageError"
@@ -149,9 +149,9 @@
                         <router-link
                           :to="getBookDetailLink(item)"
                           class="text-decoration-none text-dark hover-primary"
-                          :title="`Xem chi tiết: ${item.SachId?.TenSach || item.MaSach}`"
+                          :title="`Xem chi tiết: ${(item.SachId?.tenSach || item.SachId?.TenSach) || (item.maSach || item.MaSach)}`"
                         >
-                          {{ item.SachId?.TenSach || item.MaSach }}
+                          {{ (item.SachId?.tenSach || item.SachId?.TenSach) || (item.maSach || item.MaSach) }}
                         </router-link>
                       </h6>
                       <span class="badge bg-success-subtle text-success border border-success-subtle">
@@ -160,26 +160,26 @@
                     </div>
 
                     <div class="small text-muted mb-2">
-                      Tác giả: {{ item.SachId?.TacGia || 'Chưa cập nhật' }}
+                      Tác giả: {{ (item.SachId?.tacGia || item.SachId?.TacGia) || 'Chưa cập nhật' }}
                     </div>
 
                     <div class="small bg-light p-2 rounded mb-2">
                       <div class="d-flex justify-content-between mb-1">
                         <span>Ngày mượn:</span>
-                        <strong class="text-dark">{{ formatDate(item.NgayMuon) }}</strong>
+                        <strong class="text-dark">{{ formatDate((item.ngayMuon || item.NgayMuon)) }}</strong>
                       </div>
                       <div class="d-flex justify-content-between">
                         <span>Hạn trả sách:</span>
-                        <strong :class="isOverdue(item.HanTra || item.NgayTra) ? 'text-danger fw-bold' : 'text-primary'">
-                          {{ formatDate(item.HanTra || item.NgayTra) }}
-                          <span v-if="isOverdue(item.HanTra || item.NgayTra)" class="badge bg-danger ms-1">Quá hạn</span>
+                        <strong :class="isOverdue((item.hanTra || item.HanTra) || (item.ngayTra || item.NgayTra)) ? 'text-danger fw-bold' : 'text-primary'">
+                          {{ formatDate((item.hanTra || item.HanTra) || (item.ngayTra || item.NgayTra)) }}
+                          <span v-if="isOverdue((item.hanTra || item.HanTra) || (item.ngayTra || item.NgayTra))" class="badge bg-danger ms-1">Quá hạn</span>
                         </strong>
                       </div>
                     </div>
 
                     <div class="mt-auto d-flex justify-content-between align-items-center pt-2 border-top">
                       <div class="small text-muted">
-                        Số lần gia hạn: <strong>{{ item.SoLanGiaHan || 0 }} / 1</strong>
+                        Số lần gia hạn: <strong>{{ (item.soLanGiaHan ?? item.SoLanGiaHan) || 0 }} / {{ settingsStore.maxRenew }}</strong>
                       </div>
 
                       <div class="d-flex align-items-center gap-2">
@@ -192,11 +192,11 @@
                         </router-link>
                         <button
                           class="btn btn-sm btn-outline-success"
-                          :disabled="item.SoLanGiaHan >= 1 || isOverdue(item.HanTra || item.NgayTra) || isActionLoading"
+                          :disabled="(item.soLanGiaHan ?? item.SoLanGiaHan) >= settingsStore.maxRenew || isOverdue((item.hanTra || item.HanTra) || (item.ngayTra || item.NgayTra)) || isActionLoading"
                           @click="handleRenew(item._id)"
-                          title="Gia hạn thêm 7 ngày kể từ hạn trả hiện tại"
+                          :title="`Gia hạn thêm ${settingsStore.renewDays} ngày kể từ hạn trả hiện tại`"
                         >
-                          <i class="bi bi-arrow-repeat me-1"></i> Gia hạn (+7 ngày)
+                          <i class="bi bi-arrow-repeat me-1"></i> Gia hạn (+{{ settingsStore.renewDays }} ngày)
                         </button>
                       </div>
                     </div>
@@ -225,14 +225,14 @@
             >
               <div
                 class="card border-0 shadow-sm h-100 p-3 bg-white border-start border-4"
-                :class="item.TrangThai === 'APPROVED' ? 'border-success' : 'border-warning'"
+                :class="(item.trangThai || item.TrangThai) === 'APPROVED' ? 'border-success' : 'border-warning'"
               >
                 <div class="d-flex gap-3">
                   <!-- Ảnh bìa sách có Link -->
-                  <router-link :to="getBookDetailLink(item)" class="flex-shrink-0" :title="`Xem chi tiết: ${item.SachId?.TenSach || item.MaSach}`">
+                  <router-link :to="getBookDetailLink(item)" class="flex-shrink-0" :title="`Xem chi tiết: ${(item.SachId?.tenSach || item.SachId?.TenSach) || (item.maSach || item.MaSach)}`">
                     <img
                       :src="getCover(item)"
-                      :alt="item.SachId?.TenSach || item.MaSach"
+                      :alt="(item.SachId?.tenSach || item.SachId?.TenSach) || (item.maSach || item.MaSach)"
                       class="rounded shadow-sm book-thumbnail-hover"
                       style="width: 85px; height: 125px; object-fit: cover;"
                       @error="onImageError"
@@ -245,24 +245,24 @@
                         <router-link
                           :to="getBookDetailLink(item)"
                           class="text-decoration-none text-dark hover-primary"
-                          :title="`Xem chi tiết: ${item.SachId?.TenSach || item.MaSach}`"
+                          :title="`Xem chi tiết: ${(item.SachId?.tenSach || item.SachId?.TenSach) || (item.maSach || item.MaSach)}`"
                         >
-                          {{ item.SachId?.TenSach || item.MaSach }}
+                          {{ (item.SachId?.tenSach || item.SachId?.TenSach) || (item.maSach || item.MaSach) }}
                         </router-link>
                       </h6>
                       <span
                         class="badge"
-                        :class="item.TrangThai === 'APPROVED' ? 'bg-success text-white' : 'bg-warning text-dark'"
+                        :class="(item.trangThai || item.TrangThai) === 'APPROVED' ? 'bg-success text-white' : 'bg-warning text-dark'"
                       >
-                        <i :class="item.TrangThai === 'APPROVED' ? 'bi bi-check2-circle me-1' : 'bi bi-clock me-1'"></i>
-                        {{ item.TrangThai === 'APPROVED' ? 'Đã duyệt (Chờ lấy)' : 'Chờ duyệt' }}
+                        <i :class="(item.trangThai || item.TrangThai) === 'APPROVED' ? 'bi bi-check2-circle me-1' : 'bi bi-clock me-1'"></i>
+                        {{ (item.trangThai || item.TrangThai) === 'APPROVED' ? 'Đã duyệt (Chờ lấy)' : 'Chờ duyệt' }}
                       </span>
                     </div>
 
                     <div class="small text-muted mb-2">
-                      Mã sách: <code>{{ item.MaSach }}</code>
-                      <span class="mx-1" v-if="item.SachId?.TacGia">•</span>
-                      <span v-if="item.SachId?.TacGia">{{ item.SachId.TacGia }}</span>
+                      Mã sách: <code>{{ (item.maSach || item.MaSach) }}</code>
+                      <span class="mx-1" v-if="(item.SachId?.tacGia || item.SachId?.TacGia)">•</span>
+                      <span v-if="(item.SachId?.tacGia || item.SachId?.TacGia)">{{ item.SachId.TacGia }}</span>
                     </div>
 
                     <div class="small bg-light p-2 rounded mb-2">
@@ -274,14 +274,14 @@
                         <span>Ngày hẹn lấy sách:</span>
                         <strong class="text-success">{{ formatDate(item.NgayHenLay) }}</strong>
                       </div>
-                      <div class="d-flex justify-content-between text-primary" v-if="item.TrangThai === 'APPROVED' && item.HanChotNhan">
-                        <span>Hạn chót nhận (48h):</span>
+                      <div class="d-flex justify-content-between text-primary" v-if="(item.trangThai || item.TrangThai) === 'APPROVED' && item.HanChotNhan">
+                        <span>Hạn chót nhận ({{ settingsStore.holdHours }}h):</span>
                         <strong>{{ formatDate(item.HanChotNhan) }}</strong>
                       </div>
                     </div>
 
                     <div class="mt-auto d-flex justify-content-between align-items-center pt-2 border-top">
-                      <template v-if="item.TrangThai === 'PENDING'">
+                      <template v-if="(item.trangThai || item.TrangThai) === 'PENDING'">
                         <span class="small text-muted fst-italic">
                           <i class="bi bi-info-circle me-1"></i> Có thể hủy trước khi duyệt
                         </span>
@@ -293,7 +293,7 @@
                           <i class="bi bi-trash me-1"></i> Hủy yêu cầu
                         </button>
                       </template>
-                      <template v-else-if="item.TrangThai === 'APPROVED'">
+                      <template v-else-if="(item.trangThai || item.TrangThai) === 'APPROVED'">
                         <span class="small text-success fw-semibold">
                           <i class="bi bi-geo-alt-fill me-1"></i> Vui lòng xuất trình mã thẻ tại quầy số 1
                         </span>
@@ -333,7 +333,7 @@
                         <router-link :to="getBookDetailLink(item)">
                           <img
                             :src="getCover(item)"
-                            :alt="item.SachId?.TenSach || item.MaSach"
+                            :alt="(item.SachId?.tenSach || item.SachId?.TenSach) || (item.maSach || item.MaSach)"
                             class="rounded shadow-sm book-thumbnail-hover"
                             style="width: 40px; height: 55px; object-fit: cover;"
                             @error="onImageError"
@@ -345,25 +345,25 @@
                               :to="getBookDetailLink(item)"
                               class="text-decoration-none text-dark hover-primary"
                             >
-                              {{ item.SachId?.TenSach || item.MaSach }}
+                              {{ (item.SachId?.tenSach || item.SachId?.TenSach) || (item.maSach || item.MaSach) }}
                             </router-link>
                           </div>
-                          <div class="text-muted small" style="font-size: 0.75rem;">Mã: {{ item.MaSach }}</div>
+                          <div class="text-muted small" style="font-size: 0.75rem;">Mã: {{ (item.maSach || item.MaSach) }}</div>
                         </div>
                       </div>
                     </td>
-                    <td class="small">{{ formatDate(item.NgayMuon || item.NgayYeuCau || item.createdAt) }}</td>
-                    <td class="small">{{ formatDate(item.NgayTraThucTe || item.NgayTra || item.updatedAt) }}</td>
+                    <td class="small">{{ formatDate((item.ngayMuon || item.NgayMuon) || item.NgayYeuCau || item.createdAt) }}</td>
+                    <td class="small">{{ formatDate((item.ngayTraThucTe || item.NgayTraThucTe) || (item.ngayTra || item.NgayTra) || item.updatedAt) }}</td>
                     <td>
                       <span
                         class="badge"
                         :class="{
-                          'bg-success': item.TrangThai === 'RETURNED',
-                          'bg-secondary': item.TrangThai === 'CANCELLED',
-                          'bg-danger': item.TrangThai === 'OVERDUE' || item.TrangThai === 'REJECTED' || item.TrangThai === 'EXPIRED'
+                          'bg-success': (item.trangThai || item.TrangThai) === 'RETURNED',
+                          'bg-secondary': (item.trangThai || item.TrangThai) === 'CANCELLED',
+                          'bg-danger': (item.trangThai || item.TrangThai) === 'OVERDUE' || (item.trangThai || item.TrangThai) === 'REJECTED' || (item.trangThai || item.TrangThai) === 'EXPIRED'
                         }"
                       >
-                        {{ getStatusLabel(item.TrangThai) }}
+                        {{ getStatusLabel((item.trangThai || item.TrangThai)) }}
                       </span>
                     </td>
                     <td class="text-end">
@@ -389,11 +389,13 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { useBorrowStore } from '../stores/borrowStore';
+import { useSettingsStore } from '../stores/settingsStore';
 import { useToast } from '../composables/useToast';
 import { useConfirm } from '../composables/useConfirm';
 import { getImageUrl } from '../utils/imageHelper';
 
 const borrowStore = useBorrowStore();
+const settingsStore = useSettingsStore();
 const toast = useToast();
 const { confirm } = useConfirm();
 const activeTab = ref('borrowed');
@@ -446,14 +448,14 @@ const getBookDetailLink = (item) => {
   if (!item) return '/books';
   if (item.SachId?._id) return `/books/${item.SachId._id}`;
   if (typeof item.SachId === 'string' && item.SachId.length === 24) return `/books/${item.SachId}`;
-  if (item.MaSach) return `/books/${item.MaSach}`;
+  if ((item.maSach || item.MaSach)) return `/books/${(item.maSach || item.MaSach)}`;
   return '/books';
 };
 
 const handleRenew = async (id) => {
   const isConfirmed = await confirm({
     title: 'Gia hạn mượn sách',
-    message: 'Bạn có chắc chắn muốn gia hạn ấn phẩm này thêm 07 ngày mượn đọc không?',
+    message: `Bạn có chắc chắn muốn gia hạn ấn phẩm này thêm ${settingsStore.renewDays} ngày mượn đọc không?`,
     confirmText: 'Xác nhận gia hạn',
     type: 'primary',
     icon: 'bi-arrow-repeat'

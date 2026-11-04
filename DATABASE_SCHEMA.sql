@@ -288,3 +288,30 @@ CREATE INDEX idx_NhatKy_HanhDong ON NhatKyHoatDong(HanhDong);
 CREATE INDEX idx_NhatKy_NhanVienId ON NhatKyHoatDong(NhanVienId);
 CREATE INDEX idx_NhatKy_TenCollection ON NhatKyHoatDong(TenCollection);
 CREATE INDEX idx_NhatKy_DocumentId ON NhatKyHoatDong(DocumentId);
+
+
+-- -----------------------------------------------------------------------------
+-- 9. COLLECTION: DanhGiaSach (Bổ trợ mở rộng)
+-- Mô tả: Nhận xét và đánh giá sao của bạn đọc đối với các ấn phẩm đã mượn và hoàn trả
+-- -----------------------------------------------------------------------------
+CREATE TABLE DanhGiaSach (
+  _id                 VARCHAR(24) PRIMARY KEY,     -- MongoDB ObjectId
+  SachId              VARCHAR(24) NOT NULL,        -- Khóa ngoại tham chiếu Sach._id (Index)
+  MaSach              VARCHAR(50) NOT NULL,        -- Mã ấn phẩm (Index)
+  DocGiaId            VARCHAR(24) NOT NULL,        -- Khóa ngoại tham chiếu DocGia._id (Index)
+  MaDocGia            VARCHAR(50) NOT NULL,        -- Mã độc giả đánh giá
+  HoTenDocGia         VARCHAR(150) NOT NULL,       -- Họ tên độc giả tại thời điểm đánh giá
+  AvatarDocGia        TEXT DEFAULT '',             -- Đường dẫn ảnh đại diện độc giả
+  SoSao               INT NOT NULL DEFAULT 5,      -- Điểm đánh giá (1 - 5 sao, CHECK: SoSao BETWEEN 1 AND 5)
+  NoiDung             TEXT NOT NULL,               -- Nội dung nhận xét (2 - 2000 ký tự)
+  createdAt           TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updatedAt           TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  CONSTRAINT fk_DanhGia_Sach FOREIGN KEY (SachId) REFERENCES Sach(_id),
+  CONSTRAINT fk_DanhGia_DocGia FOREIGN KEY (DocGiaId) REFERENCES DocGia(_id),
+  CONSTRAINT chk_DanhGia_SoSao CHECK (SoSao >= 1 AND SoSao <= 5)
+);
+
+CREATE UNIQUE INDEX uq_DanhGia_Sach_DocGia ON DanhGiaSach(SachId, DocGiaId);
+CREATE INDEX idx_DanhGiaSach_SachId ON DanhGiaSach(SachId);
+CREATE INDEX idx_DanhGiaSach_DocGiaId ON DanhGiaSach(DocGiaId);
+CREATE INDEX idx_DanhGiaSach_CreatedAt ON DanhGiaSach(createdAt);

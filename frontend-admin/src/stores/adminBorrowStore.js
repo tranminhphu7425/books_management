@@ -1,6 +1,61 @@
 import { defineStore } from 'pinia';
 import api from '../services/api';
 
+/**
+ * Chuẩn hóa đối tượng phiếu theo dõi mượn trả sách sang camelCase chuẩn JavaScript
+ */
+export const normalizeBorrow = (b) => {
+  if (!b) return b;
+  const maTheoDoi = b.maTheoDoi || b.MaTheoDoi || '';
+  const maDocGia = b.maDocGia || b.MaDocGia || b.docGiaId?.maDocGia || b.docGiaId?.MaDocGia || b.docGia?.maDocGia || b.docGia?.MaDocGia || '';
+  const maSach = b.maSach || b.MaSach || b.sachId?.maSach || b.sachId?.MaSach || b.sach?.maSach || b.sach?.MaSach || '';
+  const ngayMuon = b.ngayMuon || b.NgayMuon || '';
+  const hanTra = b.hanTra || b.HanTra || b.ngayTra || b.NgayTra || '';
+  const ngayTra = b.ngayTra || b.NgayTra || hanTra;
+  const ngayTraThucTe = b.ngayTraThucTe || b.NgayTraThucTe || '';
+  const trangThai = b.trangThai || b.TrangThai || '';
+  const tienPhat = Number(b.tienPhat ?? b.TienPhat ?? 0);
+  const ngayYeuCau = b.ngayYeuCau || b.NgayYeuCau || b.createdAt || '';
+  const ngayHenLay = b.ngayHenLay || b.NgayHenLay || '';
+  const hanChotNhan = b.hanChotNhan || b.HanChotNhan || ngayHenLay;
+  const lyDoTuChoi = b.lyDoTuChoi || b.LyDoTuChoi || '';
+  const ghiChu = b.ghiChu || b.GhiChu || '';
+
+  return {
+    ...b,
+    _id: b._id || b.id,
+    id: b.id || b._id,
+    maTheoDoi,
+    MaTheoDoi: maTheoDoi,
+    maDocGia,
+    MaDocGia: maDocGia,
+    maSach,
+    MaSach: maSach,
+    ngayMuon,
+    NgayMuon: ngayMuon,
+    hanTra,
+    HanTra: hanTra,
+    ngayTra,
+    NgayTra: ngayTra,
+    ngayTraThucTe,
+    NgayTraThucTe: ngayTraThucTe,
+    trangThai,
+    TrangThai: trangThai,
+    tienPhat,
+    TienPhat: tienPhat,
+    ngayYeuCau,
+    NgayYeuCau: ngayYeuCau,
+    ngayHenLay,
+    NgayHenLay: ngayHenLay,
+    hanChotNhan,
+    HanChotNhan: hanChotNhan,
+    lyDoTuChoi,
+    LyDoTuChoi: lyDoTuChoi,
+    ghiChu,
+    GhiChu: ghiChu
+  };
+};
+
 export const useAdminBorrowStore = defineStore('adminBorrow', {
   state: () => ({
     borrows: [],
@@ -9,16 +64,19 @@ export const useAdminBorrowStore = defineStore('adminBorrow', {
   }),
 
   getters: {
-    pendingBorrows: (state) => state.borrows.filter((b) => b.TrangThai === 'PENDING'),
-    approvedBorrows: (state) => state.borrows.filter((b) => b.TrangThai === 'APPROVED'),
-    activeBorrows: (state) => state.borrows.filter((b) => b.TrangThai === 'BORROWED'),
+    pendingBorrows: (state) => state.borrows.filter((b) => (b.trangThai || b.TrangThai) === 'PENDING'),
+    approvedBorrows: (state) => state.borrows.filter((b) => (b.trangThai || b.TrangThai) === 'APPROVED'),
+    activeBorrows: (state) => state.borrows.filter((b) => (b.trangThai || b.TrangThai) === 'BORROWED'),
     overdueBorrows: (state) => {
       const now = new Date();
       return state.borrows.filter(
-        (b) => b.TrangThai === 'BORROWED' && (b.HanTra || b.NgayTra) && new Date(b.HanTra || b.NgayTra) < now
+        (b) =>
+          (b.trangThai || b.TrangThai) === 'BORROWED' &&
+          (b.hanTra || b.HanTra || b.ngayTra || b.NgayTra) &&
+          new Date(b.hanTra || b.HanTra || b.ngayTra || b.NgayTra) < now
       );
     },
-    returnedBorrows: (state) => state.borrows.filter((b) => ['RETURNED', 'CANCELLED'].includes(b.TrangThai))
+    returnedBorrows: (state) => state.borrows.filter((b) => ['RETURNED', 'CANCELLED'].includes(b.trangThai || b.TrangThai))
   },
 
   actions: {
@@ -28,7 +86,8 @@ export const useAdminBorrowStore = defineStore('adminBorrow', {
       try {
         const params = status ? { status } : {};
         const response = await api.get('/borrows', { params });
-        this.borrows = response.data.data;
+        const list = Array.isArray(response.data.data) ? response.data.data : [];
+        this.borrows = list.map(normalizeBorrow);
       } catch (err) {
         this.error = err.response?.data?.error?.message || 'Không thể tải danh sách phiếu mượn.';
       } finally {

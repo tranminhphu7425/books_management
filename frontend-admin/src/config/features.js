@@ -12,5 +12,5 @@ export const ADMIN_FEATURES = {
    * - false: Ẩn hoàn toàn khỏi Sidebar và chặn truy cập Route
    * - true : Hiển thị trên Sidebar và cho phép truy cập
    */
-  ENABLE_SETTINGS_PAGE: false,
+  ENABLE_SETTINGS_PAGE: true,
 };

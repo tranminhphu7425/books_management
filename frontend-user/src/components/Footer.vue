@@ -39,7 +39,7 @@
           </ul>
           <div class="mt-3 p-2 rounded bg-black bg-opacity-25 text-white-50 small">
             <i class="bi bi-info-circle text-info me-1"></i>
-            Hệ thống hỗ trợ đặt mượn trực tuyến 24/7. Bạn đọc có 48 giờ để đến quầy nhận sách kể từ khi yêu cầu được duyệt.
+            Hệ thống hỗ trợ đặt mượn trực tuyến 24/7. Bạn đọc có {{ settingsStore.holdHours }} giờ để đến quầy nhận sách kể từ khi yêu cầu được duyệt.
           </div>
         </div>
 
@@ -49,11 +49,11 @@
           <ul class="list-unstyled text-white-50 small mb-3">
             <li class="mb-2 d-flex align-items-start gap-2">
               <i class="bi bi-check-circle-fill text-success mt-1"></i>
-              <span>Mỗi bạn đọc được mượn tối đa <strong>03 cuốn sách</strong> cùng một thời điểm.</span>
+              <span>Mỗi bạn đọc được mượn tối đa <strong>{{ settingsStore.maxBooks }} cuốn sách</strong> cùng một thời điểm.</span>
             </li>
             <li class="mb-2 d-flex align-items-start gap-2">
               <i class="bi bi-check-circle-fill text-success mt-1"></i>
-              <span>Thời hạn mượn tiêu chuẩn là <strong>14 ngày</strong> và được quyền gia hạn thêm 01 lần (+07 ngày).</span>
+              <span>Thời hạn mượn tiêu chuẩn là <strong>{{ settingsStore.borrowDays }} ngày</strong> và được quyền gia hạn thêm {{ settingsStore.maxRenew }} lần (+{{ settingsStore.renewDays }} ngày).</span>
             </li>
             <li class="mb-2 d-flex align-items-start gap-2">
               <i class="bi bi-exclamation-triangle-fill text-warning mt-1"></i>
@@ -77,6 +77,12 @@
     </div>
   </footer>
 </template>
+
+<script setup>
+import { useSettingsStore } from '../stores/settingsStore';
+
+const settingsStore = useSettingsStore();
+</script>
 
 <style scoped>
 .footer-custom {

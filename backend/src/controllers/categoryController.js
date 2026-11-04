@@ -159,6 +159,14 @@ exports.updateCategory = async (req, res, next) => {
 
     await cat.save();
 
+    // Đồng bộ cập nhật tên thể loại cho các đầu sách liên quan nếu tên thể loại thay đổi
+    if (oldData.TenTheLoai !== cat.TenTheLoai) {
+      await Sach.updateMany(
+        { $or: [{ TheLoai: oldData.TenTheLoai }, { MaTheLoai: cat.MaTheLoai }] },
+        { $set: { TheLoai: cat.TenTheLoai } }
+      );
+    }
+
     await logAuditTrail(req, {
       hanhDong: 'UPDATE_CATEGORY',
       collection: 'TheLoai',

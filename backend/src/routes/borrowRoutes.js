@@ -10,9 +10,7 @@ const { borrowLimiter } = require('../middlewares/rateLimiter');
 router.post('/', authMiddleware, requireUser, borrowLimiter, borrowCheck, borrowController.requestBorrow);
 router.get('/my-borrows', authMiddleware, requireUser, borrowController.getMyBorrows);
 router.get('/my-history', authMiddleware, requireUser, borrowController.getMyBorrows);
-router.put('/:id/cancel', authMiddleware, requireUser, borrowController.cancelMyBorrow);
 router.patch('/:id/cancel', authMiddleware, requireUser, borrowController.cancelMyBorrow);
-router.put('/:id/renew', authMiddleware, requireUser, borrowController.renewBorrow);
 router.patch('/:id/renew', authMiddleware, requireUser, borrowController.renewBorrow);
 
 // Staff routes (ADMIN & BOOK_MANAGER)

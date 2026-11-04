@@ -73,27 +73,27 @@
                 <td>
                   <div
                     class="fw-bold text-primary role-clickable hover-underline"
-                    @click="bookDetailModalRef?.open(item.SachId || item.MaSach)"
+                    @click="bookDetailModalRef?.open(item.sachId || item.SachId || item.maSach || item.MaSach)"
                     title="Nhấn để xem thông tin chi tiết ấn phẩm"
                   >
-                    <i class="bi bi-book me-1"></i>{{ item.SachId?.TenSach || item.MaSach }}
+                    <i class="bi bi-book me-1"></i>{{ item.sachId?.tenSach || item.SachId?.TenSach || item.maSach || item.MaSach }}
                   </div>
-                  <div class="text-muted" style="font-size: 0.75rem;">Mã: <code>{{ item.MaSach }}</code> | Kệ: {{ item.SachId?.ViTri || 'Chung' }}</div>
+                  <div class="text-muted" style="font-size: 0.75rem;">Mã: <code>{{ item.maSach || item.MaSach }}</code> | Kệ: {{ item.sachId?.viTri || item.SachId?.ViTri || 'Chung' }}</div>
                 </td>
                 <td>
                   <div
                     class="fw-semibold text-dark role-clickable hover-underline"
-                    @click="userDetailModalRef?.open(item.DocGiaId || item.MaDocGia)"
+                    @click="userDetailModalRef?.open(item.docGiaId || item.DocGiaId || item.maDocGia || item.MaDocGia)"
                     title="Nhấn để xem hồ sơ chi tiết bạn đọc"
                   >
-                    <i class="bi bi-person-fill text-muted me-1"></i>{{ item.DocGiaId?.HoLot }} {{ item.DocGiaId?.Ten }}
+                    <i class="bi bi-person-fill text-muted me-1"></i>{{ item.docGiaId?.hoLot || item.DocGiaId?.HoLot }} {{ item.docGiaId?.ten || item.DocGiaId?.Ten }}
                   </div>
-                  <div class="text-muted" style="font-size: 0.75rem;">{{ item.DocGiaId?.Email }} | SĐT: {{ item.DocGiaId?.DienThoai }}</div>
+                  <div class="text-muted" style="font-size: 0.75rem;">{{ item.docGiaId?.email || item.DocGiaId?.Email }} | SĐT: {{ item.docGiaId?.soDienThoai || item.docGiaId?.dienThoai || item.DocGiaId?.DienThoai }}</div>
                 </td>
-                <td>{{ formatDate(item.NgayYeuCau || item.createdAt) }}</td>
+                <td>{{ formatDate(item.ngayYeuCau || item.NgayYeuCau || item.createdAt) }}</td>
                 <td>
                   <span class="badge bg-light text-dark border">
-                    {{ formatDate(item.NgayHenLay) }}
+                    {{ formatDate(item.ngayHenLay || item.NgayHenLay) }}
                   </span>
                 </td>
                 <td class="text-end">
@@ -139,26 +139,26 @@
                 <td>
                   <div
                     class="fw-bold text-primary role-clickable hover-underline"
-                    @click="bookDetailModalRef?.open(item.SachId || item.MaSach)"
+                    @click="bookDetailModalRef?.open(item.sachId || item.SachId || item.maSach || item.MaSach)"
                     title="Nhấn để xem thông tin chi tiết ấn phẩm"
                   >
-                    <i class="bi bi-book me-1"></i>{{ item.SachId?.TenSach || item.MaSach }}
+                    <i class="bi bi-book me-1"></i>{{ item.sachId?.tenSach || item.SachId?.TenSach || item.maSach || item.MaSach }}
                   </div>
-                  <div class="text-muted" style="font-size: 0.75rem;">Mã: <code>{{ item.MaSach }}</code> | Kệ: {{ item.SachId?.ViTri || 'Chung' }}</div>
+                  <div class="text-muted" style="font-size: 0.75rem;">Mã: <code>{{ item.maSach || item.MaSach }}</code> | Kệ: {{ item.sachId?.viTri || item.SachId?.ViTri || 'Chung' }}</div>
                 </td>
                 <td>
                   <div
                     class="fw-semibold text-dark role-clickable hover-underline"
-                    @click="userDetailModalRef?.open(item.DocGiaId || item.MaDocGia)"
+                    @click="userDetailModalRef?.open(item.docGiaId || item.DocGiaId || item.maDocGia || item.MaDocGia)"
                     title="Nhấn để xem hồ sơ chi tiết bạn đọc"
                   >
-                    <i class="bi bi-person-fill text-muted me-1"></i>{{ item.DocGiaId?.HoLot }} {{ item.DocGiaId?.Ten }}
+                    <i class="bi bi-person-fill text-muted me-1"></i>{{ item.docGiaId?.hoLot || item.DocGiaId?.HoLot }} {{ item.docGiaId?.ten || item.DocGiaId?.Ten }}
                   </div>
-                  <div class="text-muted" style="font-size: 0.75rem;">Mã ĐG: <code>{{ item.MaDocGia }}</code> | SĐT: {{ item.DocGiaId?.DienThoai }}</div>
+                  <div class="text-muted" style="font-size: 0.75rem;">Mã ĐG: <code>{{ item.maDocGia || item.MaDocGia }}</code> | SĐT: {{ item.docGiaId?.soDienThoai || item.docGiaId?.dienThoai || item.DocGiaId?.DienThoai }}</div>
                 </td>
                 <td>
                   <span class="badge bg-warning-subtle text-warning border border-warning-subtle">
-                    <i class="bi bi-clock-history me-1"></i> Hết hạn giữ: {{ formatDate(item.HanChotNhan || item.NgayHenLay) }}
+                    <i class="bi bi-clock-history me-1"></i> Hết hạn giữ: {{ formatDate(item.hanChotNhan || item.HanChotNhan || item.ngayHenLay || item.NgayHenLay) }}
                   </span>
                 </td>
                 <td class="text-end">
@@ -241,9 +241,10 @@ const refreshData = () => {
 };
 
 const handleApprove = async (item) => {
+  const bookTitle = item.sachId?.tenSach || item.SachId?.TenSach || item.maSach || item.MaSach;
   const isConfirmed = await confirm({
     title: 'Duyệt yêu cầu mượn sách',
-    message: `Xác nhận phê duyệt yêu cầu mượn cuốn "${item.SachId?.TenSach || item.MaSach}" và giữ sách tại quầy trong 48 giờ?`,
+    message: `Xác nhận phê duyệt yêu cầu mượn cuốn "${bookTitle}" và giữ sách tại quầy trong 48 giờ?`,
     confirmText: 'Duyệt yêu cầu',
     cancelText: 'Hủy bỏ',
     type: 'primary',
@@ -257,9 +258,10 @@ const handleApprove = async (item) => {
 };
 
 const handleCheckout = async (item) => {
+  const bookTitle = item.sachId?.tenSach || item.SachId?.TenSach || item.maSach || item.MaSach;
   const isConfirmed = await confirm({
     title: 'Xuất sách cho bạn đọc',
-    message: `Xác nhận độc giả đã có mặt tại quầy và hoàn tất thủ tục xuất cuốn sách "${item.SachId?.TenSach || item.MaSach}" mang về? Thời hạn mượn là 14 ngày.`,
+    message: `Xác nhận độc giả đã có mặt tại quầy và hoàn tất thủ tục xuất cuốn sách "${bookTitle}" mang về? Thời hạn mượn là 14 ngày.`,
     confirmText: 'Xác nhận xuất sách',
     cancelText: 'Hủy bỏ',
     type: 'success',

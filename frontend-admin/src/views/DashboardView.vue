@@ -152,24 +152,24 @@
               <td>
                 <div
                   class="fw-bold text-dark role-clickable hover-underline"
-                  @click="bookDetailModalRef?.open(book._id || book.MaSach)"
+                  @click="bookDetailModalRef?.open(book._id || book.maSach || book.MaSach)"
                   title="Nhấn để xem chi tiết ấn phẩm"
                 >
-                  {{ book.TenSach }}
+                  {{ book.tenSach || book.TenSach }}
                 </div>
                 <div class="text-muted" style="font-size: 0.75rem;">
                   Mã:
                   <code
                     class="role-clickable text-primary"
-                    @click="bookDetailModalRef?.open(book._id || book.MaSach)"
-                  >{{ book.MaSach }}</code>
+                    @click="bookDetailModalRef?.open(book._id || book.maSach || book.MaSach)"
+                  >{{ book.maSach || book.MaSach }}</code>
                 </div>
               </td>
-              <td>{{ book.TacGia || book.NguonGoc || 'N/A' }}</td>
-              <td><span class="badge bg-light text-dark border">{{ book.TheLoai }}</span></td>
-              <td class="fw-semibold">{{ formatCurrency(book.DonGia) }}</td>
+              <td>{{ book.tacGia || book.TacGia || book.nguonGoc || book.NguonGoc || 'N/A' }}</td>
+              <td><span class="badge bg-light text-dark border">{{ book.theLoai || book.TheLoai }}</span></td>
+              <td class="fw-semibold">{{ formatCurrency(book.donGia ?? book.DonGia) }}</td>
               <td class="text-center">
-                <span class="badge bg-success px-3 py-1">{{ book.LuotMuon || 0 }} lượt</span>
+                <span class="badge bg-success px-3 py-1">{{ book.luotMuon ?? book.LuotMuon ?? 0 }} lượt</span>
               </td>
             </tr>
           </tbody>

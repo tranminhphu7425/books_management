@@ -7,16 +7,18 @@ const dotenv = require('dotenv');
 
 dotenv.config();
 
+
+const logger = require('./config/logger');
+
 // 1. Tiền kiểm tra biến môi trường bắt buộc (Pre-flight Check)
 const requiredEnv = ['PORT', 'MONGODB_URI', 'JWT_SECRET', 'JWT_REFRESH_SECRET', 'FRONTEND_USER_URL', 'FRONTEND_ADMIN_URL'];
 const missingEnv = requiredEnv.filter((k) => !process.env[k]);
 if (missingEnv.length > 0) {
-  console.error(`[Pre-flight Error] Thiếu các biến môi trường bắt buộc trong .env: ${missingEnv.join(', ')}`);
+  logger.error(`[Pre-flight Error] Thiếu các biến môi trường bắt buộc trong .env: ${missingEnv.join(', ')}`);
   process.exit(1);
 }
 
 const { connectDB, mongoose } = require('./config/db');
-const logger = require('./config/logger');
 const { generalLimiter } = require('./middlewares/rateLimiter');
 const { errorHandler } = require('./middlewares/errorMiddleware');
 
@@ -96,6 +98,8 @@ app.use('/api/fines', require('./routes/fineRoutes'));
 app.use('/api/users', require('./routes/userRoutes'));
 app.use('/api/upload', require('./routes/uploadRoutes'));
 app.use('/api/stats', require('./routes/statsRoutes'));
+app.use('/api/settings', require('./routes/settingRoutes'));
+app.use('/api/reviews', require('./routes/reviewRoutes'));
 
 // 8. Xử lý đường dẫn 404 Not Found theo chuẩn Response Envelope
 app.use((req, res) => {

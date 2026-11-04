@@ -11,6 +11,6 @@ router.get('/:id', categoryController.getCategoryById);
 // Route quản trị cho ADMIN và Thủ thư (BOOK_MANAGER)
 router.post('/', authMiddleware, requireStaff, categoryController.createCategory);
 router.put('/:id', authMiddleware, requireStaff, categoryController.updateCategory);
-router.delete('/:id', authMiddleware, requireAdmin, categoryController.deleteCategory);
+router.delete('/:id', authMiddleware, requireStaff, categoryController.deleteCategory);
 
 module.exports = router;

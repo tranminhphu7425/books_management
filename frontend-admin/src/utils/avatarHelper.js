@@ -26,8 +26,9 @@ export function getDefaultAvatar(gender) {
  * @returns {string} URL ảnh avatar
  */
 export function getUserAvatar(user) {
-  if (user && user.HinhAnh && typeof user.HinhAnh === 'string' && user.HinhAnh.trim() !== '') {
-    return getImageUrl(user.HinhAnh);
+  const avatar = user?.avatar || user?.hinhAnh || user?.HinhAnh;
+  if (avatar && typeof avatar === 'string' && avatar.trim() !== '') {
+    return getImageUrl(avatar);
   }
-  return getDefaultAvatar(user?.Phai || user?.GioiTinh || user?.Gender);
+  return getDefaultAvatar(user?.phai || user?.Phai || user?.gioiTinh || user?.GioiTinh || user?.gender || user?.Gender);
 }

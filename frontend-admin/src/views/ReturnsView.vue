@@ -57,48 +57,48 @@
               <td>
                 <div
                   class="fw-bold text-dark role-clickable hover-underline"
-                  @click="bookDetailModalRef?.open(item.SachId || item.MaSach)"
+                  @click="bookDetailModalRef?.open(item.sachId || item.SachId || item.maSach || item.MaSach)"
                   title="Nhấn để xem chi tiết ấn phẩm"
                 >
-                  {{ item.SachId?.TenSach || item.MaSach }}
+                  {{ item.sachId?.tenSach || item.SachId?.TenSach || item.maSach || item.MaSach }}
                 </div>
                 <div class="text-muted" style="font-size: 0.75rem;">
                   Mã:
                   <code
                     class="role-clickable text-primary"
-                    @click="bookDetailModalRef?.open(item.SachId || item.MaSach)"
-                  >{{ item.MaSach }}</code>
-                  | Trị giá: {{ formatCurrency(item.SachId?.DonGia) }}
+                    @click="bookDetailModalRef?.open(item.sachId || item.SachId || item.maSach || item.MaSach)"
+                  >{{ item.maSach || item.MaSach }}</code>
+                  | Trị giá: {{ formatCurrency(item.sachId?.donGia ?? item.SachId?.DonGia) }}
                 </div>
               </td>
               <td>
                 <div
                   class="fw-semibold text-dark role-clickable hover-underline"
-                  @click="userDetailModalRef?.open(item.DocGiaId || item.MaDocGia)"
+                  @click="userDetailModalRef?.open(item.docGiaId || item.DocGiaId || item.maDocGia || item.MaDocGia)"
                   title="Nhấn để xem hồ sơ bạn đọc"
                 >
-                  {{ item.DocGiaId?.HoLot }} {{ item.DocGiaId?.Ten }}
+                  {{ item.docGiaId?.hoLot || item.DocGiaId?.HoLot }} {{ item.docGiaId?.ten || item.DocGiaId?.Ten }}
                 </div>
                 <div class="text-muted" style="font-size: 0.75rem;">
                   Mã ĐG:
                   <code
                     class="role-clickable text-primary"
-                    @click="userDetailModalRef?.open(item.DocGiaId || item.MaDocGia)"
-                  >{{ item.MaDocGia }}</code>
-                  | SĐT: {{ item.DocGiaId?.DienThoai || 'N/A' }}
+                    @click="userDetailModalRef?.open(item.docGiaId || item.DocGiaId || item.maDocGia || item.MaDocGia)"
+                  >{{ item.maDocGia || item.MaDocGia }}</code>
+                  | SĐT: {{ item.docGiaId?.soDienThoai || item.docGiaId?.dienThoai || item.DocGiaId?.DienThoai || 'N/A' }}
                 </div>
               </td>
-              <td>{{ formatDate(item.NgayMuon) }}</td>
+              <td>{{ formatDate(item.ngayMuon || item.NgayMuon) }}</td>
               <td>
-                <strong :class="isOverdue(item.HanTra || item.NgayTra) ? 'text-danger fw-bold' : 'text-primary'">
-                  {{ formatDate(item.HanTra || item.NgayTra) }}
+                <strong :class="isOverdue(item.hanTra || item.HanTra || item.ngayTra || item.NgayTra) ? 'text-danger fw-bold' : 'text-primary'">
+                  {{ formatDate(item.hanTra || item.HanTra || item.ngayTra || item.NgayTra) }}
                 </strong>
               </td>
               <td>
-                <span class="badge" :class="isOverdue(item.HanTra || item.NgayTra) ? 'badge-status-overdue' : 'badge-status-borrowed'">
+                <span class="badge" :class="isOverdue(item.hanTra || item.HanTra || item.ngayTra || item.NgayTra) ? 'badge-status-overdue' : 'badge-status-borrowed'">
                   <i
-                    :class="isOverdue(item.HanTra || item.NgayTra) ? 'bi bi-exclamation-triangle-fill me-1' : 'bi bi-check-circle-fill me-1'"></i>
-                  {{ isOverdue(item.HanTra || item.NgayTra) ? 'Quá hạn' : 'Đang mượn' }}
+                    :class="isOverdue(item.hanTra || item.HanTra || item.ngayTra || item.NgayTra) ? 'bi bi-exclamation-triangle-fill me-1' : 'bi bi-check-circle-fill me-1'"></i>
+                  {{ isOverdue(item.hanTra || item.HanTra || item.ngayTra || item.NgayTra) ? 'Quá hạn' : 'Đang mượn' }}
                 </span>
               </td>
               <td class="text-end">
@@ -139,10 +139,10 @@
           <form @submit.prevent="submitIncident">
             <div class="modal-body p-4" v-if="selectedItem">
               <div class="p-3 bg-light rounded small mb-3 border">
-                <div class="fw-bold text-dark">{{ selectedItem.SachId?.TenSach || selectedItem.MaSach }}</div>
-                <div class="text-muted">Bạn đọc: <strong>{{ selectedItem.DocGiaId?.HoLot }} {{
-                  selectedItem.DocGiaId?.Ten }}</strong> (Mã: {{ selectedItem.MaDocGia }})</div>
-                <div class="text-danger fw-bold mt-1">Đơn giá niêm yết: {{ formatCurrency(selectedItem.SachId?.DonGia)
+                <div class="fw-bold text-dark">{{ selectedItem.sachId?.tenSach || selectedItem.SachId?.TenSach || selectedItem.maSach || selectedItem.MaSach }}</div>
+                <div class="text-muted">Bạn đọc: <strong>{{ selectedItem.docGiaId?.hoLot || selectedItem.DocGiaId?.HoLot }} {{
+                  selectedItem.docGiaId?.ten || selectedItem.DocGiaId?.Ten }}</strong> (Mã: {{ selectedItem.maDocGia || selectedItem.MaDocGia }})</div>
+                <div class="text-danger fw-bold mt-1">Đơn giá niêm yết: {{ formatCurrency(selectedItem.sachId?.donGia ?? selectedItem.SachId?.DonGia)
                   }}</div>
               </div>
 
@@ -217,11 +217,11 @@ const filteredBorrows = computed(() => {
   if (!searchKeyword.value.trim()) return list;
   const kw = searchKeyword.value.trim();
   return list.filter((b) => {
-    const bookTitle = b.SachId?.TenSach || '';
-    const readerName = `${b.DocGiaId?.HoLot || ''} ${b.DocGiaId?.Ten || ''}`.trim();
-    const readerEmail = b.DocGiaId?.Email || '';
-    const maSach = b.MaSach || '';
-    const maDocGia = b.MaDocGia || b.DocGiaId?.MaDocGia || '';
+    const bookTitle = b.sachId?.tenSach || b.SachId?.TenSach || '';
+    const readerName = `${b.docGiaId?.hoLot || b.DocGiaId?.HoLot || ''} ${b.docGiaId?.ten || b.DocGiaId?.Ten || ''}`.trim();
+    const readerEmail = b.docGiaId?.email || b.DocGiaId?.Email || '';
+    const maSach = b.maSach || b.MaSach || '';
+    const maDocGia = b.maDocGia || b.MaDocGia || b.docGiaId?.maDocGia || b.docGiaId?.MaDocGia || '';
     return (
       matchVietnamese(bookTitle, kw) ||
       matchVietnamese(readerName, kw) ||
@@ -252,9 +252,10 @@ const refreshData = () => {
 };
 
 const handleNormalCheckin = async (item) => {
+  const bookTitle = item.sachId?.tenSach || item.SachId?.TenSach || item.maSach || item.MaSach;
   const isConfirmed = await confirm({
     title: 'Nhận trả ấn phẩm nguyên vẹn',
-    message: `Xác nhận nhận lại cuốn sách "${item.SachId?.TenSach || item.MaSach}" nguyên vẹn từ bạn đọc và hoàn trả lại kệ kho khả dụng?`,
+    message: `Xác nhận nhận lại cuốn sách "${bookTitle}" nguyên vẹn từ bạn đọc và hoàn trả lại kệ kho khả dụng?`,
     confirmText: 'Xác nhận nhận trả',
     cancelText: 'Hủy bỏ',
     type: 'success',
@@ -272,7 +273,8 @@ const openIncidentModal = (item) => {
   incidentForm.loaiSuCo = 'DAMAGED';
   incidentForm.moTa = '';
   // Số tiền bồi thường mặc định chính xác là giá niêm yết của ấn phẩm
-  const bookPrice = typeof item.SachId?.DonGia === 'number' ? item.SachId.DonGia : (Number(item.SachId?.DonGia) || 0);
+  const donGia = item.sachId?.donGia ?? item.SachId?.DonGia ?? 0;
+  const bookPrice = typeof donGia === 'number' ? donGia : (Number(donGia) || 0);
   incidentForm.soTienBoiThuong = bookPrice;
 
   const modal = new window.bootstrap.Modal(incidentModalRef.value);

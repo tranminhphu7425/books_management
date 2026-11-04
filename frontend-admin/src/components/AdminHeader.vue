@@ -42,9 +42,9 @@
         <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0" aria-labelledby="headerUserDropdown">
           <li class="px-3 py-2 border-bottom">
             <div class="fw-bold small text-dark">{{ authStore.staffName }}</div>
-            <div class="small text-muted">{{ authStore.adminUser?.Email }}</div>
-            <div class="small text-muted" v-if="authStore.adminUser?.MSNV">
-              MSNV: <code>{{ authStore.adminUser.MSNV }}</code>
+            <div class="small text-muted">{{ authStore.adminUser?.email || authStore.adminUser?.Email }}</div>
+            <div class="small text-muted" v-if="authStore.adminUser?.msnv || authStore.adminUser?.MSNV">
+              MSNV: <code>{{ authStore.adminUser?.msnv || authStore.adminUser?.MSNV }}</code>
             </div>
           </li>
           <li>

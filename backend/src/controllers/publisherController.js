@@ -105,7 +105,12 @@ exports.createPublisher = async (req, res, next) => {
 exports.updatePublisher = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const pub = await NhaXuatBan.findById(id);
+    let pub = null;
+    if (id.match(/^[0-9a-fA-F]{24}$/)) {
+      pub = await NhaXuatBan.findById(id);
+    } else {
+      pub = await NhaXuatBan.findOne({ MaNXB: id });
+    }
 
     if (!pub) {
       return sendError(res, {

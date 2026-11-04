@@ -112,15 +112,15 @@
                 <div class="d-none d-lg-block text-start user-info-block">
                   <div class="small fw-bold text-white lh-1 user-full-name">{{ authStore.fullName }}</div>
                   <div class="user-badge-code" style="font-size: 0.75rem;">
-                    {{ authStore.user?.MaDocGia || 'Độc giả' }}
+                    {{ authStore.user?.maDocGia || 'Độc giả' }}
                   </div>
                 </div>
               </a>
               <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0 rounded-3 mt-2" aria-labelledby="userDropdown">
                 <li class="px-3 py-2 border-bottom bg-light rounded-top">
                   <div class="fw-bold text-dark">{{ authStore.fullName }}</div>
-                  <div class="small text-muted">{{ authStore.user?.Email }}</div>
-                  <div class="badge bg-secondary mt-1 font-monospace">{{ authStore.user?.MaDocGia }}</div>
+                  <div class="small text-muted">{{ authStore.user?.email }}</div>
+                  <div class="badge bg-secondary mt-1 font-monospace">{{ authStore.user?.maDocGia }}</div>
                 </li>
                 <li>
                   <router-link to="/profile" class="dropdown-item py-2">
@@ -166,13 +166,13 @@ const searchKeyword = ref('');
 const avatarFallback = ref(false);
 
 const userInitial = computed(() => {
-  const name = authStore.user?.Ten || authStore.user?.Email || 'U';
+  const name = authStore.user?.ten || authStore.user?.email || 'U';
   return name.charAt(0).toUpperCase();
 });
 
 const displayUserAvatar = computed(() => {
-  if (avatarFallback.value || !authStore.user?.HinhAnh) {
-    return getDefaultAvatar(authStore.user?.Phai);
+  if (avatarFallback.value || !authStore.user?.avatar) {
+    return getDefaultAvatar(authStore.user?.phai);
   }
   return authStore.user.HinhAnh;
 });

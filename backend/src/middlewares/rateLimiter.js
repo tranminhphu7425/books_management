@@ -4,7 +4,7 @@ const { sendError } = require('./responseEnvelope');
 // 1. Giới hạn tần suất cho Xác thực (Đăng nhập / Đăng ký)
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 phút
-  max: process.env.NODE_ENV === 'production' ? 10 : 100, // Nới lỏng trong development để không cản trở kiểm thử
+  max: 10, // Nới lỏng trong development để không cản trở kiểm thử
   standardHeaders: true,
   legacyHeaders: false,
   skip: (req) => process.env.NODE_ENV === 'development', // Bỏ qua hoàn toàn trong development

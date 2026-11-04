@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const logger = require('./logger');
 
 const connectDB = async () => {
   try {
@@ -7,19 +8,19 @@ const connectDB = async () => {
       serverSelectionTimeoutMS: 5000
     });
 
-    console.log(`Kết nối MongoDB thành công: ${conn.connection.host}/${conn.connection.name}`);
+    logger.info(`Kết nối MongoDB thành công: ${conn.connection.host}/${conn.connection.name}`);
 
     mongoose.connection.on('error', (err) => {
-      console.error('Lỗi kết nối MongoDB:', err);
+      logger.error('Lỗi kết nối MongoDB: %s', err.stack || err.message);
     });
 
     mongoose.connection.on('disconnected', () => {
-      console.warn('Mất kết nối tới MongoDB! Đang thử kết nối lại...');
+      logger.warn('Mất kết nối tới MongoDB! Đang thử kết nối lại...');
     });
 
     return conn;
   } catch (error) {
-    console.error('Kết nối MongoDB thất bại:', error.message);
+    logger.error('Kết nối MongoDB thất bại: %s', error.message);
     process.exit(1);
   }
 };

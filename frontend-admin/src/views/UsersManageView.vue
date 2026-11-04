@@ -75,43 +75,38 @@
             <tr
               v-for="user in displayedUsers"
               :key="user._id"
-              :id="'user-row-' + (user._id || user.MaDocGia || user.MSNV)"
-              :class="{ 'table-warning border-warning highlighted-row': highlightedUserId === user._id || highlightedUserId === user.MaDocGia || highlightedUserId === user.MSNV }"
+              :id="'user-row-' + (user._id || user.msnv || user.MSNV || user.maDocGia || user.MaDocGia)"
+              :class="{ 'table-warning border-warning highlighted-row': [user._id, user.msnv, user.MSNV, user.maDocGia, user.MaDocGia].includes(highlightedUserId) }"
             >
               <td>
-                <div
-                  class="fw-bold text-dark "
-                  
-                >
-                  {{ user.HoTenNV || `${user.HoLot || ''} ${user.Ten || ''}`.trim() }}
+                <div class="fw-bold text-dark">
+                  {{ user.hoTenNV || user.HoTenNV || user.hoTen || `${user.hoLot || user.HoLot || ''} ${user.ten || user.Ten || ''}`.trim() }}
                 </div>
-                <div class="text-muted" style="font-size: 0.75rem;">Địa chỉ: {{ user.DiaChi || 'Chưa cập nhật' }}</div>
+                <div class="text-muted" style="font-size: 0.75rem;">Địa chỉ: {{ user.diaChi || user.DiaChi || 'Chưa cập nhật' }}</div>
               </td>
               <td>
-                <code
-                  class="text-primary"
-                >{{ user.MSNV || user.MaDocGia || user._id.slice(-6).toUpperCase() }}</code>
+                <code class="text-primary">{{ user.msnv || user.MSNV || user.maDocGia || user.MaDocGia || user._id.slice(-6).toUpperCase() }}</code>
               </td>
-              <td>{{ user.Email }}</td>
-              <td>{{ user.DienThoai || user.SoDienThoai || 'N/A' }}</td>
+              <td>{{ user.email || user.Email }}</td>
+              <td>{{ user.soDienThoai || user.SoDienThoai || user.dienThoai || user.DienThoai || 'N/A' }}</td>
               <td>
                 <span
                   class="badge"
                   :class="{
-                    'bg-danger': user.Role === 'ADMIN',
-                    'bg-primary': user.Role === 'BOOK_MANAGER',
-                    'bg-secondary': user.Role === 'USER'
+                    'bg-danger': (user.role || user.Role) === 'ADMIN',
+                    'bg-primary': (user.role || user.Role) === 'BOOK_MANAGER',
+                    'bg-secondary': (user.role || user.Role) === 'USER'
                   }"
                 >
-                  {{ user.Role === 'ADMIN' ? 'Quản trị viên' : user.Role === 'BOOK_MANAGER' ? 'Thủ thư' : 'Bạn đọc' }}
+                  {{ (user.role || user.Role) === 'ADMIN' ? 'Quản trị viên' : (user.role || user.Role) === 'BOOK_MANAGER' ? 'Thủ thư' : 'Bạn đọc' }}
                 </span>
               </td>
               <td>
                 <span
                   class="badge"
-                  :class="user.TrangThai === 'BLACKLISTED' || user.IsBlacklisted ? 'bg-danger' : 'bg-success'"
+                  :class="(user.trangThai || user.TrangThai) === 'BLACKLISTED' || user.isBlacklisted || user.IsBlacklisted ? 'bg-danger' : 'bg-success'"
                 >
-                  {{ user.TrangThai === 'BLACKLISTED' || user.IsBlacklisted ? 'Tạm khóa (Blacklist)' : 'Hoạt động' }}
+                  {{ (user.trangThai || user.TrangThai) === 'BLACKLISTED' || user.isBlacklisted || user.IsBlacklisted ? 'Tạm khóa (Blacklist)' : 'Hoạt động' }}
                 </span>
               </td>
               <td class="text-end">
@@ -127,7 +122,7 @@
 
                   <!-- Chỉnh sửa thông tin Nhân sự / Thủ thư -->
                   <button
-                    v-if="user.MSNV || ['ADMIN', 'BOOK_MANAGER'].includes(user.Role || user.ChucVu)"
+                    v-if="user.msnv || user.MSNV || ['ADMIN', 'BOOK_MANAGER'].includes(user.role || user.Role || user.chucVu || user.ChucVu)"
                     class="btn btn-outline-warning"
                     @click="openEditStaff(user)"
                     title="Chỉnh sửa thông tin nhân viên"
@@ -147,7 +142,7 @@
 
                   <!-- Blacklist Button -->
                   <button
-                    v-if="user.TrangThai === 'BLACKLISTED' || user.IsBlacklisted"
+                    v-if="(user.trangThai || user.TrangThai) === 'BLACKLISTED' || user.isBlacklisted || user.IsBlacklisted"
                     class="btn btn-outline-success"
                     @click="handleToggleBlacklist(user, false)"
                     title="Gỡ khỏi danh sách vi phạm Blacklist"
@@ -159,7 +154,7 @@
                     class="btn btn-outline-danger"
                     @click="handleToggleBlacklist(user, true)"
                     title="Đưa vào danh sách vi phạm Blacklist"
-                    :disabled="user._id === currentAdminId || user.Role === 'ADMIN'"
+                    :disabled="user._id === currentAdminId || (user.role || user.Role) === 'ADMIN'"
                   >
                     <i class="bi bi-slash-circle"></i> Khóa Blacklist
                   </button>
@@ -187,12 +182,12 @@
             <div class="modal-body p-4">
               <div class="mb-3">
                 <label class="form-label small fw-semibold">Họ và tên nhân viên <span class="text-danger">*</span></label>
-                <input type="text" v-model="staffForm.HoTenNV" class="form-control" required placeholder="Ví dụ: Trần Văn Cương" />
+                <input type="text" v-model="staffForm.hoTenNV" class="form-control" required placeholder="Ví dụ: Trần Văn Cương" />
               </div>
 
               <div class="mb-3">
                 <label class="form-label small fw-semibold">Địa chỉ Email đăng nhập <span class="text-danger">*</span></label>
-                <input type="email" v-model="staffForm.Email" class="form-control" required placeholder="nhanvien@library.com" />
+                <input type="email" v-model="staffForm.email" class="form-control" required placeholder="nhanvien@library.com" />
               </div>
 
               <div class="mb-3">
@@ -200,25 +195,25 @@
                 <input
                   type="tel"
                   inputmode="numeric"
-                  v-model="staffForm.SoDienThoai"
+                  v-model="staffForm.soDienThoai"
                   class="form-control"
                   required
                   placeholder="0987654321"
                   maxlength="11"
                   pattern="[0-9]{10,11}"
                   @keypress="filterNumeric"
-                  @input="staffForm.SoDienThoai = staffForm.SoDienThoai.replace(/\D/g, '')"
+                  @input="staffForm.soDienThoai = staffForm.soDienThoai.replace(/\D/g, '')"
                 />
               </div>
 
               <div class="mb-3">
                 <label class="form-label small fw-semibold">Địa chỉ nơi ở</label>
-                <input type="text" v-model="staffForm.DiaChi" class="form-control" placeholder="Ví dụ: Số 123 Đường 3/2, Ninh Kiều, Cần Thơ" />
+                <input type="text" v-model="staffForm.diaChi" class="form-control" placeholder="Ví dụ: Số 123 Đường 3/2, Ninh Kiều, Cần Thơ" />
               </div>
 
               <div class="mb-3">
                 <label class="form-label small fw-semibold">Phân quyền vai trò <span class="text-danger">*</span></label>
-                <select v-model="staffForm.Role" class="form-select" required>
+                <select v-model="staffForm.role" class="form-select" required>
                   <option value="BOOK_MANAGER">Thủ thư / Quản lý sách (BOOK_MANAGER)</option>
                   <option value="ADMIN">Quản trị viên Hệ thống (ADMIN)</option>
                 </select>
@@ -226,7 +221,7 @@
 
               <div class="mb-3">
                 <label class="form-label small fw-semibold">Mật khẩu khởi tạo <span class="text-danger">*</span></label>
-                <input type="password" v-model="staffForm.Password" class="form-control" minlength="6" required placeholder="Tối thiểu 6 ký tự" />
+                <input type="password" v-model="staffForm.password" class="form-control" minlength="6" required placeholder="Tối thiểu 6 ký tự" />
               </div>
             </div>
 
@@ -254,17 +249,17 @@
             <div class="modal-body p-4">
               <div class="mb-3">
                 <label class="form-label small fw-semibold">Mã số nhân viên (MSNV)</label>
-                <input type="text" :value="editStaffTarget?.MSNV" class="form-control bg-light font-monospace" disabled />
+                <input type="text" :value="editStaffTarget?.msnv || editStaffTarget?.MSNV" class="form-control bg-light font-monospace" disabled />
               </div>
 
               <div class="mb-3">
                 <label class="form-label small fw-semibold">Họ và tên nhân viên <span class="text-danger">*</span></label>
-                <input type="text" v-model="editStaffForm.HoTenNV" class="form-control" required placeholder="Ví dụ: Trần Văn Cương" />
+                <input type="text" v-model="editStaffForm.hoTenNV" class="form-control" required placeholder="Ví dụ: Trần Văn Cương" />
               </div>
 
               <div class="mb-3">
                 <label class="form-label small fw-semibold">Địa chỉ Email <span class="text-danger">*</span></label>
-                <input type="email" v-model="editStaffForm.Email" class="form-control" required placeholder="nhanvien@library.com" />
+                <input type="email" v-model="editStaffForm.email" class="form-control" required placeholder="nhanvien@library.com" />
               </div>
 
               <div class="mb-3">
@@ -272,24 +267,24 @@
                 <input
                   type="tel"
                   inputmode="numeric"
-                  v-model="editStaffForm.SoDienThoai"
+                  v-model="editStaffForm.soDienThoai"
                   class="form-control"
                   placeholder="0987654321"
                   maxlength="11"
                   @keypress="filterNumeric"
-                  @input="editStaffForm.SoDienThoai = editStaffForm.SoDienThoai.replace(/\D/g, '')"
+                  @input="editStaffForm.soDienThoai = editStaffForm.soDienThoai.replace(/\D/g, '')"
                 />
               </div>
 
               <div class="mb-3">
                 <label class="form-label small fw-semibold">Địa chỉ nơi ở</label>
-                <input type="text" v-model="editStaffForm.DiaChi" class="form-control" placeholder="Ví dụ: Số 123 Đường 3/2, Ninh Kiều, Cần Thơ" />
+                <input type="text" v-model="editStaffForm.diaChi" class="form-control" placeholder="Ví dụ: Số 123 Đường 3/2, Ninh Kiều, Cần Thơ" />
               </div>
 
               <div class="mb-3">
                 <label class="form-label small fw-semibold">Chức vụ vai trò <span class="text-danger">*</span></label>
                 <select
-                  v-model="editStaffForm.Role"
+                  v-model="editStaffForm.role"
                   class="form-select"
                   required
                   :disabled="editStaffTarget?._id === currentAdminId"
@@ -304,7 +299,7 @@
 
               <div class="mb-3">
                 <label class="form-label small fw-semibold">Mật khẩu mới (Bỏ trống nếu không đổi)</label>
-                <input type="password" v-model="editStaffForm.Password" class="form-control" minlength="6" placeholder="Để trống nếu giữ nguyên mật khẩu cũ" />
+                <input type="password" v-model="editStaffForm.password" class="form-control" minlength="6" placeholder="Để trống nếu giữ nguyên mật khẩu cũ" />
               </div>
             </div>
 
@@ -342,11 +337,11 @@
               <!-- Thông tin người dùng bị khóa -->
               <div v-if="blacklistTargetUser" class="p-3 bg-light rounded-3 mb-3 border">
                 <div class="fw-bold text-dark fs-6">
-                  {{ blacklistTargetUser.HoTenNV || `${blacklistTargetUser.HoLot || ''} ${blacklistTargetUser.Ten || ''}`.trim() }}
+                  {{ blacklistTargetUser.hoTenNV || blacklistTargetUser.HoTenNV || blacklistTargetUser.hoTen || `${blacklistTargetUser.hoLot || blacklistTargetUser.HoLot || ''} ${blacklistTargetUser.ten || blacklistTargetUser.Ten || ''}`.trim() }}
                 </div>
                 <div class="small text-muted d-flex gap-3 mt-1 flex-wrap">
-                  <span><strong>Email:</strong> {{ blacklistTargetUser.Email }}</span>
-                  <span><strong>Mã:</strong> {{ blacklistTargetUser.MSNV || blacklistTargetUser.MaDocGia || blacklistTargetUser._id?.slice(-6).toUpperCase() }}</span>
+                  <span><strong>Email:</strong> {{ blacklistTargetUser.email || blacklistTargetUser.Email }}</span>
+                  <span><strong>Mã:</strong> {{ blacklistTargetUser.msnv || blacklistTargetUser.MSNV || blacklistTargetUser.maDocGia || blacklistTargetUser.MaDocGia || blacklistTargetUser._id?.slice(-6).toUpperCase() }}</span>
                 </div>
               </div>
 
@@ -432,14 +427,14 @@
               <!-- Thông tin người dùng -->
               <div v-if="roleTargetUser" class="p-3 bg-light rounded-3 mb-3 border">
                 <div class="fw-bold text-dark fs-6">
-                  {{ roleTargetUser.HoTenNV || `${roleTargetUser.HoLot || ''} ${roleTargetUser.Ten || ''}`.trim() }}
+                  {{ roleTargetUser.hoTenNV || roleTargetUser.HoTenNV || roleTargetUser.hoTen || `${roleTargetUser.hoLot || roleTargetUser.HoLot || ''} ${roleTargetUser.ten || roleTargetUser.Ten || ''}`.trim() }}
                 </div>
                 <div class="small text-muted d-flex gap-3 mt-1 flex-wrap align-items-center">
-                  <span><strong>Email:</strong> {{ roleTargetUser.Email }}</span>
-                  <span><strong>Mã:</strong> {{ roleTargetUser.MSNV || roleTargetUser.MaDocGia || roleTargetUser._id?.slice(-6).toUpperCase() }}</span>
+                  <span><strong>Email:</strong> {{ roleTargetUser.email || roleTargetUser.Email }}</span>
+                  <span><strong>Mã:</strong> {{ roleTargetUser.msnv || roleTargetUser.MSNV || roleTargetUser.maDocGia || roleTargetUser.MaDocGia || roleTargetUser._id?.slice(-6).toUpperCase() }}</span>
                   <span><strong>Vai trò hiện tại:</strong> 
-                    <span class="badge ms-1" :class="roleTargetUser.Role === 'ADMIN' ? 'bg-danger' : roleTargetUser.Role === 'BOOK_MANAGER' ? 'bg-primary' : 'bg-secondary'">
-                      {{ roleTargetUser.Role === 'ADMIN' ? 'Quản trị viên' : roleTargetUser.Role === 'BOOK_MANAGER' ? 'Thủ thư' : 'Bạn đọc' }}
+                    <span class="badge ms-1" :class="(roleTargetUser.role || roleTargetUser.Role) === 'ADMIN' ? 'bg-danger' : (roleTargetUser.role || roleTargetUser.Role) === 'BOOK_MANAGER' ? 'bg-primary' : 'bg-secondary'">
+                      {{ (roleTargetUser.role || roleTargetUser.Role) === 'ADMIN' ? 'Quản trị viên' : (roleTargetUser.role || roleTargetUser.Role) === 'BOOK_MANAGER' ? 'Thủ thư' : 'Bạn đọc' }}
                     </span>
                   </span>
                 </div>
@@ -527,30 +522,45 @@ const editStaffModalRef = ref(null);
 const editStaffTarget = ref(null);
 const isSubmittingEditStaff = ref(false);
 
+const staffForm = reactive({
+  hoTenNV: '',
+  email: '',
+  soDienThoai: '',
+  diaChi: '',
+  role: 'BOOK_MANAGER',
+  password: ''
+});
+
 const editStaffForm = reactive({
-  HoTenNV: '',
-  Email: '',
-  SoDienThoai: '',
-  DiaChi: '',
-  Role: 'BOOK_MANAGER',
-  Password: ''
+  hoTenNV: '',
+  email: '',
+  soDienThoai: '',
+  diaChi: '',
+  role: 'BOOK_MANAGER',
+  password: ''
+});
+
+const displayedUsers = computed(() => {
+  if (currentTab.value === 'READERS') return userStore.readers;
+  if (currentTab.value === 'STAFFS') return userStore.staffs;
+  return userStore.blacklistedUsers;
 });
 
 const isEditStaffFormDirty = computed(() => {
   if (!editStaffTarget.value) return false;
-  const initialHoTen = editStaffTarget.value.HoTenNV || editStaffTarget.value.HoTen || '';
-  const initialEmail = editStaffTarget.value.Email || '';
-  const initialSoDienThoai = editStaffTarget.value.SoDienThoai || editStaffTarget.value.DienThoai || '';
-  const initialDiaChi = editStaffTarget.value.DiaChi || '';
-  const initialRole = editStaffTarget.value.Role || editStaffTarget.value.ChucVu || 'BOOK_MANAGER';
+  const initialHoTen = editStaffTarget.value.hoTenNV || editStaffTarget.value.HoTenNV || editStaffTarget.value.hoTen || '';
+  const initialEmail = editStaffTarget.value.email || editStaffTarget.value.Email || '';
+  const initialSoDienThoai = editStaffTarget.value.soDienThoai || editStaffTarget.value.SoDienThoai || editStaffTarget.value.dienThoai || '';
+  const initialDiaChi = editStaffTarget.value.diaChi || editStaffTarget.value.DiaChi || '';
+  const initialRole = editStaffTarget.value.role || editStaffTarget.value.Role || editStaffTarget.value.chucVu || 'BOOK_MANAGER';
 
   const isChanged =
-    editStaffForm.HoTenNV.trim() !== initialHoTen.trim() ||
-    editStaffForm.Email.trim().toLowerCase() !== initialEmail.trim().toLowerCase() ||
-    editStaffForm.SoDienThoai.trim() !== initialSoDienThoai.trim() ||
-    editStaffForm.DiaChi.trim() !== initialDiaChi.trim() ||
-    editStaffForm.Role !== initialRole ||
-    Boolean(editStaffForm.Password && editStaffForm.Password.trim().length > 0);
+    editStaffForm.hoTenNV.trim() !== initialHoTen.trim() ||
+    editStaffForm.email.trim().toLowerCase() !== initialEmail.trim().toLowerCase() ||
+    editStaffForm.soDienThoai.trim() !== initialSoDienThoai.trim() ||
+    editStaffForm.diaChi.trim() !== initialDiaChi.trim() ||
+    editStaffForm.role !== initialRole ||
+    Boolean(editStaffForm.password && editStaffForm.password.trim().length > 0);
 
   return isChanged;
 });
@@ -573,33 +583,34 @@ const setQuickBlacklistReason = (reason) => {
 
 const currentAdminId = computed(() => authStore.adminUser?._id);
 
-const staffForm = reactive({
-  HoTenNV: '',
-  Email: '',
-  SoDienThoai: '',
-  Role: 'BOOK_MANAGER',
-  Password: ''
-});
-
-const displayedUsers = computed(() => {
-  if (currentTab.value === 'READERS') return userStore.readers;
-  if (currentTab.value === 'STAFFS') return userStore.staffs;
-  return userStore.blacklistedUsers;
-});
-
 const openCreateStaffModal = () => {
-  staffForm.HoTenNV = '';
-  staffForm.Email = '';
-  staffForm.SoDienThoai = '';
-  staffForm.DiaChi = '';
-  staffForm.Role = 'BOOK_MANAGER';
-  staffForm.Password = '';
+  staffForm.hoTenNV = '';
+  staffForm.email = '';
+  staffForm.soDienThoai = '';
+  staffForm.diaChi = '';
+  staffForm.role = 'BOOK_MANAGER';
+  staffForm.password = '';
   const modal = new window.bootstrap.Modal(createStaffModalRef.value);
   modal.show();
 };
 
 const submitCreateStaff = async () => {
-  const res = await userStore.createStaff(staffForm);
+  const payload = {
+    hoTenNV: staffForm.hoTenNV,
+    HoTenNV: staffForm.hoTenNV,
+    email: staffForm.email,
+    Email: staffForm.email,
+    soDienThoai: staffForm.soDienThoai,
+    SoDienThoai: staffForm.soDienThoai,
+    diaChi: staffForm.diaChi,
+    DiaChi: staffForm.diaChi,
+    role: staffForm.role,
+    Role: staffForm.role,
+    password: staffForm.password,
+    Password: staffForm.password
+  };
+
+  const res = await userStore.createStaff(payload);
   if (res.success) {
     const modal = window.bootstrap.Modal.getInstance(createStaffModalRef.value);
     if (modal) modal.hide();
@@ -611,12 +622,12 @@ const submitCreateStaff = async () => {
 
 const openEditStaff = (user) => {
   editStaffTarget.value = user;
-  editStaffForm.HoTenNV = user.HoTenNV || user.HoTen || '';
-  editStaffForm.Email = user.Email || '';
-  editStaffForm.SoDienThoai = user.SoDienThoai || user.DienThoai || '';
-  editStaffForm.DiaChi = user.DiaChi || '';
-  editStaffForm.Role = user.Role || user.ChucVu || 'BOOK_MANAGER';
-  editStaffForm.Password = '';
+  editStaffForm.hoTenNV = user.hoTenNV || user.HoTenNV || user.hoTen || '';
+  editStaffForm.email = user.email || user.Email || '';
+  editStaffForm.soDienThoai = user.soDienThoai || user.SoDienThoai || user.dienThoai || '';
+  editStaffForm.diaChi = user.diaChi || user.DiaChi || '';
+  editStaffForm.role = user.role || user.Role || user.chucVu || 'BOOK_MANAGER';
+  editStaffForm.password = '';
 
   if (editStaffModalRef.value && window.bootstrap) {
     const modal = window.bootstrap.Modal.getOrCreateInstance(editStaffModalRef.value);
@@ -629,14 +640,19 @@ const submitEditStaff = async () => {
   isSubmittingEditStaff.value = true;
   try {
     const payload = {
-      hoTenNV: editStaffForm.HoTenNV,
-      email: editStaffForm.Email,
-      soDienThoai: editStaffForm.SoDienThoai,
-      diaChi: editStaffForm.DiaChi,
-      role: editStaffForm.Role
+      hoTenNV: editStaffForm.hoTenNV,
+      HoTenNV: editStaffForm.hoTenNV,
+      email: editStaffForm.email,
+      Email: editStaffForm.email,
+      soDienThoai: editStaffForm.soDienThoai,
+      SoDienThoai: editStaffForm.soDienThoai,
+      diaChi: editStaffForm.diaChi,
+      DiaChi: editStaffForm.diaChi,
+      role: editStaffForm.role,
+      Role: editStaffForm.role
     };
-    if (editStaffForm.Password && editStaffForm.Password.trim()) {
-      payload.password = editStaffForm.Password;
+    if (editStaffForm.password && editStaffForm.password.trim()) {
+      payload.password = editStaffForm.password;
     }
 
     const res = await userStore.updateStaff(editStaffTarget.value._id, payload);
@@ -656,7 +672,7 @@ const submitEditStaff = async () => {
 
 const openChangeRole = (user) => {
   roleTargetUser.value = user;
-  selectedNewRole.value = user.Role || 'USER';
+  selectedNewRole.value = user.role || user.Role || 'USER';
   if (changeRoleModalRef.value && window.bootstrap) {
     const modal = window.bootstrap.Modal.getOrCreateInstance(changeRoleModalRef.value);
     modal.show();
@@ -665,7 +681,8 @@ const openChangeRole = (user) => {
 
 const submitChangeRole = async () => {
   if (!roleTargetUser.value) return;
-  if (selectedNewRole.value === roleTargetUser.value.Role) {
+  const currentRole = roleTargetUser.value.role || roleTargetUser.value.Role;
+  if (selectedNewRole.value === currentRole) {
     toast.error('Vui lòng chọn vai trò khác với vai trò hiện tại.');
     return;
   }
@@ -728,9 +745,10 @@ const handleToggleBlacklist = async (user, isBlacklisted) => {
   if (isBlacklisted) {
     openBlacklistModal(user);
   } else {
+    const userName = user.hoTenNV || user.HoTenNV || user.hoTen || `${user.hoLot || user.HoLot || ''} ${user.ten || user.Ten || ''}`.trim() || user.email || user.Email;
     const isConfirmed = await confirm({
       title: 'Gỡ khỏi danh sách vi phạm',
-      message: `Xác nhận gỡ tài khoản "${user.HoTenNV || user.Ten}" (${user.Email}) khỏi danh sách vi phạm Blacklist và khôi phục quyền mượn sách?`,
+      message: `Xác nhận gỡ tài khoản "${userName}" (${user.email || user.Email}) khỏi danh sách vi phạm Blacklist và khôi phục quyền mượn sách?`,
       confirmText: 'Xác nhận gỡ vi phạm',
       cancelText: 'Hủy bỏ',
       type: 'success',

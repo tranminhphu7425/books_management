@@ -66,7 +66,7 @@ export const useBorrowStore = defineStore('borrow', {
       this.isLoading = true;
       this.error = null;
       try {
-        const response = await api.put(`/borrows/${borrowId}/cancel`);
+        const response = await api.patch(`/borrows/${borrowId}/cancel`);
         await this.fetchMyBorrows();
         return { success: true, message: response.data.message };
       } catch (err) {
@@ -81,7 +81,7 @@ export const useBorrowStore = defineStore('borrow', {
       this.isLoading = true;
       this.error = null;
       try {
-        const response = await api.put(`/borrows/${borrowId}/renew`);
+        const response = await api.patch(`/borrows/${borrowId}/renew`);
         await this.fetchMyBorrows();
         return { success: true, message: response.data.message };
       } catch (err) {

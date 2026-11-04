@@ -17,10 +17,13 @@ import Footer from './components/Footer.vue';
 import ToastContainer from './components/ToastContainer.vue';
 import ConfirmModal from './components/ConfirmModal.vue';
 import { useAuthStore } from './stores/authStore';
+import { useSettingsStore } from './stores/settingsStore';
 
 const authStore = useAuthStore();
+const settingsStore = useSettingsStore();
 
 onMounted(() => {
+  settingsStore.fetchSettings();
   if (authStore.isAuthenticated) {
     authStore.fetchCurrentUser();
   }

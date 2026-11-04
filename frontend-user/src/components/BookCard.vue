@@ -4,7 +4,7 @@
     <div class="book-cover-container position-relative overflow-hidden">
       <img
         :src="coverImage"
-        :alt="book.TenSach"
+        :alt="(book.tenSach || book.TenSach)"
         class="card-img-top book-cover-img"
         @error="handleImageError"
         loading="lazy"
@@ -22,9 +22,9 @@
       </div>
 
       <!-- Badge thể loại -->
-      <div class="position-absolute bottom-0 start-0 m-2" v-if="book.TheLoai">
+      <div class="position-absolute bottom-0 start-0 m-2" v-if="(book.theLoai || book.TheLoai)">
         <span class="badge bg-dark bg-opacity-75 text-white fw-normal">
-          {{ book.TheLoai }}
+          {{ (book.theLoai || book.TheLoai) }}
         </span>
       </div>
     </div>
@@ -33,21 +33,21 @@
     <div class="card-body d-flex flex-column p-3">
       <div class="book-meta text-muted small mb-1">
         <i class="bi bi-person me-1"></i>
-        <span>{{ book.TacGia || book.NguonGoc || 'Nhiều tác giả' }}</span>
+        <span>{{ (book.tacGia || book.TacGia) || (book.nguonGoc || book.NguonGoc) || 'Nhiều tác giả' }}</span>
         <span class="mx-1">•</span>
-        <span>{{ book.NamXuatBan || 'N/A' }}</span>
+        <span>{{ (book.namXuatBan || book.NamXuatBan) || 'N/A' }}</span>
       </div>
 
-      <h6 class="book-title mb-2" :title="book.TenSach">
+      <h6 class="book-title mb-2" :title="(book.tenSach || book.TenSach)">
         <router-link :to="`/books/${book._id}`" class="text-decoration-none text-dark">
-          {{ book.TenSach }}
+          {{ (book.tenSach || book.TenSach) }}
         </router-link>
       </h6>
 
       <div class="mt-auto pt-2 d-flex align-items-center justify-content-between border-top">
         <div class="book-price small">
           <span class="text-muted d-block" style="font-size: 0.75rem;">Trị giá ấn phẩm</span>
-          <strong class="text-dark">{{ formatCurrency(book.DonGia) }}</strong>
+          <strong class="text-dark">{{ formatCurrency((book.donGia || book.DonGia)) }}</strong>
         </div>
 
         <router-link
@@ -77,20 +77,20 @@ const imageFallback = ref(false);
 
 const coverImage = computed(() => {
   if (imageFallback.value) return defaultCover;
-  return getImageUrl(props.book?.HinhAnh, defaultCover);
+  return getImageUrl((props.book?.hinhAnh || props.book?.HinhAnh), defaultCover);
 });
 
 const conLai = computed(() => {
   if (!props.book) return 0;
-  if (props.book.SoQuyenKhaDung !== undefined && props.book.SoQuyenKhaDung !== null) {
-    return Math.max(0, Number(props.book.SoQuyenKhaDung));
+  if ((props.book?.soQuyenKhaDung || props.book?.SoQuyenKhaDung) !== undefined && (props.book?.soQuyenKhaDung || props.book?.SoQuyenKhaDung) !== null) {
+    return Math.max(0, Number((props.book?.soQuyenKhaDung || props.book?.SoQuyenKhaDung)));
   }
-  if (props.book.SoQuyenConLai !== undefined && props.book.SoQuyenConLai !== null) {
-    return Math.max(0, Number(props.book.SoQuyenConLai));
+  if ((props.book?.soQuyenConLai || props.book?.SoQuyenConLai) !== undefined && (props.book?.soQuyenConLai || props.book?.SoQuyenConLai) !== null) {
+    return Math.max(0, Number((props.book?.soQuyenConLai || props.book?.SoQuyenConLai)));
   }
-  const total = Number(props.book.SoQuyen) || 0;
-  const borrowed = Number(props.book.SoQuyenDangMuon) || 0;
-  const damaged = Number(props.book.SoQuyenHuHong) || 0;
+  const total = Number(props.book?.soQuyen || props.book?.SoQuyen) || 0;
+  const borrowed = Number((props.book?.soQuyenDangMuon || props.book?.SoQuyenDangMuon)) || 0;
+  const damaged = Number((props.book?.soQuyenHuHong || props.book?.SoQuyenHuHong)) || 0;
   return Math.max(0, total - borrowed - damaged);
 });
 

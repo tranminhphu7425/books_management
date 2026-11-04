@@ -64,4 +64,32 @@ const authMiddleware = async (req, res, next) => {
   }
 };
 
+const optionalAuth = async (req, res, next) => {
+  const authHeader = req.headers.authorization;
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    req.user = null;
+    req.userType = null;
+    return next();
+  }
+
+  const token = authHeader.split(' ')[1];
+  try {
+    const decoded = jwt.verify(token, secret);
+    let user = await NhanVien.findById(decoded.id).select('-Password');
+    let userType = 'STAFF';
+    if (!user) {
+      user = await DocGia.findById(decoded.id).select('-Password');
+      userType = 'READER';
+    }
+    req.user = user || null;
+    req.userType = user ? userType : null;
+  } catch (err) {
+    req.user = null;
+    req.userType = null;
+  }
+  return next();
+};
+
 module.exports = authMiddleware;
+module.exports.authMiddleware = authMiddleware;
+module.exports.optionalAuth = optionalAuth;

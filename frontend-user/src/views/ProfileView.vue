@@ -51,7 +51,7 @@
 
               <h4 class="font-serif fw-bold mb-1 card-name">{{ authStore.fullName }}</h4>
               <div class="font-monospace small card-code mb-3">
-                MÃ SỐ: {{ authStore.user?.MaDocGia || 'DG-XXXX' }}
+                MÃ SỐ: {{ authStore.user?.maDocGia || 'DG-XXXX' }}
               </div>
               <div class="d-flex justify-content-between align-items-end small card-footer-row pt-2 border-top border-white border-opacity-25">
                 <span>Trạng thái: <strong class="text-white">Đang kích hoạt</strong></span>
@@ -62,23 +62,23 @@
             <div class="list-group list-group-flush text-start small">
               <div class="list-group-item d-flex justify-content-between px-0">
                 <span class="text-muted">Email:</span>
-                <span>{{ authStore.user?.Email }}</span>
+                <span>{{ authStore.user?.email }}</span>
               </div>
               <div class="list-group-item d-flex justify-content-between px-0">
                 <span class="text-muted">Mã bạn đọc:</span>
-                <strong class="font-monospace text-dark">{{ authStore.user?.MaDocGia }}</strong>
+                <strong class="font-monospace text-dark">{{ authStore.user?.maDocGia }}</strong>
               </div>
               <div class="list-group-item d-flex justify-content-between px-0">
                 <span class="text-muted">Giới tính:</span>
-                <span>{{ authStore.user?.Phai || 'Chưa cập nhật' }}</span>
+                <span>{{ authStore.user?.phai || 'Chưa cập nhật' }}</span>
               </div>
               <div class="list-group-item d-flex justify-content-between px-0">
                 <span class="text-muted">Ngày sinh:</span>
-                <span>{{ formatDate(authStore.user?.NgaySinh) }}</span>
+                <span>{{ formatDate(authStore.user?.ngaySinh) }}</span>
               </div>
               <div class="list-group-item d-flex justify-content-between px-0">
                 <span class="text-muted">Số điện thoại:</span>
-                <span>{{ authStore.user?.DienThoai || 'Chưa cập nhật' }}</span>
+                <span>{{ authStore.user?.dienThoai || 'Chưa cập nhật' }}</span>
               </div>
             </div>
           </div>
@@ -98,7 +98,7 @@
                   <label class="form-label small fw-semibold">Họ và tên lót</label>
                   <input
                     type="text"
-                    v-model="profileForm.HoLot"
+                    v-model="profileForm.hoLot"
                     class="form-control"
                     required
                   />
@@ -108,7 +108,7 @@
                   <label class="form-label small fw-semibold">Tên bạn đọc</label>
                   <input
                     type="text"
-                    v-model="profileForm.Ten"
+                    v-model="profileForm.ten"
                     class="form-control"
                     required
                   />
@@ -116,7 +116,7 @@
 
                 <div class="col-md-6">
                   <label class="form-label small fw-semibold">Giới tính</label>
-                  <select v-model="profileForm.Phai" class="form-select">
+                  <select v-model="profileForm.phai" class="form-select">
                     <option value="Nam">Nam</option>
                     <option value="Nữ">Nữ</option>
                     <option value="Khác">Khác</option>
@@ -127,7 +127,7 @@
                   <label class="form-label small fw-semibold">Ngày sinh</label>
                   <input
                     type="date"
-                    v-model="profileForm.NgaySinh"
+                    v-model="profileForm.ngaySinh"
                     :max="maxDateFor18"
                     class="form-control"
                   />
@@ -138,7 +138,7 @@
                   <label class="form-label small fw-semibold">Địa chỉ Email</label>
                   <input
                     type="email"
-                    :value="authStore.user?.Email"
+                    :value="authStore.user?.email"
                     class="form-control bg-light"
                     disabled
                     readonly
@@ -151,14 +151,14 @@
                   <input
                     type="tel"
                     inputmode="numeric"
-                    v-model="profileForm.DienThoai"
+                    v-model="profileForm.dienThoai"
                     class="form-control"
                     placeholder="Ví dụ: 0912345678"
                     maxlength="11"
                     pattern="[0-9]{10,11}"
                     required
                     @keypress="filterNumeric"
-                    @input="profileForm.DienThoai = profileForm.DienThoai.replace(/\D/g, '')"
+                    @input="profileForm.dienThoai = profileForm.dienThoai.replace(/\D/g, '')"
                   />
                 </div>
 
@@ -166,7 +166,7 @@
                   <label class="form-label small fw-semibold">Địa chỉ nơi cư trú</label>
                   <input
                     type="text"
-                    v-model="profileForm.DiaChi"
+                    v-model="profileForm.diaChi"
                     class="form-control"
                     placeholder="Nhập địa chỉ nhận thông báo hoặc giao dịch"
                   />
@@ -417,8 +417,8 @@ const userInitial = computed(() => {
 });
 
 const displayAvatar = computed(() => {
-  if (avatarFallback.value || !authStore.user?.HinhAnh) {
-    return getDefaultAvatar(profileForm.Phai || authStore.user?.Phai);
+  if (avatarFallback.value || !authStore.user?.avatar) {
+    return getDefaultAvatar(profileForm.phai || authStore.user?.phai);
   }
   return authStore.user.HinhAnh;
 });
@@ -499,22 +499,22 @@ const formatDateForInput = (dateStr) => {
 };
 
 const profileForm = reactive({
-  HoLot: authStore.user?.HoLot || '',
-  Ten: authStore.user?.Ten || '',
-  Phai: authStore.user?.Phai || 'Nam',
-  NgaySinh: formatDateForInput(authStore.user?.NgaySinh),
-  DienThoai: authStore.user?.DienThoai || '',
-  DiaChi: authStore.user?.DiaChi || ''
+  HoLot: authStore.user?.hoLot || '',
+  Ten: authStore.user?.ten || '',
+  Phai: authStore.user?.phai || 'Nam',
+  NgaySinh: formatDateForInput(authStore.user?.ngaySinh),
+  DienThoai: authStore.user?.dienThoai || '',
+  DiaChi: authStore.user?.diaChi || ''
 });
 
 const populateProfileForm = () => {
   if (authStore.user) {
-    profileForm.HoLot = authStore.user.HoLot || '';
-    profileForm.Ten = authStore.user.Ten || '';
-    profileForm.Phai = authStore.user.Phai || 'Nam';
-    profileForm.NgaySinh = formatDateForInput(authStore.user.NgaySinh);
-    profileForm.DienThoai = authStore.user.DienThoai || '';
-    profileForm.DiaChi = authStore.user.DiaChi || '';
+    profileForm.hoLot = authStore.user.HoLot || '';
+    profileForm.ten = authStore.user.Ten || '';
+    profileForm.phai = authStore.user.Phai || 'Nam';
+    profileForm.ngaySinh = formatDateForInput(authStore.user.NgaySinh);
+    profileForm.dienThoai = authStore.user.DienThoai || '';
+    profileForm.diaChi = authStore.user.DiaChi || '';
   }
 };
 
@@ -535,8 +535,8 @@ const formatCurrency = (val) => {
 };
 
 const handleUpdateProfile = async () => {
-  if (profileForm.NgaySinh) {
-    const [birthYear, birthMonth, birthDay] = profileForm.NgaySinh.split('-').map(Number);
+  if (profileForm.ngaySinh) {
+    const [birthYear, birthMonth, birthDay] = profileForm.ngaySinh.split('-').map(Number);
     const birthDate = new Date(birthYear, birthMonth - 1, birthDay);
     const now = new Date();
     const todayDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
@@ -555,7 +555,7 @@ const handleUpdateProfile = async () => {
 
   const res = await authStore.updateProfile({
     ...profileForm,
-    NgaySinh: profileForm.NgaySinh || null
+    NgaySinh: profileForm.ngaySinh || null
   });
   const msg = res.success ? (res.message || 'Cập nhật thông tin cá nhân thành công!') : (res.error || 'Cập nhật thông tin thất bại.');
   if (res.success) {

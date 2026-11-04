@@ -47,24 +47,24 @@
             </tr>
 
             <tr v-for="log in statsStore.auditLogs" :key="log._id">
-              <td class="text-nowrap">{{ formatDateTime(log.ThoiGian || log.createdAt || log.timestamp) }}</td>
+              <td class="text-nowrap">{{ formatDateTime(log.thoiGian || log.ThoiGian || log.createdAt || log.timestamp) }}</td>
               <td>
                 <div class="fw-semibold text-dark">
-                  {{ log.NguoiThucHien?.HoTen || log.UserName || log.UserEmail || 'Hệ thống' }}
-                  <span v-if="log.NguoiThucHien?.MSNV" class="text-muted fw-normal" style="font-size: 0.75rem;">({{ log.NguoiThucHien.MSNV }})</span>
+                  {{ log.nguoiThucHien?.hoTen || log.NguoiThucHien?.HoTen || log.userName || log.UserName || log.userEmail || log.UserEmail || 'Hệ thống' }}
+                  <span v-if="log.nguoiThucHien?.msnv || log.NguoiThucHien?.MSNV" class="text-muted fw-normal" style="font-size: 0.75rem;">({{ log.nguoiThucHien?.msnv || log.NguoiThucHien?.MSNV }})</span>
                 </div>
-                <span class="badge bg-light text-dark border" style="font-size: 0.72rem;">{{ log.NguoiThucHien?.ChucVu || log.UserRole || 'STAFF' }}</span>
+                <span class="badge bg-light text-dark border" style="font-size: 0.72rem;">{{ log.nguoiThucHien?.chucVu || log.NguoiThucHien?.ChucVu || log.userRole || log.UserRole || 'STAFF' }}</span>
               </td>
               <td>
-                <span class="badge" :class="getActionBadgeClass(log.HanhDong || log.Action)">
-                  {{ formatAction(log.HanhDong || log.Action) }}
+                <span class="badge" :class="getActionBadgeClass(log.hanhDong || log.HanhDong || log.action || log.Action)">
+                  {{ formatAction(log.hanhDong || log.HanhDong || log.action || log.Action) }}
                 </span>
               </td>
-              <td><code>{{ log.DoiTuongTacDong?.Collection || log.Resource || log.Target || 'Chung' }}</code></td>
-              <td class="font-monospace text-muted">{{ log.NguoiThucHien?.DiaChiIP || log.IpAddress || '127.0.0.1' }}</td>
+              <td><code>{{ log.doiTuongTacDong?.collection || log.DoiTuongTacDong?.Collection || log.resource || log.Resource || log.target || log.Target || 'Chung' }}</code></td>
+              <td class="font-monospace text-muted">{{ log.nguoiThucHien?.diaChiIP || log.NguoiThucHien?.DiaChiIP || log.ipAddress || log.IpAddress || '127.0.0.1' }}</td>
               <td>
                 <div class="text-secondary" style="max-width: 320px; word-break: break-word;">
-                  {{ log.ChiTiet || log.Details || log.Description || 'Hoàn tất tác vụ thành công.' }}
+                  {{ log.chiTiet || log.ChiTiet || log.details || log.Details || log.description || log.Description || 'Hoàn tất tác vụ thành công.' }}
                 </div>
               </td>
             </tr>

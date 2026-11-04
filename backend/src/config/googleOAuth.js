@@ -12,9 +12,7 @@ const getClient = () => {
 const verifyGoogleToken = async (idToken) => {
   try {
     const client = getClient();
-    const audience = process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_ID !== 'your_google_client_id_here'
-      ? process.env.GOOGLE_CLIENT_ID
-      : undefined;
+    const audience = process.env.GOOGLE_CLIENT_ID;
 
     const ticket = await client.verifyIdToken({
       idToken,

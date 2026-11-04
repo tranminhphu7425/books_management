@@ -12,7 +12,6 @@ router.get('/:id', bookController.getBookById);
 router.post('/', authMiddleware, requireStaff, bookController.createBook);
 router.put('/:id', authMiddleware, requireStaff, bookController.updateBook);
 router.patch('/:id/restore', authMiddleware, requireStaff, bookController.restoreBook);
-router.put('/:id/restore', authMiddleware, requireStaff, bookController.restoreBook);
 router.delete('/:id', authMiddleware, requireStaff, bookController.deleteBook);
 
 module.exports = router;

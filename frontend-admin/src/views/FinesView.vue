@@ -69,57 +69,57 @@
             </tr>
 
             <tr v-for="fine in displayedFines" :key="fine._id">
-              <td><code>{{ fine.MaBienBan }}</code></td>
+              <td><code>{{ fine.maBienBan || fine.MaBienBan }}</code></td>
               <td>
                 <div
                   class="fw-semibold text-dark role-clickable hover-underline"
-                  @click="userDetailModalRef?.open(fine.DocGiaId || fine.MaDocGia)"
+                  @click="userDetailModalRef?.open(fine.docGiaId || fine.DocGiaId || fine.maDocGia || fine.MaDocGia)"
                   title="Nhấn để xem hồ sơ độc giả"
                 >
-                  {{ fine.DocGiaId?.HoLot }} {{ fine.DocGiaId?.Ten }}
+                  {{ fine.docGiaId?.hoLot || fine.DocGiaId?.HoLot }} {{ fine.docGiaId?.ten || fine.DocGiaId?.Ten }}
                 </div>
                 <div class="text-muted" style="font-size: 0.75rem;">
                   Mã ĐG:
                   <code
                     class="role-clickable text-primary"
-                    @click="userDetailModalRef?.open(fine.DocGiaId || fine.MaDocGia)"
-                  >{{ fine.MaDocGia }}</code>
-                  | SĐT: {{ fine.DocGiaId?.DienThoai || 'N/A' }}
+                    @click="userDetailModalRef?.open(fine.docGiaId || fine.DocGiaId || fine.maDocGia || fine.MaDocGia)"
+                  >{{ fine.maDocGia || fine.MaDocGia }}</code>
+                  | SĐT: {{ fine.docGiaId?.soDienThoai || fine.docGiaId?.dienThoai || fine.DocGiaId?.DienThoai || 'N/A' }}
                 </div>
               </td>
               <td>
                 <div
                   class="fw-bold text-dark role-clickable hover-underline"
-                  @click="bookDetailModalRef?.open(fine.SachId || fine.MaSach)"
+                  @click="bookDetailModalRef?.open(fine.sachId || fine.SachId || fine.maSach || fine.MaSach)"
                   title="Nhấn để xem chi tiết ấn phẩm"
                 >
-                  {{ fine.SachId?.TenSach || fine.MaSach }}
+                  {{ fine.sachId?.tenSach || fine.SachId?.TenSach || fine.maSach || fine.MaSach }}
                 </div>
                 <div class="text-muted" style="font-size: 0.75rem;">
                   Mã sách:
                   <code
                     class="role-clickable text-primary"
-                    @click="bookDetailModalRef?.open(fine.SachId || fine.MaSach)"
-                  >{{ fine.MaSach }}</code>
+                    @click="bookDetailModalRef?.open(fine.sachId || fine.SachId || fine.maSach || fine.MaSach)"
+                  >{{ fine.maSach || fine.MaSach }}</code>
                 </div>
               </td>
               <td>
-                <span class="badge" :class="fine.LoaiSuCo === 'LOST' ? 'bg-danger' : 'bg-warning text-dark'">
-                  {{ fine.LoaiSuCo === 'LOST' ? 'Làm mất sách' : 'Rách / Hư hỏng' }}
+                <span class="badge" :class="(fine.loaiSuCo || fine.LoaiSuCo) === 'LOST' ? 'bg-danger' : 'bg-warning text-dark'">
+                  {{ (fine.loaiSuCo || fine.LoaiSuCo) === 'LOST' ? 'Làm mất sách' : 'Rách / Hư hỏng' }}
                 </span>
               </td>
               <td>
                 <span class="text-secondary" style="max-width: 250px; display: inline-block;">
-                  {{ fine.MoTa || fine.LyDo }}
+                  {{ fine.moTa || fine.MoTa || fine.lyDo || fine.LyDo }}
                 </span>
               </td>
               <td>
-                <strong class="text-danger fs-6">{{ formatCurrency(fine.SoTienBoiThuong || fine.SoTienPhat) }}</strong>
+                <strong class="text-danger fs-6">{{ formatCurrency(fine.soTienBoiThuong ?? fine.SoTienBoiThuong ?? fine.soTienPhat ?? fine.SoTienPhat) }}</strong>
               </td>
-              <td>{{ formatDate(fine.NgayLap || fine.createdAt) }}</td>
+              <td>{{ formatDate(fine.ngayLap || fine.NgayLap || fine.ngayTao || fine.NgayTao || fine.createdAt) }}</td>
               <td class="text-end">
                 <button
-                  v-if="fine.TrangThai === 'UNPAID'"
+                  v-if="(fine.trangThai || fine.TrangThai) === 'UNPAID'"
                   class="btn btn-sm btn-success px-3 shadow-sm"
                   @click="handlePayFine(fine)"
                 >
@@ -174,8 +174,8 @@ const formatCurrency = (val) => {
 };
 
 const handlePayFine = async (fine) => {
-  const amountStr = formatCurrency(fine.SoTienBoiThuong || fine.SoTienPhat);
-  const readerName = `${fine.DocGiaId?.HoLot || ''} ${fine.DocGiaId?.Ten || ''}`.trim();
+  const amountStr = formatCurrency(fine.soTienBoiThuong ?? fine.SoTienBoiThuong ?? fine.soTienPhat ?? fine.SoTienPhat);
+  const readerName = `${fine.docGiaId?.hoLot || fine.DocGiaId?.HoLot || ''} ${fine.docGiaId?.ten || fine.DocGiaId?.Ten || ''}`.trim() || fine.maDocGia || fine.MaDocGia;
 
   const isConfirmed = await confirm({
     title: 'Xác nhận thu tiền bồi thường',

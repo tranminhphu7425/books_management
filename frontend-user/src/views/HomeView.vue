@@ -122,7 +122,7 @@
               <div class="step-number mb-3">2</div>
               <h5 class="fw-bold font-serif mb-2">Đăng Ký Đặt Mượn</h5>
               <p class="small text-muted mb-0">
-                Gửi yêu cầu mượn kèm ngày hẹn đến nhận sách. Thủ thư sẽ giữ sách trong 48h.
+                Gửi yêu cầu mượn kèm ngày hẹn đến nhận sách. Thủ thư sẽ giữ sách trong {{ settingsStore.holdHours }}h.
               </p>
             </div>
           </div>
@@ -142,7 +142,7 @@
               <div class="step-number mb-3">4</div>
               <h5 class="fw-bold font-serif mb-2">Đọc & Trả Sách Đúng Hạn</h5>
               <p class="small text-muted mb-0">
-                Thời gian đọc 14 ngày. Có thể tự thực hiện gia hạn thêm 01 lần (07 ngày) trên website.
+                Thời gian đọc {{ settingsStore.borrowDays }} ngày. Có thể tự thực hiện gia hạn thêm {{ settingsStore.maxRenew }} lần ({{ settingsStore.renewDays }} ngày) trên website.
               </p>
             </div>
           </div>
@@ -156,12 +156,14 @@
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useBookStore } from '../stores/bookStore';
+import { useSettingsStore } from '../stores/settingsStore';
 import { useToast } from '../composables/useToast';
 import BookCard from '../components/BookCard.vue';
 
 const router = useRouter();
 const bookStore = useBookStore();
 const toast = useToast();
+const settingsStore = useSettingsStore();
 
 const heroKeyword = ref('');
 const hotKeywords = ['Lập trình', 'Trí tuệ nhân tạo', 'Kinh tế học', 'Văn học cổ điển', 'Tâm lý học'];

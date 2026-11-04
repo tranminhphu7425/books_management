@@ -26,21 +26,21 @@
           <div class="d-flex gap-3 mb-4 p-3 bg-light rounded">
             <img
               :src="modalCoverImage"
-              :alt="book.TenSach"
+              :alt="(book.tenSach || book.TenSach)"
               class="rounded shadow-sm"
               style="width: 70px; height: 105px; object-fit: cover;"
               @error="handleImageError"
             />
             <div class="flex-grow-1">
-              <h6 class="fw-bold font-serif mb-1">{{ book.TenSach }}</h6>
+              <h6 class="fw-bold font-serif mb-1">{{ (book.tenSach || book.TenSach) }}</h6>
               <div class="small text-muted mb-1">
-                Tác giả: <strong>{{ book.TacGia || book.NguonGoc || 'Nhiều tác giả' }}</strong>
+                Tác giả: <strong>{{ (book.tacGia || book.TacGia) || (book.nguonGoc || book.NguonGoc) || 'Nhiều tác giả' }}</strong>
               </div>
               <div class="small text-muted mb-1">
-                Mã ấn phẩm: <code>{{ book.MaSach }}</code>
+                Mã ấn phẩm: <code>{{ (book.maSach || book.MaSach) }}</code>
               </div>
-              <div class="small text-muted" v-if="book.ViTri">
-                Vị trí kệ: <span class="badge bg-secondary">{{ book.ViTri }}</span>
+              <div class="small text-muted" v-if="(book.viTri || book.ViTri)">
+                Vị trí kệ: <span class="badge bg-secondary">{{ (book.viTri || book.ViTri) }}</span>
               </div>
             </div>
           </div>
@@ -67,11 +67,11 @@
           <form v-else @submit.prevent="submitBorrowRequest">
             <!-- Ràng buộc số lượng sách -->
             <div
-              v-if="borrowStore.activeBorrowCount >= 3"
+              v-if="(borrowStore.activeBorrowCount + borrowStore.pendingBorrowCount) >= settingsStore.maxBooks"
               class="alert alert-danger py-2 small mb-3"
             >
               <i class="bi bi-x-circle-fill me-1"></i>
-              Bạn đã mượn tối đa <strong>03 cuốn sách</strong>. Vui lòng hoàn trả các cuốn sách hiện tại trước khi đăng ký mượn thêm.
+              Bạn đã có <strong>{{ borrowStore.activeBorrowCount + borrowStore.pendingBorrowCount }} / {{ settingsStore.maxBooks }} cuốn</strong> đang mượn hoặc chờ nhận (Giới hạn tối đa: {{ settingsStore.maxBooks }} cuốn). Vui lòng hoàn tất đơn hiện tại trước khi mượn thêm.
             </div>
 
             <!-- Cảnh báo tiền bồi thường chưa nộp -->
@@ -81,6 +81,21 @@
             >
               <i class="bi bi-cash-coin me-1"></i>
               Tài khoản đang có khoản bồi thường chưa thanh toán. Vui lòng nộp phạt trực tiếp tại quầy thư viện.
+            </div>
+
+            <!-- Cảnh báo nếu đã đăng ký mượn cuốn sách này rồi -->
+            <div
+              v-else-if="isAlreadyBorrowed"
+              class="alert alert-warning py-3 small mb-0"
+            >
+              <div class="d-flex align-items-center gap-2 mb-1">
+                <i class="bi bi-bookmark-check-fill fs-5 text-warning"></i>
+                <strong class="fs-6">Bạn đã đăng ký mượn sách này rồi</strong>
+              </div>
+              <p class="mb-2">Bạn đang có yêu cầu chờ nhận hoặc đang mượn ấn phẩm này. Mỗi bạn đọc chỉ được mượn 1 cuốn cho cùng một đầu sách.</p>
+              <router-link to="/my-borrows" class="btn btn-warning btn-sm fw-bold text-dark" data-bs-dismiss="modal">
+                <i class="bi bi-arrow-right-circle me-1"></i> Xem danh sách mượn của bạn
+              </router-link>
             </div>
 
             <template v-else>
@@ -109,8 +124,8 @@
                   <i class="bi bi-clock-history text-primary me-1"></i> Quy định lưu ý:
                 </div>
                 <ul class="mb-0 ps-3">
-                  <li>Thời hạn mượn sách tiêu chuẩn: <strong>14 ngày</strong> kể từ khi thủ thư quét xuất kho.</li>
-                  <li>Nếu sau ngày hẹn lấy sách <strong>48 giờ</strong> bạn đọc không tới nhận, yêu cầu sẽ tự động hủy.</li>
+                  <li>Thời hạn mượn sách tiêu chuẩn: <strong>{{ settingsStore.borrowDays }} ngày</strong> kể từ khi thủ thư quét xuất kho.</li>
+                  <li>Nếu sau ngày hẹn lấy sách <strong>{{ settingsStore.holdHours }} giờ</strong> bạn đọc không tới nhận, yêu cầu sẽ tự động hủy.</li>
                 </ul>
               </div>
 
@@ -156,6 +171,7 @@ import { ref, computed, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useAuthStore } from '../stores/authStore';
 import { useBorrowStore } from '../stores/borrowStore';
+import { useSettingsStore } from '../stores/settingsStore';
 import { useToast } from '../composables/useToast';
 import { getImageUrl } from '../utils/imageHelper';
 
@@ -170,6 +186,7 @@ const route = useRoute();
 const router = useRouter();
 const authStore = useAuthStore();
 const borrowStore = useBorrowStore();
+const settingsStore = useSettingsStore();
 const toast = useToast();
 
 const modalRef = ref(null);
@@ -205,8 +222,8 @@ const defaultCover = 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?
 const imageFallback = ref(false);
 
 const modalCoverImage = computed(() => {
-  if (imageFallback.value || !props.book?.HinhAnh) return defaultCover;
-  return getImageUrl(props.book.HinhAnh, defaultCover);
+  if (imageFallback.value || !(props.book?.hinhAnh || props.book?.HinhAnh)) return defaultCover;
+  return getImageUrl((props.book.hinhAnh || props.book.HinhAnh), defaultCover);
 });
 
 const handleImageError = () => {
@@ -223,9 +240,22 @@ const maxDate = next3Days.toISOString().split('T')[0];
 
 const ngayHenLay = ref(minDate);
 
+const isAlreadyBorrowed = computed(() => {
+  if (!authStore.isAuthenticated || !props.book) return false;
+  const currentId = String(props.book._id || props.book.id || "");
+  const currentMa = String(props.book.maSach || props.book.MaSach || "");
+  return borrowStore.myBorrows.some((b) => {
+    if (!["PENDING", "APPROVED", "BORROWED"].includes(b.TrangThai)) return false;
+    const bSachId = b.SachId?._id ? String(b.SachId._id) : String(b.SachId || "");
+    const bMaSach = String(b.MaSach || b.SachId?.MaSach || "");
+    return (currentId && bSachId === currentId) || (currentMa && bMaSach === currentMa);
+  });
+});
+
 const isEligibleToBorrow = computed(() => {
   if (!authStore.isAuthenticated) return false;
-  if (borrowStore.activeBorrowCount >= 3) return false;
+  if (isAlreadyBorrowed.value) return false;
+  if ((borrowStore.activeBorrowCount + borrowStore.pendingBorrowCount) >= settingsStore.maxBooks) return false;
   if (borrowStore.totalUnpaidFineAmount > 0) return false;
   return true;
 });

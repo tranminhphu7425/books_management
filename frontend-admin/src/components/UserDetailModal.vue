@@ -33,9 +33,9 @@
               <span
                 class="badge px-3 py-1"
                 :class="{
-                  'bg-danger': user.Role === 'ADMIN',
-                  'bg-primary': user.Role === 'BOOK_MANAGER',
-                  'bg-secondary': user.Role === 'USER' || !user.Role
+                  'bg-danger': (user.role || user.Role) === 'ADMIN',
+                  'bg-primary': (user.role || user.Role) === 'BOOK_MANAGER',
+                  'bg-secondary': (user.role || user.Role) === 'USER' || !(user.role || user.Role)
                 }"
               >
                 {{ userRoleLabel }}
@@ -43,23 +43,23 @@
 
               <span
                 class="badge px-3 py-1"
-                :class="user.TrangThai === 'BLACKLISTED' || user.DaBiKhoa || user.IsBlacklisted ? 'bg-danger' : 'bg-success'"
+                :class="(user.trangThai || user.TrangThai) === 'BLACKLISTED' || user.isBlacklisted || user.IsBlacklisted || user.daBiKhoa || user.DaBiKhoa ? 'bg-danger' : 'bg-success'"
               >
-                <i :class="user.TrangThai === 'BLACKLISTED' || user.DaBiKhoa || user.IsBlacklisted ? 'bi bi-slash-circle me-1' : 'bi bi-check-circle me-1'"></i>
-                {{ user.TrangThai === 'BLACKLISTED' || user.DaBiKhoa || user.IsBlacklisted ? 'Đang Tạm Khóa (Blacklist)' : 'Đang Hoạt Động' }}
+                <i :class="(user.trangThai || user.TrangThai) === 'BLACKLISTED' || user.isBlacklisted || user.IsBlacklisted || user.daBiKhoa || user.DaBiKhoa ? 'bi bi-slash-circle me-1' : 'bi bi-check-circle me-1'"></i>
+                {{ (user.trangThai || user.TrangThai) === 'BLACKLISTED' || user.isBlacklisted || user.IsBlacklisted || user.daBiKhoa || user.DaBiKhoa ? 'Đang Tạm Khóa (Blacklist)' : 'Đang Hoạt Động' }}
               </span>
             </div>
           </div>
 
           <!-- Cảnh báo nếu bị khóa -->
           <div
-            v-if="user.TrangThai === 'BLACKLISTED' || user.DaBiKhoa || user.IsBlacklisted"
+            v-if="(user.trangThai || user.TrangThai) === 'BLACKLISTED' || user.isBlacklisted || user.IsBlacklisted || user.daBiKhoa || user.DaBiKhoa"
             class="alert alert-danger py-2 px-3 small mb-3 border-0 rounded-3 shadow-sm"
           >
             <div class="fw-bold mb-1"><i class="bi bi-exclamation-triangle-fill me-1"></i> Lý do tạm khóa quyền:</div>
-            <div>{{ user.LyDoKhoa || 'Vi phạm quy chế mượn trả hoặc chậm trễ hoàn tất biên bản bồi thường.' }}</div>
-            <div class="text-muted mt-1" v-if="user.NgayKhoa" style="font-size: 0.75rem;">
-              Ngày khóa: {{ formatDate(user.NgayKhoa) }}
+            <div>{{ user.lyDoKhoa || user.LyDoKhoa || 'Vi phạm quy chế mượn trả hoặc chậm trễ hoàn tất biên bản bồi thường.' }}</div>
+            <div class="text-muted mt-1" v-if="user.ngayKhoa || user.NgayKhoa" style="font-size: 0.75rem;">
+              Ngày khóa: {{ formatDate(user.ngayKhoa || user.NgayKhoa) }}
             </div>
           </div>
 
@@ -67,19 +67,19 @@
           <div class="card bg-light border-0 p-3 rounded-3 small">
             <div class="row g-2">
               <div class="col-sm-4 text-muted">Email tài khoản:</div>
-              <div class="col-sm-8 fw-semibold text-dark">{{ user.Email || 'Chưa cập nhật' }}</div>
+              <div class="col-sm-8 fw-semibold text-dark">{{ user.email || user.Email || 'Chưa cập nhật' }}</div>
 
               <div class="col-sm-4 text-muted">Số điện thoại:</div>
-              <div class="col-sm-8 fw-semibold text-dark">{{ user.DienThoai || user.SoDienThoai || 'Chưa cập nhật' }}</div>
+              <div class="col-sm-8 fw-semibold text-dark">{{ user.soDienThoai || user.SoDienThoai || user.dienThoai || user.DienThoai || 'Chưa cập nhật' }}</div>
 
               <div class="col-sm-4 text-muted">Giới tính:</div>
-              <div class="col-sm-8 text-dark">{{ user.Phai || 'Chưa cập nhật' }}</div>
+              <div class="col-sm-8 text-dark">{{ user.phai || user.Phai || user.gioiTinh || user.GioiTinh || 'Chưa cập nhật' }}</div>
 
               <div class="col-sm-4 text-muted">Ngày sinh:</div>
-              <div class="col-sm-8 text-dark">{{ formatDate(user.NgaySinh) }}</div>
+              <div class="col-sm-8 text-dark">{{ formatDate(user.ngaySinh || user.NgaySinh) }}</div>
 
               <div class="col-sm-4 text-muted">Địa chỉ nơi ở:</div>
-              <div class="col-sm-8 text-dark">{{ user.DiaChi || 'Chưa cập nhật' }}</div>
+              <div class="col-sm-8 text-dark">{{ user.diaChi || user.DiaChi || 'Chưa cập nhật' }}</div>
 
               <div class="col-sm-4 text-muted">Ngày tham gia:</div>
               <div class="col-sm-8 text-dark">{{ formatDate(user.createdAt) }}</div>
@@ -134,9 +134,10 @@ const isUsersManagePage = computed(() => {
 
 const userFullName = computed(() => {
   if (!user.value) return '';
-  if (user.value.HoTenNV) return user.value.HoTenNV;
-  if (user.value.HoTen) return user.value.HoTen;
-  return `${user.value.HoLot || ''} ${user.value.Ten || ''}`.trim() || user.value.Email || 'Bạn đọc';
+  if (user.value.hoTenNV || user.value.HoTenNV) return user.value.hoTenNV || user.value.HoTenNV;
+  if (user.value.hoTen || user.value.HoTen) return user.value.hoTen || user.value.HoTen;
+  const name = `${user.value.hoLot || user.value.HoLot || ''} ${user.value.ten || user.value.Ten || ''}`.trim();
+  return name || user.value.email || user.value.Email || 'Bạn đọc';
 });
 
 const userInitial = computed(() => {
@@ -145,10 +146,11 @@ const userInitial = computed(() => {
 });
 
 const displayUserAvatar = computed(() => {
-  if (avatarFallback.value || !user.value?.HinhAnh) {
-    return getDefaultAvatar(user.value?.Phai);
+  const avatar = user.value?.avatar || user.value?.hinhAnh || user.value?.HinhAnh;
+  if (avatarFallback.value || !avatar) {
+    return getDefaultAvatar(user.value?.phai || user.value?.Phai || user.value?.gioiTinh || user.value?.GioiTinh);
   }
-  return user.value.HinhAnh;
+  return avatar;
 });
 
 const handleAvatarError = () => {
@@ -157,11 +159,17 @@ const handleAvatarError = () => {
 
 const userCode = computed(() => {
   if (!user.value) return '';
-  return user.value.MaDocGia || user.value.MSNV || user.value._id?.slice(-6).toUpperCase();
+  return (
+    user.value.msnv ||
+    user.value.MSNV ||
+    user.value.maDocGia ||
+    user.value.MaDocGia ||
+    user.value._id?.slice(-6).toUpperCase()
+  );
 });
 
 const userRoleLabel = computed(() => {
-  const role = user.value?.Role || user.value?.ChucVu || 'USER';
+  const role = user.value?.role || user.value?.Role || user.value?.chucVu || user.value?.ChucVu || 'USER';
   if (role === 'ADMIN') return 'Quản Trị Viên';
   if (role === 'BOOK_MANAGER') return 'Thủ Thư / Quản Lý';
   return 'Bạn Đọc Thư Viện';
@@ -177,11 +185,19 @@ const formatDate = (dateStr) => {
 const goToUserManageAndEdit = () => {
   if (!user.value) return;
 
-  const targetId = user.value._id || user.value.MaDocGia || user.value.MSNV;
+  const targetId = user.value._id || user.value.msnv || user.value.MSNV || user.value.maDocGia || user.value.MaDocGia;
   let targetTab = 'READERS';
-  if (user.value.TrangThai === 'BLACKLISTED' || user.value.IsBlacklisted || user.value.DaBiKhoa) {
+  const isBlacklisted =
+    (user.value.trangThai || user.value.TrangThai) === 'BLACKLISTED' ||
+    user.value.isBlacklisted ||
+    user.value.IsBlacklisted ||
+    user.value.daBiKhoa ||
+    user.value.DaBiKhoa;
+  const role = user.value.role || user.value.Role || 'USER';
+
+  if (isBlacklisted) {
     targetTab = 'BLACKLIST';
-  } else if (user.value.Role === 'BOOK_MANAGER' || user.value.Role === 'ADMIN') {
+  } else if (role === 'BOOK_MANAGER' || role === 'ADMIN') {
     targetTab = 'STAFFS';
   }
 
@@ -193,7 +209,7 @@ const goToUserManageAndEdit = () => {
     query: {
       tab: targetTab,
       highlight: targetId,
-      role: user.value.Role || 'USER'
+      role
     }
   });
 };

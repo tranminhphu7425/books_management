@@ -29,7 +29,7 @@
                   <input
                     type="text"
                     id="regHoLot"
-                    v-model="form.HoLot"
+                    v-model="form.hoLot"
                     class="form-control"
                     placeholder="Ví dụ: Nguyễn Văn"
                     required
@@ -40,7 +40,7 @@
                   <input
                     type="text"
                     id="regTen"
-                    v-model="form.Ten"
+                    v-model="form.ten"
                     class="form-control"
                     placeholder="Ví dụ: An"
                     required
@@ -53,7 +53,7 @@
                   <input
                     type="email"
                     id="regEmail"
-                    v-model="form.Email"
+                    v-model="form.email"
                     class="form-control"
                     placeholder="name@example.com"
                     required
@@ -65,14 +65,14 @@
                     type="tel"
                     inputmode="numeric"
                     id="regDienThoai"
-                    v-model="form.DienThoai"
+                    v-model="form.dienThoai"
                     class="form-control"
                     placeholder="0912345678"
                     maxlength="11"
                     pattern="[0-9]{10,11}"
                     required
                     @keypress="filterNumeric"
-                    @input="form.DienThoai = form.DienThoai.replace(/\D/g, '')"
+                    @input="form.dienThoai = form.dienThoai.replace(/\D/g, '')"
                   />
                 </div>
 
@@ -84,7 +84,7 @@
                   <input
                     type="date"
                     id="regNgaySinh"
-                    v-model="form.NgaySinh"
+                    v-model="form.ngaySinh"
                     class="form-control"
                     required
                   />
@@ -94,7 +94,7 @@
                 </div>
                 <div class="col-md-6">
                   <label for="regPhai" class="form-label small fw-semibold">Giới tính</label>
-                  <select id="regPhai" v-model="form.Phai" class="form-select">
+                  <select id="regPhai" v-model="form.phai" class="form-select">
                     <option value="Nam">Nam</option>
                     <option value="Nữ">Nữ</option>
                     <option value="Khác">Khác</option>
@@ -107,7 +107,7 @@
                   <input
                     type="text"
                     id="regDiaChi"
-                    v-model="form.DiaChi"
+                    v-model="form.diaChi"
                     class="form-control"
                     placeholder="Nhập số nhà, tên đường, phường/xã, quận/huyện..."
                   />
@@ -120,7 +120,7 @@
                     <input
                       :type="showPassword ? 'text' : 'password'"
                       id="regPassword"
-                      v-model="form.Password"
+                      v-model="form.password"
                       class="form-control"
                       placeholder="Tối thiểu 6 ký tự"
                       minlength="6"
@@ -256,19 +256,19 @@ const formatDisplayDate = (isoStr) => {
 };
 
 const form = reactive({
-  HoLot: '',
-  Ten: '',
-  Email: '',
-  DienThoai: '',
-  NgaySinh: '',
-  Phai: 'Nam',
-  DiaChi: '',
-  Password: '',
+  hoLot: '',
+  ten: '',
+  email: '',
+  dienThoai: '',
+  ngaySinh: '',
+  phai: 'Nam',
+  diaChi: '',
+  password: '',
   confirmPassword: ''
 });
 
 const handleRegister = async () => {
-  if (form.Password !== form.confirmPassword) {
+  if (form.password !== form.confirmPassword) {
     const msg = 'Mật khẩu và xác nhận mật khẩu không trùng khớp nhau.';
     errorMessage.value = msg;
     toast.warning(msg);
@@ -280,7 +280,7 @@ const handleRegister = async () => {
     return;
   }
 
-  if (!form.NgaySinh) {
+  if (!form.ngaySinh) {
     const msg = 'Vui lòng chọn ngày tháng năm sinh để xác minh độ tuổi.';
     errorMessage.value = msg;
     toast.warning(msg);
@@ -288,7 +288,7 @@ const handleRegister = async () => {
   }
 
   // Kiểm tra ràng buộc: không được là ngày tương lai & phải từ đủ 18 tuổi trở lên
-  const [birthYear, birthMonth, birthDay] = form.NgaySinh.split('-').map(Number);
+  const [birthYear, birthMonth, birthDay] = form.ngaySinh.split('-').map(Number);
   const birthDate = new Date(birthYear, birthMonth - 1, birthDay);
   const now = new Date();
   const todayDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
@@ -312,14 +312,14 @@ const handleRegister = async () => {
   errorMessage.value = '';
 
   const payload = {
-    HoLot: form.HoLot.trim(),
-    Ten: form.Ten.trim(),
-    Email: form.Email.trim(),
-    DienThoai: form.DienThoai.trim(),
-    NgaySinh: form.NgaySinh,
-    Phai: form.Phai,
-    DiaChi: form.DiaChi.trim() || undefined,
-    Password: form.Password
+    hoLot: form.hoLot.trim(),
+    ten: form.ten.trim(),
+    email: form.email.trim(),
+    dienThoai: form.dienThoai.trim(),
+    ngaySinh: form.ngaySinh,
+    phai: form.phai,
+    diaChi: form.diaChi.trim() || undefined,
+    password: form.password
   };
 
   const res = await authStore.register(payload);

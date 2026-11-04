@@ -144,8 +144,8 @@
             <tr
               v-for="(book, index) in bookStore.books"
               :key="book._id"
-              :id="'book-row-' + (book._id || book.MaSach)"
-              :class="{ 'table-warning border-warning highlighted-row': highlightedBookId === book._id || highlightedBookId === book.MaSach }"
+              :id="'book-row-' + (book._id || book.maSach || book.MaSach)"
+              :class="{ 'table-warning border-warning highlighted-row': [book._id, book.maSach, book.MaSach].includes(highlightedBookId) }"
             >
               <td class="text-center text-muted fw-semibold">
                 {{ (bookStore.pagination.page - 1) * bookStore.pagination.limit + index + 1 }}
@@ -153,8 +153,8 @@
               <td>
                 <div class="d-flex align-items-center gap-2">
                   <img
-                    :src="getImageUrl(book.HinhAnh, defaultCover)"
-                    :alt="book.TenSach"
+                    :src="getImageUrl(book.hinhAnh || book.HinhAnh, defaultCover)"
+                    :alt="book.tenSach || book.TenSach"
                     class="rounded shadow-sm flex-shrink-0"
                     style="width: 42px; height: 60px; object-fit: cover;"
                     @error="$event.target.src = defaultCover"
@@ -165,62 +165,62 @@
                       @click="bookDetailModalRef?.open(book)"
                       title="Nhấn để xem chi tiết ấn phẩm"
                     >
-                      {{ book.TenSach }}
+                      {{ book.tenSach || book.TenSach }}
                     </div>
                     <div class="text-muted" style="font-size: 0.75rem;">
-                      <span>Năm XB: {{ book.NamXuatBan || 'N/A' }}</span>
-                      <span v-if="book.TenNXB || book.NhaXuatBan || book.MaNXB" class="ms-1">
-                        | NXB: {{ book.TenNXB || book.NhaXuatBan || book.MaNXB }}
+                      <span>Năm XB: {{ book.namXuatBan || book.NamXuatBan || 'N/A' }}</span>
+                      <span v-if="book.tenNXB || book.TenNXB || book.nhaXuatBan || book.NhaXuatBan || book.maNXB || book.MaNXB" class="ms-1">
+                        | NXB: {{ book.tenNXB || book.TenNXB || book.nhaXuatBan || book.NhaXuatBan || book.maNXB || book.MaNXB }}
                       </span>
-                      <span v-if="book.ISBN" class="badge bg-light text-muted border ms-1" style="font-size: 0.68rem;">
-                        ISBN: {{ book.ISBN }}
+                      <span v-if="book.isbn || book.ISBN" class="badge bg-light text-muted border ms-1" style="font-size: 0.68rem;">
+                        ISBN: {{ book.isbn || book.ISBN }}
                       </span>
                     </div>
                   </div>
                 </div>
               </td>
               <td>
-                <code class="text-primary fw-bold">{{ book.MaSach }}</code>
+                <code class="text-primary fw-bold">{{ book.maSach || book.MaSach }}</code>
               </td>
               <td>
-                <div class="fw-medium text-dark">{{ book.TacGia || book.NguonGoc || 'N/A' }}</div>
+                <div class="fw-medium text-dark">{{ book.tacGia || book.TacGia || book.nguonGoc || book.NguonGoc || 'N/A' }}</div>
                 <span class="badge bg-secondary-subtle text-secondary border border-secondary-subtle" style="font-size: 0.72rem;">
-                  {{ book.TheLoai }}
+                  {{ book.theLoai || book.TheLoai }}
                 </span>
               </td>
               <td>
                 <span class="badge bg-light text-dark border">
-                  <i class="bi bi-geo-alt me-1 text-primary"></i>{{ book.ViTri || 'Kệ chung' }}
+                  <i class="bi bi-geo-alt me-1 text-primary"></i>{{ book.viTri || book.ViTri || 'Kệ chung' }}
                 </span>
               </td>
-              <td class="text-center fw-bold">{{ book.SoQuyen }}</td>
+              <td class="text-center fw-bold">{{ book.soQuyen ?? book.SoQuyen ?? 0 }}</td>
               <td class="text-center">
                 <span class="badge bg-success-subtle text-success border border-success-subtle px-2 py-1">
-                  {{ book.SoQuyenKhaDung ?? (book.SoQuyen - (book.SoQuyenDangMuon || 0) - (book.SoQuyenHuHong || 0)) }}
+                  {{ book.soQuyenKhaDung ?? book.SoQuyenKhaDung ?? ((book.soQuyen ?? book.SoQuyen ?? 0) - (book.soQuyenDangMuon ?? book.SoQuyenDangMuon ?? 0) - (book.soQuyenHuHong ?? book.SoQuyenHuHong ?? 0)) }}
                 </span>
               </td>
               <td class="text-center">
                 <span class="badge bg-warning-subtle text-warning border border-warning-subtle px-2 py-1">
-                  {{ book.SoQuyenDangMuon || 0 }}
+                  {{ book.soQuyenDangMuon ?? book.SoQuyenDangMuon ?? 0 }}
                 </span>
               </td>
               <td class="text-center">
                 <span
-                  v-if="book.SoQuyenHuHong > 0"
+                  v-if="(book.soQuyenHuHong ?? book.SoQuyenHuHong ?? 0) > 0"
                   class="badge bg-danger-subtle text-danger border border-danger-subtle px-2 py-1"
-                  :title="`Có ${book.SoQuyenHuHong} cuốn bị hư hỏng hoặc thất lạc`"
+                  :title="`Có ${book.soQuyenHuHong ?? book.SoQuyenHuHong} cuốn bị hư hỏng hoặc thất lạc`"
                 >
-                  {{ book.SoQuyenHuHong }}
+                  {{ book.soQuyenHuHong ?? book.SoQuyenHuHong }}
                 </span>
                 <span v-else class="text-muted small">0</span>
               </td>
-              <td class="fw-semibold text-danger">{{ formatCurrency(book.DonGia) }}</td>
+              <td class="fw-semibold text-danger">{{ formatCurrency(book.donGia ?? book.DonGia) }}</td>
               <td class="text-center">
                 <span
                   class="badge"
-                  :class="book.TrangThai === 'ARCHIVED' ? 'bg-secondary' : 'bg-success-subtle text-success border border-success-subtle'"
+                  :class="(book.trangThai || book.TrangThai) === 'ARCHIVED' ? 'bg-secondary' : 'bg-success-subtle text-success border border-success-subtle'"
                 >
-                  {{ book.TrangThai === 'ARCHIVED' ? 'Đã lưu trữ' : 'Đang lưu hành' }}
+                  {{ (book.trangThai || book.TrangThai) === 'ARCHIVED' ? 'Đã lưu trữ' : 'Đang lưu hành' }}
                 </span>
               </td>
               <td class="text-end">
@@ -232,7 +232,7 @@
                   >
                     <i class="bi bi-eye"></i>
                   </button>
-                  <template v-if="book.TrangThai === 'ARCHIVED'">
+                  <template v-if="(book.trangThai || book.TrangThai) === 'ARCHIVED'">
                     <button
                       class="btn btn-success"
                       @click="handleRestore(book)"
@@ -251,8 +251,8 @@
                     <button
                       class="btn btn-outline-danger"
                       @click="handleDelete(book)"
-                      :disabled="book.SoQuyenDangMuon > 0"
-                      :title="book.SoQuyenDangMuon > 0 ? 'Không thể xóa khi có bản sách đang được độc giả mượn' : 'Lưu trữ (Soft delete)'"
+                      :disabled="(book.soQuyenDangMuon ?? book.SoQuyenDangMuon ?? 0) > 0"
+                      :title="(book.soQuyenDangMuon ?? book.SoQuyenDangMuon ?? 0) > 0 ? 'Không thể xóa khi có bản sách đang được độc giả mượn' : 'Lưu trữ (Soft delete)'"
                     >
                       <i class="bi bi-archive"></i>
                     </button>
@@ -312,7 +312,7 @@
                   <input
                     type="text"
                     name="book_title"
-                    v-model="formData.TenSach"
+                    v-model="formData.tenSach"
                     class="form-control"
                     autocomplete="off"
                     required
@@ -323,7 +323,7 @@
                   <input
                     type="text"
                     name="book_code"
-                    v-model="formData.MaSach"
+                    v-model="formData.maSach"
                     class="form-control"
                     :disabled="isEditing"
                     placeholder="VD: SACH001"
@@ -336,7 +336,7 @@
                   <input
                     type="text"
                     name="book_author"
-                    v-model="formData.TacGia"
+                    v-model="formData.tacGia"
                     class="form-control"
                     autocomplete="off"
                     required
@@ -344,18 +344,11 @@
                 </div>
                 <div class="col-md-6">
                   <label class="form-label small fw-semibold">Chủ đề / Thể loại <span class="text-danger">*</span></label>
-                  <select
-                    name="book_genre"
-                    v-model="formData.TheLoai"
-                    class="form-select"
-                    autocomplete="off"
-                    required
-                  >
-                    <option v-for="g in bookStore.genres" :key="g" :value="g">{{ g }}</option>
-                    <option v-if="formData.TheLoai && !bookStore.genres.includes(formData.TheLoai)" :value="formData.TheLoai">
-                      {{ formData.TheLoai }}
-                    </option>
-                  </select>
+                  <CategorySelect
+                    ref="categorySelectRef"
+                    v-model="formData.theLoai"
+                    :required="true"
+                  />
                 </div>
 
                 <div class="col-md-4">
@@ -363,7 +356,7 @@
                   <input
                     type="number"
                     name="book_price"
-                    v-model="formData.DonGia"
+                    v-model="formData.donGia"
                     class="form-control"
                     min="0"
                     step="1000"
@@ -376,7 +369,7 @@
                   <input
                     type="number"
                     name="book_quantity"
-                    v-model="formData.SoQuyen"
+                    v-model="formData.soQuyen"
                     class="form-control"
                     min="1"
                     autocomplete="off"
@@ -388,7 +381,7 @@
                   <input
                     type="number"
                     name="book_publish_year"
-                    v-model="formData.NamXuatBan"
+                    v-model="formData.namXuatBan"
                     class="form-control"
                     :max="new Date().getFullYear()"
                     autocomplete="off"
@@ -396,25 +389,18 @@
                 </div>
 
                 <div class="col-md-6">
-                  <label class="form-label small fw-semibold d-flex justify-content-between align-items-center mb-1">
+                  <label class="form-label small fw-semibold d-flex justify-content-between align-items-center mb-2">
                     <span>Nhà xuất bản <span class="text-danger">*</span></span>
-                    <button
-                      type="button"
-                      class="btn btn-link btn-sm p-0 text-decoration-none text-primary fw-bold"
-                      style="font-size: 0.75rem;"
-                      @click="publisherSelectRef?.openQuickAddWithQuery()"
-                    >
-                      <i class="bi bi-plus-circle me-1"></i>Thêm NXB mới
-                    </button>
+                    
                   </label>
-                  <PublisherSelect ref="publisherSelectRef" v-model="formData.MaNXB" :required="true" />
+                  <PublisherSelect ref="publisherSelectRef" v-model="formData.maNXB" :required="true" />
                 </div>
                 <div class="col-md-6">
                   <label class="form-label small fw-semibold">Mã chuẩn quốc tế (ISBN)</label>
                   <input
                     type="text"
                     name="book_isbn_number"
-                    v-model="formData.ISBN"
+                    v-model="formData.isbn"
                     class="form-control"
                     placeholder="VD: 978-604-0-12345-6"
                     autocomplete="off"
@@ -426,7 +412,7 @@
                   <input
                     type="text"
                     name="book_shelf_location"
-                    v-model="formData.ViTri"
+                    v-model="formData.viTri"
                     class="form-control"
                     placeholder="Ví dụ: Kệ A1 - Tầng 2"
                     autocomplete="off"
@@ -440,7 +426,7 @@
                     <div class="flex-shrink-0 text-center">
                       <div class="position-relative d-inline-block">
                         <img
-                          :src="getImageUrl(formData.HinhAnh, defaultCover)"
+                          :src="getImageUrl(formData.hinhAnh, defaultCover)"
                           alt="Preview"
                           class="rounded border shadow-sm"
                           style="width: 70px; height: 98px; object-fit: cover;"
@@ -474,9 +460,9 @@
                         </button>
                         <button
                           type="button"
-                          v-if="formData.HinhAnh"
+                          v-if="formData.hinhAnh"
                           class="btn btn-outline-secondary btn-sm"
-                          @click="formData.HinhAnh = ''"
+                          @click="formData.hinhAnh = ''"
                           title="Đặt lại ảnh bìa mặc định"
                         >
                           <i class="bi bi-x-circle me-1"></i> Xóa ảnh
@@ -492,7 +478,7 @@
                       <input
                         type="text"
                         name="book_cover_url"
-                        v-model="formData.HinhAnh"
+                        v-model="formData.hinhAnh"
                         class="form-control form-control-sm font-monospace text-muted"
                         placeholder="Đường dẫn ảnh lưu trên server Express (/uploads/covers/...)"
                         autocomplete="off"
@@ -508,7 +494,7 @@
                   <label class="form-label small fw-semibold">Mô tả tóm tắt nội dung ấn phẩm</label>
                   <textarea
                     name="book_summary"
-                    v-model="formData.MoTa"
+                    v-model="formData.moTa"
                     rows="3"
                     class="form-control"
                     placeholder="Tóm tắt giới thiệu nội dung cuốn sách..."
@@ -545,6 +531,7 @@ import { useToast } from '../composables/useToast';
 import { useConfirm } from '../composables/useConfirm';
 import BookDetailModal from '../components/BookDetailModal.vue';
 import PublisherSelect from '../components/PublisherSelect.vue';
+import CategorySelect from '../components/CategorySelect.vue';
 import { getImageUrl } from '../utils/imageHelper';
 
 const route = useRoute();
@@ -554,6 +541,7 @@ const { confirm } = useConfirm();
 
 const bookDetailModalRef = ref(null);
 const publisherSelectRef = ref(null);
+const categorySelectRef = ref(null);
 const highlightedBookId = ref(null);
 
 const searchKeyword = ref('');
@@ -596,7 +584,7 @@ const onCoverFileSelected = async (event) => {
   try {
     const res = await bookStore.uploadCover(file);
     if (res.success) {
-      formData.HinhAnh = res.data.url;
+      formData.hinhAnh = res.data.url;
       toast.success(res.message || 'Tải lên ảnh bìa sách thành công!');
     } else {
       toast.error(res.error || 'Tải lên ảnh bìa thất bại.');
@@ -610,18 +598,18 @@ const onCoverFileSelected = async (event) => {
 };
 
 const formData = reactive({
-  TenSach: '',
-  MaSach: '',
-  TacGia: '',
-  TheLoai: 'Công nghệ thông tin',
-  DonGia: 50000,
-  SoQuyen: 5,
-  NamXuatBan: new Date().getFullYear(),
-  MaNXB: '',
-  ViTri: '',
-  HinhAnh: '',
-  MoTa: '',
-  ISBN: ''
+  tenSach: '',
+  maSach: '',
+  tacGia: '',
+  theLoai: 'Công nghệ thông tin',
+  donGia: 50000,
+  soQuyen: 5,
+  namXuatBan: new Date().getFullYear(),
+  maNXB: '',
+  viTri: '',
+  hinhAnh: '',
+  moTa: '',
+  isbn: ''
 });
 
 const isBookFormDirty = computed(() => {
@@ -630,18 +618,18 @@ const isBookFormDirty = computed(() => {
 
   const init = initialBookData.value;
   return (
-    formData.TenSach.trim() !== (init.TenSach || '').trim() ||
-    formData.MaSach.trim() !== (init.MaSach || '').trim() ||
-    formData.TacGia.trim() !== (init.TacGia || '').trim() ||
-    formData.TheLoai !== (init.TheLoai || '') ||
-    Number(formData.DonGia) !== Number(init.DonGia ?? 0) ||
-    Number(formData.SoQuyen) !== Number(init.SoQuyen ?? 0) ||
-    Number(formData.NamXuatBan) !== Number(init.NamXuatBan ?? 0) ||
-    formData.MaNXB.trim() !== (init.MaNXB || '').trim() ||
-    formData.ViTri.trim() !== (init.ViTri || '').trim() ||
-    formData.HinhAnh.trim() !== (init.HinhAnh || '').trim() ||
-    formData.MoTa.trim() !== (init.MoTa || '').trim() ||
-    formData.ISBN.trim() !== (init.ISBN || '').trim()
+    formData.tenSach.trim() !== (init.tenSach || '').trim() ||
+    formData.maSach.trim() !== (init.maSach || '').trim() ||
+    formData.tacGia.trim() !== (init.tacGia || '').trim() ||
+    formData.theLoai !== (init.theLoai || '') ||
+    Number(formData.donGia) !== Number(init.donGia ?? 0) ||
+    Number(formData.soQuyen) !== Number(init.soQuyen ?? 0) ||
+    Number(formData.namXuatBan) !== Number(init.namXuatBan ?? 0) ||
+    formData.maNXB.trim() !== (init.maNXB || '').trim() ||
+    formData.viTri.trim() !== (init.viTri || '').trim() ||
+    formData.hinhAnh.trim() !== (init.hinhAnh || '').trim() ||
+    formData.moTa.trim() !== (init.moTa || '').trim() ||
+    formData.isbn.trim() !== (init.isbn || '').trim()
   );
 });
 
@@ -709,18 +697,18 @@ const openCreateModal = () => {
   isEditing.value = false;
   editingBookId.value = null;
   initialBookData.value = null;
-  formData.TenSach = '';
-  formData.MaSach = '';
-  formData.TacGia = '';
-  formData.TheLoai = bookStore.genres[0] || 'Công nghệ thông tin';
-  formData.DonGia = 50000;
-  formData.SoQuyen = 5;
-  formData.NamXuatBan = new Date().getFullYear();
-  formData.MaNXB = '';
-  formData.ViTri = '';
-  formData.HinhAnh = '';
-  formData.MoTa = '';
-  formData.ISBN = '';
+  formData.tenSach = '';
+  formData.maSach = '';
+  formData.tacGia = '';
+  formData.theLoai = bookStore.genres[0] || 'Công nghệ thông tin';
+  formData.donGia = 50000;
+  formData.soQuyen = 5;
+  formData.namXuatBan = new Date().getFullYear();
+  formData.maNXB = '';
+  formData.viTri = '';
+  formData.hinhAnh = '';
+  formData.moTa = '';
+  formData.isbn = '';
 
   const modal = new window.bootstrap.Modal(modalRef.value);
   modal.show();
@@ -729,33 +717,33 @@ const openCreateModal = () => {
 const openEditModal = (book) => {
   isEditing.value = true;
   editingBookId.value = book._id;
-  formData.TenSach = book.TenSach || '';
-  formData.MaSach = book.MaSach || '';
-  formData.TacGia = book.TacGia || book.NguonGoc || '';
-  formData.TheLoai = book.TheLoai || (bookStore.genres[0] || 'Công nghệ thông tin');
-  formData.DonGia = book.DonGia ?? 50000;
-  formData.SoQuyen = book.SoQuyen ?? 1;
-  formData.NamXuatBan = book.NamXuatBan || new Date().getFullYear();
-  formData.MaNXB = book.MaNXB?.MaNXB || book.MaNXB || '';
-  formData.ViTri = book.ViTri || '';
-  formData.HinhAnh = book.HinhAnh || '';
-  formData.MoTa = book.MoTa || '';
-  formData.ISBN = book.ISBN || '';
+  formData.tenSach = book.tenSach || book.TenSach || '';
+  formData.maSach = book.maSach || book.MaSach || '';
+  formData.tacGia = book.tacGia || book.TacGia || book.nguonGoc || book.NguonGoc || '';
+  formData.theLoai = book.theLoai || book.TheLoai || (bookStore.genres[0] || 'Công nghệ thông tin');
+  formData.donGia = Number(book.donGia ?? book.DonGia ?? 50000);
+  formData.soQuyen = Number(book.soQuyen ?? book.SoQuyen ?? 1);
+  formData.namXuatBan = Number(book.namXuatBan || book.NamXuatBan || new Date().getFullYear());
+  formData.maNXB = book.maNXB?.maNXB || book.maNXB?.MaNXB || book.MaNXB?.MaNXB || book.maNXB || book.MaNXB || '';
+  formData.viTri = book.viTri || book.ViTri || '';
+  formData.hinhAnh = book.hinhAnh || book.HinhAnh || '';
+  formData.moTa = book.moTa || book.MoTa || '';
+  formData.isbn = book.isbn || book.ISBN || '';
 
   // Lưu bản snapshot dữ liệu ban đầu để kiểm tra thay đổi
   initialBookData.value = {
-    TenSach: formData.TenSach,
-    MaSach: formData.MaSach,
-    TacGia: formData.TacGia,
-    TheLoai: formData.TheLoai,
-    DonGia: formData.DonGia,
-    SoQuyen: formData.SoQuyen,
-    NamXuatBan: formData.NamXuatBan,
-    MaNXB: formData.MaNXB,
-    ViTri: formData.ViTri,
-    HinhAnh: formData.HinhAnh,
-    MoTa: formData.MoTa,
-    ISBN: formData.ISBN
+    tenSach: formData.tenSach,
+    maSach: formData.maSach,
+    tacGia: formData.tacGia,
+    theLoai: formData.theLoai,
+    donGia: formData.donGia,
+    soQuyen: formData.soQuyen,
+    namXuatBan: formData.namXuatBan,
+    maNXB: formData.maNXB,
+    viTri: formData.viTri,
+    hinhAnh: formData.hinhAnh,
+    moTa: formData.moTa,
+    isbn: formData.isbn
   };
 
   const modal = new window.bootstrap.Modal(modalRef.value);
@@ -763,16 +751,43 @@ const openEditModal = (book) => {
 };
 
 const handleSubmitBook = async () => {
-  if (!formData.MaNXB) {
+  if (!formData.maNXB) {
     toast.warning('Vui lòng chọn hoặc thêm mới Nhà xuất bản.');
     return;
   }
 
+  const payload = {
+    tenSach: formData.tenSach,
+    TenSach: formData.tenSach,
+    maSach: formData.maSach,
+    MaSach: formData.maSach,
+    tacGia: formData.tacGia,
+    TacGia: formData.tacGia,
+    theLoai: formData.theLoai,
+    TheLoai: formData.theLoai,
+    donGia: Number(formData.donGia),
+    DonGia: Number(formData.donGia),
+    soQuyen: Number(formData.soQuyen),
+    SoQuyen: Number(formData.soQuyen),
+    namXuatBan: Number(formData.namXuatBan),
+    NamXuatBan: Number(formData.namXuatBan),
+    maNXB: formData.maNXB,
+    MaNXB: formData.maNXB,
+    viTri: formData.viTri,
+    ViTri: formData.viTri,
+    hinhAnh: formData.hinhAnh,
+    HinhAnh: formData.hinhAnh,
+    moTa: formData.moTa,
+    MoTa: formData.moTa,
+    isbn: formData.isbn,
+    ISBN: formData.isbn
+  };
+
   let res;
   if (isEditing.value) {
-    res = await bookStore.updateBook(editingBookId.value, formData);
+    res = await bookStore.updateBook(editingBookId.value, payload);
   } else {
-    res = await bookStore.createBook(formData);
+    res = await bookStore.createBook(payload);
   }
 
   if (res.success) {
@@ -785,14 +800,17 @@ const handleSubmitBook = async () => {
 };
 
 const handleDelete = async (book) => {
-  if (book.SoQuyenDangMuon > 0) {
+  const borrowingCount = book.soQuyenDangMuon ?? book.SoQuyenDangMuon ?? 0;
+  if (borrowingCount > 0) {
     toast.warning('Cảnh báo an toàn: Sách đang có bản in được độc giả mượn chưa trả. Không thể xóa ấn phẩm này!');
     return;
   }
 
+  const bookTitle = book.tenSach || book.TenSach;
+  const bookCode = book.maSach || book.MaSach;
   const isConfirmed = await confirm({
     title: 'Lưu trữ ấn phẩm (Xóa mềm)',
-    message: `Bạn có chắc chắn muốn chuyển ấn phẩm "${book.TenSach}" (${book.MaSach}) vào kho lưu trữ? Ấn phẩm sẽ bị ẩn khỏi danh mục bạn đọc.`,
+    message: `Bạn có chắc chắn muốn chuyển ấn phẩm "${bookTitle}" (${bookCode}) vào kho lưu trữ? Ấn phẩm sẽ bị ẩn khỏi danh mục bạn đọc.`,
     confirmText: 'Chuyển vào lưu trữ',
     cancelText: 'Bỏ qua',
     type: 'danger',
@@ -806,9 +824,11 @@ const handleDelete = async (book) => {
 };
 
 const handleRestore = async (book) => {
+  const bookTitle = book.tenSach || book.TenSach;
+  const bookCode = book.maSach || book.MaSach;
   const isConfirmed = await confirm({
     title: 'Khôi phục ấn phẩm',
-    message: `Xác nhận khôi phục ấn phẩm "${book.TenSach}" (${book.MaSach}) từ kho lưu trữ về kệ kho lưu hành?`,
+    message: `Xác nhận khôi phục ấn phẩm "${bookTitle}" (${bookCode}) từ kho lưu trữ về kệ kho lưu hành?`,
     confirmText: 'Khôi phục ấn phẩm',
     cancelText: 'Hủy bỏ',
     type: 'success',

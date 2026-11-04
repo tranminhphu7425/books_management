@@ -1,9 +1,52 @@
 import { defineStore } from 'pinia';
 import api from '../services/api';
 
+
+const normalizeUser = (u) => {
+  if (!u) return null;
+  const hoLot = u.hoLot !== undefined ? u.hoLot : (u.HoLot || '');
+  const ten = u.ten !== undefined ? u.ten : (u.Ten || '');
+  const hoTen = u.hoTen || (hoLot + ' ' + ten).trim() || u.email || u.Email || '';
+  const email = u.email || u.Email || '';
+  const maDocGia = u.maDocGia || u.MaDocGia || '';
+  const role = u.role || u.Role || 'USER';
+  const avatar = u.avatar || u.hinhAnh || u.HinhAnh || '';
+  const dienThoai = u.dienThoai !== undefined ? u.dienThoai : (u.DienThoai || '');
+  const diaChi = u.diaChi !== undefined ? u.diaChi : (u.DiaChi || '');
+  const phai = u.phai || u.Phai || 'Nam';
+  const ngaySinh = u.ngaySinh !== undefined ? u.ngaySinh : (u.NgaySinh || null);
+
+  return {
+    ...u,
+    id: u.id || u._id,
+    _id: u._id || u.id,
+    maDocGia,
+    MaDocGia: maDocGia,
+    hoTen,
+    hoLot,
+    HoLot: hoLot,
+    ten,
+    Ten: ten,
+    email,
+    Email: email,
+    role,
+    Role: role,
+    avatar,
+    HinhAnh: avatar,
+    dienThoai,
+    DienThoai: dienThoai,
+    diaChi,
+    DiaChi: diaChi,
+    phai,
+    Phai: phai,
+    ngaySinh,
+    NgaySinh: ngaySinh
+  };
+};
+
 export const useAuthStore = defineStore('auth', {
   state: () => ({
-    user: JSON.parse(localStorage.getItem('user') || 'null'),
+    user: normalizeUser(JSON.parse(localStorage.getItem('user') || 'null')),
     accessToken: localStorage.getItem('accessToken') || null,
     refreshToken: localStorage.getItem('refreshToken') || null,
     isLoading: false,
@@ -22,7 +65,7 @@ export const useAuthStore = defineStore('auth', {
 
   actions: {
     setAuthData(user, accessToken, refreshToken) {
-      this.user = user;
+      this.user = normalizeUser(user);
       this.accessToken = accessToken;
       this.refreshToken = refreshToken;
 
@@ -87,7 +130,7 @@ export const useAuthStore = defineStore('auth', {
       if (!this.accessToken) return;
       try {
         const response = await api.get('/auth/me');
-        this.user = response.data.data.user || response.data.data;
+        this.user = normalizeUser(response.data.data.user || response.data.data);
         localStorage.setItem('user', JSON.stringify(this.user));
       } catch (err) {
         console.error('Không thể cập nhật hồ sơ người dùng:', err);
@@ -99,7 +142,7 @@ export const useAuthStore = defineStore('auth', {
       this.error = null;
       try {
         const response = await api.put('/auth/profile', profileData);
-        this.user = response.data.data;
+        this.user = normalizeUser(response.data.data);
         localStorage.setItem('user', JSON.stringify(this.user));
         return { success: true, message: response.data.message || 'Cập nhật thông tin thành công!' };
       } catch (err) {
@@ -121,7 +164,7 @@ export const useAuthStore = defineStore('auth', {
         });
         const url = response.data.data.url;
         if (this.user) {
-          this.user.HinhAnh = url;
+          this.user.avatar = url; this.user.HinhAnh = url;
           localStorage.setItem('user', JSON.stringify(this.user));
         }
         return { success: true, url, message: response.data.message || 'Tải lên ảnh đại diện thành công!' };
