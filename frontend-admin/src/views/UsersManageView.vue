@@ -348,7 +348,7 @@
               <div class="alert alert-warning small d-flex align-items-start gap-2 mb-3">
                 <i class="bi bi-exclamation-triangle-fill fs-6 text-warning flex-shrink-0 mt-1"></i>
                 <div>
-                  Tài khoản này sẽ bị <strong>tạm khóa tính năng mượn sách</strong> trên toàn hệ thống cho đến khi được quản trị viên gỡ bỏ.
+                  Tài khoản này sẽ bị <strong>vô hiệu hóa</strong>.
                 </div>
               </div>
 

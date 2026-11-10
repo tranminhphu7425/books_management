@@ -2,8 +2,8 @@
 
 > **Đồ án môn học / Dự án:** Xây dựng Hệ thống Quản lý Sách và Mượn trả Trực tuyến  
 > **Kiến trúc:** Monorepo (2 Cổng Frontend Vue 3 + 1 Máy chủ Backend RESTful API)  
-> **Công nghệ:** Node.js, Express.js, MongoDB Atlas, Vue 3, Vite, Pinia, Bootstrap 5, JWT & Google OAuth 2.0  
-> **Mô hình triển khai:** Vercel (Frontends) + Render (Backend API) + MongoDB Atlas (Database Cluster)
+> **Công nghệ:** Node.js, Express.js, MongoDB Atlas, Cloudinary, Vue 3, Vite, Pinia, Bootstrap 5, JWT & Google OAuth 2.0  
+> **Mô hình triển khai:** Vercel (Frontends) + Render (Backend API) + MongoDB Atlas (Database Cluster) + Cloudinary (Media Storage)
 
 ---
 
@@ -29,7 +29,7 @@ Dự án được xây dựng theo mô hình **Monorepo** với 3 phân hệ ho�
 
 ### 2.2. Phân hệ Quản trị & Thủ thư (Admin Portal - Port 3001)
 - **Phân quyền vai trò RBAC chặt chẽ:** Phân tách rõ ràng giữa Quản trị viên tối cao (`ADMIN`) và Thủ thư chuyên trách kho (`BOOK_MANAGER`).
-- **Quản lý Kho sách & NXB:** Thêm mới, chỉnh sửa, xóa mềm (Soft Delete), quản lý số lượng tồn và bản khả dụng, tải lên ảnh bìa an toàn (Magic Bytes check).
+- **Quản lý Kho sách & NXB:** Thêm mới, chỉnh sửa, xóa mềm (Soft Delete), quản lý số lượng tồn và bản khả dụng, tải lên ảnh bìa sách và ảnh đại diện độc giả trực tiếp lên Cloudinary (tự động nén WebP, crop theo tỷ lệ chuẩn).
 - **Quy trình Mượn - Trả chuẩn thư viện:** Duyệt yêu cầu mượn (giữ sách 48h), xuất sách (Check-out 14 ngày), nhận trả (Check-in hoàn kho) và lập biên bản sự cố.
 - **Quản lý Người dùng & Blacklist:** Khóa thẻ độc giả vi phạm quy chế, mở khóa khi hoàn tất bồi thường, phân quyền nhân sự.
 - **Báo cáo Thống kê & Audit Logs:** Biểu đồ xu hướng mượn sách, xuất báo cáo CSV, tra cứu nhật ký kiểm toán hệ thống.
@@ -51,7 +51,7 @@ npm run install:all
 
 ### Bước 2: Cấu hình Biến môi trường
 Sao chép các tệp `.env.example` thành `.env` tại từng phân hệ:
-- **Backend:** `cp backend/.env.example backend/.env`
+- **Backend:** `cp backend/.env.example backend/.env` *(Điền đầy đủ `MONGODB_URI`, `JWT_SECRET`, và cấu hình `CLOUDINARY_*`)*
 - **Frontend User:** `cp frontend-user/.env.example frontend-user/.env`
 - **Frontend Admin:** `cp frontend-admin/.env.example frontend-admin/.env`
 
@@ -121,3 +121,4 @@ books_management/
 - **Frontend Hosting:** Vercel (Hỗ trợ cấu hình `vercel.json` SPA URL rewrite).
 - **Backend Service:** Render Web Service (Chạy container Node.js với Health Check `/api/health`).
 - **Database Service:** MongoDB Atlas M0 Cluster (Singapore `ap-southeast-1`, bảo mật IP Whitelist và TLS 1.3).
+- **Media Cloud Storage:** Cloudinary (Lưu trữ và phân phối CDN cho ảnh bìa sách và avatar người dùng, giải quyết triệt để vấn đề mất file trên môi trường máy chủ tạm thời Ephemeral Filesystem của Render).

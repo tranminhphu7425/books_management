@@ -19,7 +19,7 @@ exports.uploadCover = (req, res) => {
       filename: req.file.filename,
       size: req.file.size,
     },
-    message: "Tải lên ảnh bìa sách lên Cloudinary thành công!",
+    message: "Tải lên ảnh bìa sách lên thành công!",
   });
 };
 
@@ -45,7 +45,7 @@ exports.uploadAvatar = async (req, res, next) => {
         filename: req.file.filename,
         size: req.file.size,
       },
-      message: "Tải lên và cập nhật ảnh đại diện lên Cloudinary thành công!",
+      message: "Tải lên và cập nhật ảnh đại diện lên thành công!",
     });
   } catch (error) {
     next(error);

@@ -79,7 +79,7 @@
 
               <!-- Nút bấm hiển thị Dropdown tùy chỉnh -->
               <div
-                class="form-select form-select-sm custom-pub-trigger d-flex align-items-center justify-content-between"
+                class="form-control form-select-sm custom-pub-trigger d-flex align-items-center justify-content-between"
                 :class="{ 'is-open': isPublisherOpen, 'border-primary': isPublisherOpen || selectedPublisher }"
                 tabindex="0"
                 @click="togglePublisherDropdown"
@@ -213,7 +213,7 @@
                   @change="applyFilter"
                 />
                 <label class="form-check-label small fw-semibold text-success cursor-pointer" for="availableOnlyCheck">
-                  <i class="bi bi-check-circle-fill me-1"></i> Chỉ sách còn sẵn trên kệ
+                  Chỉ sách còn sẵn trên kệ
                 </label>
               </div>
             </div>
