@@ -11,7 +11,7 @@
 </template>
 
 <script setup>
-import { onMounted } from 'vue';
+import { onMounted, onUnmounted } from 'vue';
 import Navbar from './components/Navbar.vue';
 import Footer from './components/Footer.vue';
 import ToastContainer from './components/ToastContainer.vue';
@@ -22,11 +22,24 @@ import { useSettingsStore } from './stores/settingsStore';
 const authStore = useAuthStore();
 const settingsStore = useSettingsStore();
 
+let syncInterval = null;
+
 onMounted(() => {
   settingsStore.fetchSettings();
   if (authStore.isAuthenticated) {
     authStore.fetchCurrentUser();
   }
+
+  // Polling định kỳ mỗi 15 giây để kiểm tra trạng thái tài khoản (ví dụ bị Blacklist khi đang trực tuyến)
+  syncInterval = setInterval(() => {
+    if (authStore.isAuthenticated) {
+      authStore.fetchCurrentUser();
+    }
+  }, 15000);
+});
+
+onUnmounted(() => {
+  if (syncInterval) clearInterval(syncInterval);
 });
 </script>
 

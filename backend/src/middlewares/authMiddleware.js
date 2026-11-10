@@ -36,11 +36,16 @@ const authMiddleware = async (req, res, next) => {
       });
     }
 
-    // Kiểm tra nếu tài khoản độc giả bị khóa
+    // Kiểm tra nếu tài khoản độc giả bị khóa (Blacklist)
     if (userType === 'READER' && user.DaBiKhoa) {
       return sendError(res, {
         code: 'BORROW_BLACKLISTED',
-        message: `Tài khoản của bạn đang bị khóa quyền mượn sách. Lý do: ${user.LyDoKhoa || 'Vi phạm quy chế thư viện'}.`,
+        message: `Tài khoản của bạn đã bị khóa do vi phạm quy chế. Lý do: ${user.LyDoKhoa || 'Vi phạm quy định thư viện'}.`,
+        details: {
+          daBiKhoa: true,
+          lyDoKhoa: user.LyDoKhoa || 'Vi phạm quy định thư viện',
+          ngayKhoa: user.NgayKhoa
+        },
         statusCode: 403
       });
     }

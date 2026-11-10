@@ -74,13 +74,13 @@
 
               <div class="col-md-6">
                 <label class="form-label small fw-semibold">
-                  Số ngày trễ hạn để khóa quyền mượn <span class="text-danger">*</span>
+                  Số ngày trễ hạn tối đa để đưa vào danh sách đen (Blacklist) <span class="text-danger">*</span>
                 </label>
                 <div class="input-group">
                   <input type="number" v-model.number="settings.blacklistAfterOverdueDays" class="form-control" min="1" max="60" required />
                   <span class="input-group-text bg-light text-muted small">ngày</span>
                 </div>
-                <div class="form-text small">Tự động tạm khóa quyền mượn nếu bạn đọc quá hạn số ngày này.</div>
+                <div class="form-text small">Hạn mức số ngày quá hạn trả sách làm căn cứ khóa tài khoản độc giả vi phạm.</div>
               </div>
 
               <div class="col-12 mt-4 text-end">

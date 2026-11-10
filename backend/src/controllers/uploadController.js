@@ -1,23 +1,25 @@
-const { sendSuccess, sendError } = require('../middlewares/responseEnvelope');
+const { sendSuccess, sendError } = require("../middlewares/responseEnvelope");
 
 // Upload ảnh bìa sách
 exports.uploadCover = (req, res) => {
   if (!req.file) {
     return sendError(res, {
-      code: 'VALIDATION_FAILED',
-      message: 'Vui lòng chọn tập tin ảnh bìa sách để tải lên.',
-      statusCode: 400
+      code: "VALIDATION_FAILED",
+      message: "Vui lòng chọn tập tin ảnh bìa sách để tải lên.",
+      statusCode: 400,
     });
   }
 
-  const fileUrl = `/uploads/covers/${req.file.filename}`;
+  // req.file.path chính là URL Cloudinary: https://res.cloudinary.com/...
+  const fileUrl = req.file.path;
+
   return sendSuccess(res, {
     data: {
       url: fileUrl,
       filename: req.file.filename,
-      size: req.file.size
+      size: req.file.size,
     },
-    message: 'Tải lên ảnh bìa sách thành công!'
+    message: "Tải lên ảnh bìa sách lên Cloudinary thành công!",
   });
 };
 
@@ -26,13 +28,13 @@ exports.uploadAvatar = async (req, res, next) => {
   try {
     if (!req.file) {
       return sendError(res, {
-        code: 'VALIDATION_FAILED',
-        message: 'Vui lòng chọn tập tin ảnh đại diện để tải lên.',
-        statusCode: 400
+        code: "VALIDATION_FAILED",
+        message: "Vui lòng chọn tập tin ảnh đại diện để tải lên.",
+        statusCode: 400,
       });
     }
 
-    const fileUrl = `/uploads/avatars/${req.file.filename}`;
+    const fileUrl = req.file.path; // URL Cloudinary
     const user = req.user;
     user.HinhAnh = fileUrl;
     await user.save();
@@ -41,9 +43,9 @@ exports.uploadAvatar = async (req, res, next) => {
       data: {
         url: fileUrl,
         filename: req.file.filename,
-        size: req.file.size
+        size: req.file.size,
       },
-      message: 'Tải lên và cập nhật ảnh đại diện thành công!'
+      message: "Tải lên và cập nhật ảnh đại diện lên Cloudinary thành công!",
     });
   } catch (error) {
     next(error);

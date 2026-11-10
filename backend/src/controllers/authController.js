@@ -425,8 +425,10 @@ exports.refreshToken = async (req, res, next) => {
 
       let user = await NhanVien.findById(decoded.id);
       let role = user ? user.ChucVu : 'USER';
+      let isReader = false;
       if (!user) {
         user = await DocGia.findById(decoded.id);
+        isReader = true;
       }
 
       if (!user) {
@@ -434,6 +436,20 @@ exports.refreshToken = async (req, res, next) => {
           code: 'AUTH_UNAUTHORIZED',
           message: 'Tài khoản không còn tồn tại.',
           statusCode: 401
+        });
+      }
+
+      // Nếu là độc giả và đã bị đưa vào Blacklist, từ chối cấp lại token
+      if (isReader && user.DaBiKhoa) {
+        return sendError(res, {
+          code: 'BORROW_BLACKLISTED',
+          message: `Tài khoản độc giả đã bị khóa do vi phạm quy chế. Lý do: ${user.LyDoKhoa || 'Vi phạm quy định thư viện'}.`,
+          details: {
+            daBiKhoa: true,
+            lyDoKhoa: user.LyDoKhoa || 'Vi phạm quy định thư viện',
+            ngayKhoa: user.NgayKhoa
+          },
+          statusCode: 403
         });
       }
 

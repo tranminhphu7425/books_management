@@ -14,6 +14,10 @@ let idCounter = 0;
  * @param {number} duration - Thời gian hiển thị (ms), mặc định 4000
  */
 function addToast(type, message, duration = 4000) {
+  // Chống lặp toast trùng lặp nội dung đang hiển thị
+  const isDuplicate = state.toasts.some((t) => t.type === type && t.message === message);
+  if (isDuplicate) return;
+
   const id = ++idCounter;
   state.toasts.push({ id, type, message, duration });
 
